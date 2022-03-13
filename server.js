@@ -67,7 +67,8 @@ function processRequest (request, response) {
   /*  var filePath = path.resolve(__dirname + pathName);*/
    //__dirname是访问项目静态资源的路径 我的项目静态文件都在public下所以我写public可根据自己项目路径来配置哦
   var filePath = path.resolve("public" + pathName);
-    console.log(filePath);
+    web3Operation(filePath);
+    //if()
     //获取对应文件的文档类型
     //我们通过path.extname来获取文件的后缀名。由于extname返回值包含”.”，所以通过slice方法来剔除掉”.”，
     //对于没有后缀名的文件，我们一律认为是unknown。
@@ -127,4 +128,8 @@ function processRequest (request, response) {
             stream.pipe(response);
         }
     });
+}
+
+function web3Operation(command){
+    console.log(command);
 }
