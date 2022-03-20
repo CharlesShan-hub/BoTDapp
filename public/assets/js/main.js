@@ -98,7 +98,7 @@ async function doAddDeviceTest(){
     var info = await addAccount(newName,newDetail);
 
     if(info!=false){
-        var res=await addDevice(info["account"],info["password"],newName,newDetail);
+        var res=await addDeviceTest(info["account"],info["password"],newName,newDetail);
         if(res!=0){
             alert("Saved new device name",newName);
             uiInitDashboardGallery();
