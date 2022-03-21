@@ -5,29 +5,26 @@ contract Connect{
     /** Auth
      */
     /******************************************************************/
-    bytes password=new bytes(12);
+    string password = "";
 
     // 认证
     function auth(string memory _password) public view returns(bool) {
-        return compareStr(_password,string(password));
+        return compareStr(_password,password);
     }
 
     // 设置密码
     event SetPassword(bool res,uint identity);
     function setPassword(string memory oldPassword,string memory newPassword,uint identity) public{
-        if(compareStr(oldPassword,string(password))==true){
-            password=bytes(newPassword);
-            emit SetPassword(true,identity);
-        }else{
-            emit SetPassword(false,identity);
-        }
+        require(auth(oldPassword));
+        password=newPassword;
+        emit SetPassword(true,identity);
     }
 
     /******************************************************************/
     /** Device
      */
     /******************************************************************/
-
+    /*
     // 设备信息
     struct Device{
         address account;
@@ -35,29 +32,27 @@ contract Connect{
         string name;
         string detail;
     }
-    Device[] public devices;
-    uint public devicesNum=0;
+    mapping(uint8 => Device) public devices;
+    mapping(address => uint8) public deviceAccountToIndex;
+    mapping(uint8 => address) public deviceIndexToAccount;
+    uint8 public devicesNum=0;
 
     // 获取设备数量
-    function getDeviceNum() view public returns(uint){
+    function getDeviceNum() view public returns(uint8){
         return devicesNum;
-    }
-
-    function getDeviceLength() view public returns(uint){
-        return devices.length;
     }
 
     // 设置设备名称
     event SetDeviceName(uint identity);
-    function setDeviceName(uint index,string memory _name,uint identity)public{
+    function setDeviceName(uint8 index,string memory _name,uint identity)public{
         devices[index].name=_name;
         emit SetDeviceName(identity);
     }
 
     // 获取设备信息
     function getDeviceInfo(uint8 index) view public returns(uint8 id, string memory, string memory){
-        require(index<devices.length);
-        require(compareStr("",devices[index].password)==false);
+        require(index<devicesNum);
+        require(devices[index].account!=0x0000000000000000000000000000000000000000);
         return (index,devices[index].name,devices[index].detail);
     }
 
@@ -73,9 +68,92 @@ contract Connect{
         }
     }
 
-    // 添加设备
-    event AddDevice(uint8 deviceId,uint identity);
+    // 添加设备申请
+    struct AddDeviceList{
+        string name;     // 设备名称
+        string detail;   // 设备简介
+        address account; // 账户
+        string password; // 设备密码
+        bool read;       // 等待批准
+        bool approve;    // 批准结果
+        bool test;
+    }
+    mapping(uint8 => AddDeviceList) public addDeviceList;
+    mapping(address => uint8) public addDeviceAccountToIndex;
+    mapping(uint8 => address) public addDeviceIndexToAccount;
+    uint8 public addDeviceListLen=0;
+
+    // 添加设备申请
+    event AddDevice(bool result,uint identity);
     function addDevice(address _account, string memory _password, string memory _name, string memory _detail,uint identity) public{
+        uint8 index=addDeviceListLen;
+        addDeviceAccountToIndex[_account]=index;
+        addDeviceIndexToAccount[index]=_account;
+        addDeviceList[index].name=_name;
+        addDeviceList[index].detail=_detail;
+        addDeviceList[index].account=_account;
+        addDeviceList[index].password=_password;
+        addDeviceList[index].read=false;
+        addDeviceList[index].approve=false;
+        addDeviceListLen++;
+        emit AddDevice(true,identity);
+    }
+
+    // 添加设备通过
+    event AddDeviceApprove(bool result,address account, bool approve,uint identity);
+    function addDeviceApprove(address _account,bool _approve,uint identity) public{
+        uint8 index = addDeviceAccountToIndex[_account];
+        require(compareStr("",addDeviceList[index].password)==false);
+        addDeviceList[index].read=true;
+        addDeviceList[index].approve=_approve;
+        emit AddDeviceApprove(true,_account,_approve,identity);
+    }
+
+    // 获取设备申请表长
+    function getAddDevListLen()public view returns(uint8){
+        return addDeviceListLen;
+    }
+
+    // 获取设备申请信息
+    function getAddDevListInfo(uint8 index) view public returns(uint8 id, string memory, string memory,address, string memory,bool){
+        require(index<addDeviceListLen);
+        require(addDeviceList[index].read==false);
+        return (index,addDeviceList[index].name,addDeviceList[index].detail,addDeviceList[index].account,addDeviceList[index].password,addDeviceList[index].approve);
+    }
+
+    // 批准回复
+    event AddDeviceReply(bool result, uint identity);
+    function addDeviceReply(address account, uint identity)public{
+        uint8 index = addDeviceAccountToIndex[account];
+        require(addDeviceList[index].account!=0x0000000000000000000000000000000000000000);
+        require(addDeviceList[index].read==true);
+
+        if(addDeviceList[index].approve==true){
+            devices.push(Device({
+                account:addDeviceList[index].account,
+                password:addDeviceList[index].password,
+                name:addDeviceList[index].name,
+                detail:addDeviceList[index].detail
+            }));
+            devicesNum++;
+        }
+        emit AddDeviceReply(true,identity);
+
+        addDeviceListLen--;
+        if(addDeviceListLen>0 && index!=addDeviceListLen){
+            addDeviceList[index].name    =addDeviceList[addDeviceListLen].name;
+            addDeviceList[index].detail  =addDeviceList[addDeviceListLen].detail;
+            addDeviceList[index].account =addDeviceList[addDeviceListLen].account;
+            addDeviceList[index].password=addDeviceList[addDeviceListLen].password;
+            addDeviceList[index].read    =addDeviceList[addDeviceListLen].read;
+            addDeviceList[index].approve =addDeviceList[addDeviceListLen].approve;
+        }
+        addDeviceList[addDeviceListLen].account=0x0000000000000000000000000000000000000000;
+    }
+
+    // 添加测试设备
+    event AddDeviceTest(uint8 deviceId,uint identity);
+    function addDeviceTest(address _account, string memory _password, string memory _name, string memory _detail,uint identity) public{
         devices.push(Device({
             account:_account,
             password:_password,
@@ -83,7 +161,7 @@ contract Connect{
             detail:_detail
         }));
         devicesNum++;
-        emit AddDevice(uint8(devices.length),identity);
+        emit AddDeviceTest(uint8(devices.length),identity);
     }
 
     // 删除设备
@@ -109,13 +187,13 @@ contract Connect{
             return (devices[index].account==_account && compareStr(_password,devices[index].password)==true);
         }
     }
-
+*/
     /******************************************************************/
     /** 敏感事件类别
      * 
      */
     /******************************************************************/
-    
+    /*
     // 敏感类别事件描述
     struct EventsClass{
         uint8 class;     // 事件标志(0,1,2,3)
@@ -177,13 +255,13 @@ contract Connect{
     function getEventsClassCount(uint8 id)view public returns(uint){
         return eventsClassCountById[id];
     }
-
+*/
     /******************************************************************/
     /** 敏感事件
      * 
      */
     /******************************************************************/
-
+/*
     // 敏感事件
     struct Events{
         uint8 id;     // 事件类型id
@@ -230,7 +308,7 @@ contract Connect{
         }
     }
     
-    // 获取事件的测试函数
+    // 获取事件长度函数
     function getEventLength(uint8 deviceId) view public returns(uint){
         require(compareStr("",devices[deviceId].password)==false);
         return (eventsById[deviceId].length);
@@ -303,12 +381,13 @@ contract Connect{
     function authEvent(uint8 id)view public returns(bool){
         return id<eventsClass.length;
     }
-
+*/
     /******************************************************************/
     /** 初始化
      * 指定默认密码
      */
     /******************************************************************/
+    /*
     constructor(){
         // 初始化密码为空
         password="";
@@ -336,7 +415,7 @@ contract Connect{
         }));
     }
 
-
+*/
     /******************************************************************/
     /** Tools
      */

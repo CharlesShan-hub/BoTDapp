@@ -241,12 +241,20 @@ async function doAddEventTest(){
  * 同意或拒绝申请
  */
 async function doToDoList(approve){
-    if(CURRENT_TODOLIST_ID==-1){
+    if(CURRENT_TODOLIST_ID==-1||CURRENT_TODOLIST_TYPE==-1){
+        console.log('wrong');
         console.log(CURRENT_TODOLIST_ID);
+        console.log(CURRENT_TODOLIST_TYPE);
         return;
     }
 
-    var result = await toDoListDo(CURRENT_TODOLIST_ID,approve);
+    var result;
+    if(CURRENT_TODOLIST_TYPE=='toDoList'){
+        result = await toDoListDo(CURRENT_TODOLIST_ID,approve);
+    }else{
+        result = await addDeviceApprove(CURRENT_TODOLIST_ID,approve);
+    }
+    
     if(result==true){
         if(approve==true){
             alert("Request Apprrove successful");
@@ -262,6 +270,7 @@ async function doToDoList(approve){
     document.getElementById("ToDoListBC").click();
     uiInitDashboardNote();
     CURRENT_TODOLIST_ID=-1;
+    CURRENT_TODOLIST_TYPE=-1;
 }
 
 
@@ -455,11 +464,33 @@ async function uiWinDashboardGallery(id){
  * 初始化数据看板界面消息提示显示区
  */
 async function uiInitDashboardNote(){
+    // 清空提示区域
     uiClearDashboardNote();
 
+    // 填充新设备添加信息
+    var addDeviceInfo;
+    var addDeviceName;
+    var addDeviceLen = await getAddDevListLen();
+    console.log("addDeviceLen: "+addDeviceLen.toString());
+    for(var num = 0;num<addDeviceLen;num++){
+        addDeviceInfo = await getAddDevListInfo(num);
+        if(addDeviceInfo==false){
+            continue;
+        }
+        addDeviceName = addDeviceInfo[1];
+        uiAddDashboardNote(
+            addDeviceInfo[3], // account
+            -1,               // 没有用
+            addDeviceName,
+            'Add Device',"",'addDevice');
+    }
+
+    // 填充设备行为申请信息
     var toDoListInfo;
     var deviceName;
+    var eventTypeInfo;
     var toDoListLen = await getToDoListLength();
+    console.log("toDoListLen: "+toDoListLen.toString());
     for(var num = 0;num<toDoListLen;num++){
         toDoListInfo = await getToDoListInfo(num);
         if(toDoListInfo==false){
@@ -492,10 +523,13 @@ function uiClearDashboardNote(){
 /** 
  * 添加消息提示显示区
  */
-function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail){
+function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail,toDoListType='toDoList'){
+    if(toDoListType!='toDoList' && toDoListType!='addDevice'){
+        console.log('wrong `toDoListType`!');
+    }
     var temp = '\
     <a href="" class="text-reset notification-item" data-toggle="modal" \
-        data-target="#DoToDoList" onclick="uiNotificationRecord('+toDoListId.toString()+')">\
+        data-target="#DoToDoList" onclick="uiNotificationRecord(\''+toDoListId.toString()+'\',\''+toDoListType+'\')">\
         <div class="media">\
             <div class="avatar-xs mr-3">\
                 <span class="avatar-title bg-success rounded-circle font-size-16">\
@@ -515,14 +549,57 @@ function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail){
 
 // 目前选择的申请
 var CURRENT_TODOLIST_ID=-1;
+var CURRENT_TODOLIST_TYPE=-1; // -1, 'AddDevice', 'toDoList'
 
 /**
  * 申请通过弹窗
  */
-async function uiNotificationRecord(id){
-
+async function uiNotificationRecord(id,type){
+    console.log(id);
+    console.log(type);
     CURRENT_TODOLIST_ID = id;
+    CURRENT_TODOLIST_TYPE = type;
 }
+
+
+
+/**
+ * 监听添加设备通过事件
+ */
+async function listenAddDevice(argument) {
+    return new Promise(function(result){
+        contract.events.AddDeviceApprove({},function(err,res){
+            if(err){
+                console.log("watch err",err);
+                result(false);
+            }else{
+                if(res["returnValues"]["approve"] == true && res["returnValues"]["result"] == true){
+                    //this.unsubscribe();
+                    console.log("Get Add Devices Event from user");
+                    console.log(res["returnValues"]["account"]);
+                    uiInitDashboardNote();
+                    result(res["returnValues"]["account"]);
+                }
+            }
+        });
+
+        contract.events.AddDevice({},function(err,res){
+            if(err){
+                console.log("watch err",err);
+                result(false);
+            }else{
+                if(res["returnValues"]["result"] == true){
+                    //this.unsubscribe();
+                    console.log("New Device Add Request Get!");
+                    uiInitDashboardNote();
+                    console.log('hahahahahahahah');
+                    result(true);
+                }
+            }
+        });
+    });
+}
+listenAddDevice();
 
 
 // 界面API - Statistical ------------------------------------------------------------

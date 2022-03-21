@@ -1,5 +1,5 @@
 
-async function test(){
+async function test1(){
 	// 测试获取账户0 - pass
 	//console.log("accounts[0]:",await getAccount0(),"\n\n");
 
@@ -86,16 +86,31 @@ async function test(){
 }
 
 async function test2(){
-	var a = [1,2,3,4];
-	var num = 10;
-	var color = new Array();
-	for(var i=0;i<parseInt(num/a.length);i++){
-		color=color.concat(a);
-	}
-	for(var i=0;i<parseInt(num%a.length);i++){
-		color=color.concat(a[i]);
-	}
-	console.log(color);
+	//console.log("好戏开始");
+	console.log(await setPassword("1",""));
+	//console.log("好戏开始");
+	//await setPassword("1","");
+	
+	//console.log("好戏开始");
+	//await setPassword("","");
+}
 
+async function test3(){
+	//console.log("好戏开始");
+	console.log(await setPassword("",""));
+	//console.log("好戏开始");
+	//await setPassword("1","");
+	
+	//console.log("好戏开始");
+	//await setPassword("","");
+}
 
+async function test4(){
+	//console.log("好戏开始");
+	await setPassword("1","");
+	//console.log("好戏开始");
+	//await setPassword("1","");
+	
+	//console.log("好戏开始");
+	//await setPassword("","");
 }
