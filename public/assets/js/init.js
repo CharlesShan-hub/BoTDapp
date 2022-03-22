@@ -19,8 +19,8 @@ var web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8546'))
 
 // 创建合约
 function getInstance(){
-    var CONTRACT = "0x554bDA60B6AE1157e84fB4901D960CebF787De2a";
-    var abi = '[{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"res","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetPassword","type":"event"},{"inputs":[{"internalType":"string","name":"_password","type":"string"}],"name":"auth","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_str1","type":"string"},{"internalType":"string","name":"_str2","type":"string"}],"name":"compareStr","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"string","name":"oldPassword","type":"string"},{"internalType":"string","name":"newPassword","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setPassword","outputs":[],"stateMutability":"nonpayable","type":"function"}]';
+    var CONTRACT = "0x9456E6A8DF8677d31133b2CCF14c49D1Eb52CE15";
+    var abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"result","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"eventsClassId","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventType","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"ReduceDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceInfo","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"res","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypeName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypePlan","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetPassword","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"ToDoListDo","type":"event"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"addDeviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceList","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"},{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"addDeviceListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventClass","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventType","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_password","type":"string"}],"name":"auth","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"}],"name":"authDevice","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_str1","type":"string"},{"internalType":"string","name":"_str2","type":"string"}],"name":"compareStr","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"deviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"deviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"devices","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devicesNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsById","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint256","name":"time","type":"uint256"},{"internalType":"bool","name":"state1","type":"bool"},{"internalType":"bool","name":"state2","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsClass","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint8","name":"count","type":"uint8"},{"internalType":"string","name":"name","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"eventsClassNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddDevListInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getAddDevListInfoByIndex","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddDevListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getDeviceInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getDeviceInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDeviceNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"},{"internalType":"uint8","name":"eventId","type":"uint8"}],"name":"getEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"}],"name":"getEventLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassCount","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getEventsClassLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"i","type":"uint8"}],"name":"getToDoListInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getToDoListLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"reduceDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceInfo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEvent","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint8","name":"planId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypePlan","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"oldPassword","type":"string"},{"internalType":"string","name":"newPassword","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setPassword","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"toDoList","outputs":[{"internalType":"uint8","name":"device","type":"uint8"},{"internalType":"uint8","name":"eventType","type":"uint8"},{"internalType":"uint8","name":"refer","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"toDoListDo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"toDoListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"}]';
     return new web3.eth.Contract(JSON.parse(abi),CONTRACT);
 }
 var contract = getInstance();
@@ -40,14 +40,13 @@ var contract = getInstance();
  * 设备-------------------------------------------------------------------
  * 
  * 设备数量                    getDeviceNum()
- * 设备列表长度                 getDeviceLength()
- * 设置设备名称                 setDeviceName(deviceId,name)
- * 设置设备信息                 setDeviceInfo(deviceId,name,detail)
- * 获取设备信息                 getDeviceInfo()
+ * 设置设备名称                 setDeviceName(account,name)
+ * 设置设备信息                 setDeviceInfo(account,name,detail)
+ * 获取设备信息                 getDeviceInfo(index)
+ * 添加测试设备                 addDeviceTest(account,password,name,detail)
  * 添加设备批准                 addDeviceApprove(account,approve)
  * 获取设备申请表长              getAddDevListLen()
  * 获取设备申请信息              getAddDevListInfo()
- * 添加测试设备                 addDeviceTest(account,password,name,detail)
  * 删除设备                    reduceDevice(deviceId)
  * 设备认证                    authDevice(account,password,deviceId)
  * 
@@ -207,19 +206,19 @@ async function setPassword(oldPassword,newPassword,identity){
         return false;
     }
     return new Promise(function(result){
-        contract.getPastEvents('SetPassword',
-            function(err, res){
-                if(err){
-                    result(false);
-                }else{
-                    for(var i=0;i<res.length;i++){
-                        if(res[i]["returnValues"]["identity"]==identity){
-                            result(true);
-                        }
+        contract.getPastEvents('SetPassword',function(err, res){
+            if(err){
+                console.log("watcher err",err);
+                result(false);
+            }else{
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
                     }
                 }
-            });
+            }
         });
+    });
 }
 
 
@@ -233,27 +232,10 @@ function getDeviceNum(){
         contract.methods.getDeviceNum().call(function(error, number){
             if(error){
                 console.log("Error: ",error);
-                result(-1);
+                result(false);
             }else{
                 console.log("Device Number: ",number);
-                result(number);
-            }
-        });
-    });
-}
-
-/**
- * 获取设备列表长度
- */
-function getDeviceLength(){
-    return new Promise(function(result){
-        contract.methods.getDeviceLength().call(function(error, number){
-            if(error){
-                console.log("Error: ",error);
-                result(-1);
-            }else{
-                console.log("Device Number: ",number);
-                result(number);
+                result(parseInt(number));
             }
         });
     });
@@ -262,15 +244,17 @@ function getDeviceLength(){
 /**
  * 设置设备名称(原API)
  */
-async function _setDeviceName(deviceId,name,identity){
+async function _setDeviceName(_account,name,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
+            console.log("getAccount0 failed ",identity);
             result(false);
         }
-        contract.methods.setDeviceName(deviceId,name,identity).send({from:account})
+        contract.methods.setDeviceName(_account,name,identity).send({from:account})
         .then(function(res){
             console.log("Reset Device Name Request Send ",identity);
+            result(true);
         }, function(reason) {
             console.log("Reset Device Name failed!",reason);
             result(false);
@@ -281,36 +265,41 @@ async function _setDeviceName(deviceId,name,identity){
 /**
  * 设置设备名称
  */
-async function setDeviceName(deviceId,name){
+async function setDeviceName(_account,name){
     var identity = randomNum(100000,999999);
+    if(await _setDeviceName(_account,name,identity)==false){
+        return false;
+    }
     return new Promise(function(result){
-        contract.events.SetDeviceName({},function(err,res){
+        contract.getPastEvents('SetDeviceName',function(err, res){
             if(err){
-                console.log("watch err",err);
-                result(err);
+                console.log("watcher err",err);
+                result(false);
             }else{
-                if(res["returnValues"][0] == identity){
-                    this.unsubscribe();
-                    result(true);
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
                 }
             }
         });
-        _setDeviceName(deviceId,name,identity);
     });
 }
 
 /**
  * 设置设备信息(原API)
  */
-async function _setDeviceInfo(deviceId,name,detail,identity){
+async function _setDeviceInfo(_account,name,detail,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
+            console.log("getAccount0 failed ",identity);
             result(false);
         }
-        contract.methods.setDeviceInfo(deviceId,name,detail,identity).send({from:account})
+        contract.methods.setDeviceInfo(_account,name,detail,identity).send({from:account})
         .then(function(res){
             console.log("Reset Device Info Request Send ",identity);
+            result(true);
         }, function(reason) {
             console.log("Reset Device Info failed!",reason);
             result(false);
@@ -321,30 +310,46 @@ async function _setDeviceInfo(deviceId,name,detail,identity){
 /**
  * 设置设备信息
  */
-async function setDeviceInfo(deviceId,name,detail){
+async function setDeviceInfo(_account,name,detail){
     var identity = randomNum(100000,999999);
+    if(await _setDeviceInfo(_account,name,detail,identity)==false){
+        return false;
+    }
     return new Promise(function(result){
-        contract.events.SetDeviceInfo({},function(err,res){
+        contract.getPastEvents('SetDeviceInfo',function(err, res){
             if(err){
-                console.log("watch err",err);
+                console.log("watcher err",err);
                 result(false);
             }else{
-                if(res["returnValues"]["identity"] == identity){
-                    this.unsubscribe();
-                    result(res["returnValues"][0]);
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
                 }
             }
         });
-        _setDeviceInfo(deviceId,name,detail,identity);
     });
 }
 
 /**
  * 获取设备信息
  */
-function getDeviceInfo(deviceId){
+function getDeviceInfo(account){
     return new Promise(function(result){
-        contract.methods.getDeviceInfo(deviceId).call(function(error, res){
+        contract.methods.getDeviceInfo(account).call(function(error, res){
+            if(error){
+                console.log("Get Device Info Error: ",error);
+                result(false);
+            }else{
+                console.log("Get Device Info: ",res);
+                result(res);
+            }
+        });
+    });
+}
+function getDeviceInfoByIndex(index){
+    return new Promise(function(result){
+        contract.methods.getDeviceInfoByIndex(index).call(function(error, res){
             if(error){
                 console.log("Get Device Info Error: ",error);
                 result(false);
@@ -357,17 +362,63 @@ function getDeviceInfo(deviceId){
 }
 
 /**
+ * 添加测试设备(原API)
+ */
+async function _addDeviceTest(_account,password,name,detail,identity){
+    var account = await getAccount0();
+    return new Promise(function(result){
+        if(account==false){
+            result(false);
+        }
+        contract.methods.addDeviceTest(_account,password,name,detail,identity).send({from:account})
+        .then(function(res){
+            console.log("Add Device Request Send ",identity);
+            result(true);
+        }, function(reason) {
+            console.log("Add Device failed!",reason);
+            result(false);
+        });
+    });
+}
+
+/**
+ * 添加测试设备
+ */
+async function addDeviceTest(_account,password,name,detail){
+    var identity = randomNum(100000,999999);
+    if(await _addDeviceTest(_account,password,name,detail,identity)==false){
+        return false;
+    }
+    return new Promise(function(result){
+        contract.getPastEvents('AddDeviceTest',function(err, res){
+            if(err){
+                console.log("watcher err",err);
+                result(false);
+            }else{
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
+                }
+            }
+        });
+    });
+}
+
+/**
  * 添加设备批准(原API)
  */
 async function _addDeviceApprove(_account,approve,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
+            console.log("getAccount0 failed ",identity);
             result(false);
         }
         contract.methods.addDeviceApprove(_account,approve,identity).send({from:account})
         .then(function(res){
             console.log("Add Device Approve Request Send ",identity);
+            result(true);
         }, function(reason) {
             console.log("Add Device Approve failed!",reason);
             result(false);
@@ -380,19 +431,22 @@ async function _addDeviceApprove(_account,approve,identity){
  */
 async function addDeviceApprove(account,approve){
     var identity = randomNum(100000,999999);
+    if(await _addDeviceApprove(account,approve,identity)==false){
+        return false;
+    }
     return new Promise(function(result){
-        contract.events.AddDeviceApprove({},function(err,res){
+        contract.getPastEvents('AddDeviceApprove',function(err, res){
             if(err){
-                console.log("watch err",err);
+                console.log("watcher err",err);
                 result(false);
             }else{
-                if(res["returnValues"]["identity"] == identity){
-                    this.unsubscribe();
-                    result(res["returnValues"][0]);
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
                 }
             }
         });
-        _addDeviceApprove(account,approve,identity);
     });
 }
 
@@ -404,10 +458,10 @@ function getAddDevListLen(){
         contract.methods.getAddDevListLen().call(function(error, number){
             if(error){
                 console.log("Error: ",error);
-                result(-1);
+                result(false);
             }else{
                 console.log("Add Device Request Number: ",number);
-                result(number);
+                result(parseInt(number));
             }
         });
     });
@@ -431,57 +485,19 @@ function getAddDevListInfo(requestId){
 }
 
 /**
- * 添加设备(原API)
- */
-async function _addDeviceTest(account,password,name,detail,identity){
-    var account = await getAccount0();
-    return new Promise(function(result){
-        if(account==false){
-            result(false);
-        }
-        contract.methods.addDeviceTest(account,password,name,detail,identity).send({from:account})
-        .then(function(res){
-            console.log("Add Device Request Send ",identity);
-        }, function(reason) {
-            console.log("Add Device failed!",reason);
-            result(false);
-        });
-    });
-}
-
-/**
- * 添加设备
- */
-async function addDeviceTest(account,password,name,detail){
-    var identity = randomNum(100000,999999);
-    return new Promise(function(result){
-        contract.events.AddDeviceTest({},function(err,res){
-            if(err){
-                console.log("watch err",err);
-                result(false);
-            }else{
-                if(res["returnValues"]["identity"] == identity){
-                    this.unsubscribe();
-                    result(res["returnValues"][0]);
-                }
-            }
-        });
-        _addDeviceTest(account,password,name,detail,identity);
-    });
-}
-
-/**
  * 删除设备(原API)
  */
-async function _reduceDevice(deviceId,identity){
+async function _reduceDevice(_account,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
+            console.log("getAccount0 failed ",identity);
             result(false);
         }
-        contract.methods.reduceDevice(deviceId,identity).send({from:account})
+        contract.methods.reduceDevice(_account,identity).send({from:account})
         .then(function(result){
             console.log("Deleted Device Request Send",result);
+            result(true);
         }, function(error) {
             console.log("Reduce Device Failed!",error);
             result(false);
@@ -492,31 +508,33 @@ async function _reduceDevice(deviceId,identity){
 /**
  * 删除设备
  */
-async function reduceDevice(deviceId){
+async function reduceDevice(_account){
     var identity = randomNum(100000,999999);
+    if(await _reduceDevice(_account,identity)==false){
+        return false;
+    }
     return new Promise(function(result){
-        contract.events.ReduceDevice({},function(err,res){
+        contract.getPastEvents('ReduceDevice',function(err, res){
             if(err){
-                console.log("watch err",err);
-                result(err);
+                console.log("watcher err",err);
+                result(false);
             }else{
-                if(res["returnValues"]["identity"] == identity){
-                    this.unsubscribe();
-                    result(res["returnValues"][0]);
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
                 }
-                console.log(res["returnValues"]);
             }
         });
-        _reduceDevice(deviceId,identity);
     });
 }
 
 /**
  * 设备认证
  */
-async function authDevice(account,password,deviceId){
+async function authDevice(_account,password,deviceId){
     return new Promise(function(result){
-        contract.methods.authDevice(account,password,deviceId).call(function(error, res){
+        contract.methods.authDevice(_account,password,deviceId).call(function(error, res){
             if(error){
                 console.log("Error: ",error);
                 result(false);
@@ -538,7 +556,7 @@ function getEventsClassLength(){
         contract.methods.getEventsClassLength().call(function(error, number){
             if(error){
                 console.log("Error: ",error);
-                result(-1);
+                result(false);
             }else{
                 console.log("Event Type Number: ",number);
                 result(number);
@@ -571,11 +589,13 @@ async function _setEventTypePlan(eventId,newClass,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
+            console.log("getAccount0 failed ",identity);
             result(false);
         }
         contract.methods.setEventTypePlan(eventId,newClass,identity).send({from:account})
         .then(function(result){
             console.log("EventType Class Change Request Send",result);
+            result(true)
         }, function(error) {
             console.log("EventType Class Change Failed!",error);
             result(false);
@@ -588,20 +608,22 @@ async function _setEventTypePlan(eventId,newClass,identity){
  */
 async function setEventTypePlan(eventId,newClass){
     var identity = randomNum(100000,999999);
+    if(await _setEventTypePlan(eventId,newClass,identity)==false){
+        return false;
+    }
     return new Promise(function(result){
-        contract.events.SetEventTypePlan({},function(err,res){
+        contract.getPastEvents('SetEventTypePlan',function(err, res){
             if(err){
-                console.log("watch err",err);
-                result(err);
+                console.log("watcher err",err);
+                result(false);
             }else{
-                if(res["returnValues"]["identity"] == identity){
-                    this.unsubscribe();
-                    result(res["returnValues"][0]);
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
                 }
-                console.log(res["returnValues"]);
             }
         });
-        _setEventTypePlan(eventId,newClass,identity);
     });
 }
 
@@ -612,11 +634,13 @@ async function _setEventTypeName(eventId,newName,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
+            console.log("getAccount0 failed ",identity);
             result(false);
         }
         contract.methods.setEventTypeName(eventId,newName,identity).send({from:account})
         .then(function(result){
             console.log("EventType Name Change Request Send",result);
+            result(true);
         }, function(error) {
             console.log("EventType Name Change Failed!",error);
             result(false);
@@ -629,20 +653,22 @@ async function _setEventTypeName(eventId,newName,identity){
  */
 async function setEventTypeName(eventId,newName){
     var identity = randomNum(100000,999999);
+    if(await _setEventTypeName(eventId,newName,identity)==false){
+        return false;
+    }
     return new Promise(function(result){
-        contract.events.SetEventTypeName({},function(err,res){
+        contract.getPastEvents('SetEventTypeName',function(err, res){
             if(err){
-                console.log("watch err",err);
-                result(err);
+                console.log("watcher err",err);
+                result(false);
             }else{
-                if(res["returnValues"]["identity"] == identity){
-                    this.unsubscribe();
-                    result(res["returnValues"][0]);
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
                 }
-                console.log(res["returnValues"]);
             }
         });
-        _setEventTypeName(eventId,newName,identity);
     });
 }
 
@@ -653,11 +679,13 @@ async function _addEventType(eventClass,eventName,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
+            console.log("getAccount0 failed ",identity);
             result(false);
         }
         contract.methods.addEventType(eventClass,eventName,identity).send({from:account})
         .then(function(result){
             console.log("Add EventType Request Send",result);
+            result(true);
         }, function(error) {
             console.log("Add EventType Failed!",error);
             result(false);
@@ -670,19 +698,22 @@ async function _addEventType(eventClass,eventName,identity){
  */
 async function addEventType(eventClass,eventName){
     var identity = randomNum(100000,999999);
+    if(await _addEventType(eventClass,eventName,identity)==false){
+        return false;
+    }
     return new Promise(function(result){
-        contract.events.AddEventType({},function(err,res){
+        contract.getPastEvents('AddEventType',function(err, res){
             if(err){
-                console.log("watch err",err);
-                result(err);
+                console.log("watcher err",err);
+                result(false);
             }else{
-                if(res["returnValues"]["identity"] == identity){
-                    this.unsubscribe();
-                    result(res["returnValues"][0]);
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
                 }
             }
         });
-        _addEventType(eventClass,eventName,identity);
     });
 }
 
@@ -713,7 +744,7 @@ function getToDoListLength(){
         contract.methods.getToDoListLength().call(function(error, number){
             if(error){
                 console.log("Error: ",error);
-                result(-1);
+                result(false);
             }else{
                 console.log("To Do List Number: ",number);
                 result(number);
@@ -819,13 +850,13 @@ function getEvent(deviceId,index){
 /**
  * 敏感事件申请
  */
-async function _setEvent(account,password,deviceId,eventId,identity){
+async function _setEvent(_account,password,deviceId,eventId,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
             result(2);
         }
-        contract.methods.setEvent(account,password,deviceId,eventId,identity).send({from:account})
+        contract.methods.setEvent(_account,password,deviceId,eventId,identity).send({from:account})
         .then(function(res){
             console.log("Set Event Request Send",res);
         }, function(error) {
@@ -838,7 +869,7 @@ async function _setEvent(account,password,deviceId,eventId,identity){
 /**
  * 清单信息同意/拒绝
  */
-async function setEvent(account,password,deviceId,eventId){
+async function setEvent(_account,password,deviceId,eventId){
     var identity = randomNum(100000,999999);
     return new Promise(function(result){
         contract.events.SetEvent({},function(err,res){
@@ -852,26 +883,10 @@ async function setEvent(account,password,deviceId,eventId){
                 }
             }
         });
-        _setEvent(account,password,deviceId,eventId,identity);
+        _setEvent(_account,password,deviceId,eventId,identity);
     });
 }
 
-/**
- *  事件Id合法认证
- */
-function authEvent(id){
-    return new Promise(function(result){
-        contract.methods.authEvent(id).call(function(error, res){
-            if(error){
-                console.log("Error: ",error);
-                result(false);
-            }else{
-                console.log("Event Number: ",res);
-                result(res);
-            }
-        });
-    });
-}
 
 /*************************************************************************/
 /** 工具接口API

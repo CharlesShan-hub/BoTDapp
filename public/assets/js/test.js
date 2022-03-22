@@ -17,13 +17,14 @@ async function test1(){
 	//console.log("Reset Auth Password '1'->''(true) '':",await setPassword("1",""),"\n\n");
 	
 	// 获取设备数量 - pass
-	//console.log("Get Devices Length",await getDeviceLength(),"\n\n");
+	//console.log("Get Devices Length",await getDeviceNum(),"\n\n");
 
 	// 添加设备 - pass
-	//var info = await addAccount();
-	//if(info!=false){
-	//	console.log("Add Device",await addDevice(info["account"],info["password"],"Cat","miao miao miao"),"\n\n");
-	//}
+	var info = await addAccount();
+	console.log(info);
+	if(info!=false){
+		console.log("Add Test Device",await addDeviceTest(info["account"],info["password"],"Dog","wang wang wang"),"\n\n");
+	}
 
 	// 设置设备名称 - pass
 	//console.log("Set Device Name",await setDeviceName(0,"Dog"),"\n\n");
@@ -87,7 +88,9 @@ async function test1(){
 
 async function test2(){
 	//console.log("好戏开始");
-	console.log(await setPassword("1",""));
+	var info = await getDeviceInfoByIndex(1);
+	//await getDeviceInfo("0x750898FA769A73d151efc0De11Bb6D4B700d4447");
+	//await getDeviceInfo2('0xf3c42c90D3d6F7335990B515497576D094Ca0805');
 	//console.log("好戏开始");
 	//await setPassword("1","");
 	
@@ -97,17 +100,22 @@ async function test2(){
 
 async function test3(){
 	//console.log("好戏开始");
-	console.log(await setPassword("",""));
 	//console.log("好戏开始");
 	//await setPassword("1","");
-	
+	var num = await getDeviceNum();
 	//console.log("好戏开始");
 	//await setPassword("","");
 }
 
 async function test4(){
 	//console.log("好戏开始");
-	await setPassword("1","");
+	var info = await getDeviceInfoBySub(1);
+	await setDeviceName(info.account,"Dog");
+	var num = await getDeviceNum();
+	for(var i=1;i<num+1;i++){
+		await getDeviceInfoBySub(i);
+	}
+	//console.log(await setDeviceNameBySub(1,'Hello'));
 	//console.log("好戏开始");
 	//await setPassword("1","");
 	

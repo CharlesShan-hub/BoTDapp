@@ -96,14 +96,16 @@ async function doAddDeviceTest(){
     document.getElementById("AddDeviceTestB").disabled="disabled";
 
     var info = await addAccount(newName,newDetail);
-
-    if(info!=false){
-        var res=await addDeviceTest(info["account"],info["password"],newName,newDetail);
-        if(res!=0){
-            alert("Saved new device name",newName);
-            uiInitDashboardGallery();
-        }
+    if(info==false){
+        alert("Fail to add new test device")
     }
+    
+    var res=await addDeviceTest(info["account"],info["password"],newName,newDetail);
+    if(res!=0){
+        alert("added new test device",newName);
+        uiInitDashboardGallery();
+    }
+
     document.getElementById("AddDeviceTestB").disabled=false;
     document.getElementById("AddDeviceTestBC").click();
 }
