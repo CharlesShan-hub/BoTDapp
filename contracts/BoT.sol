@@ -3,12 +3,14 @@ pragma solidity ^0.8.0;
 contract BoT{
     /******************************************************************/
     /** Auth
+     * auth        登陆认证
+     * setPassword 重制密码
      */
     /******************************************************************/
     string password = "";
 
     // 认证
-    function auth(string memory _password) public view returns(bool) {
+    function auth(string memory _password) public view returns(bool){
         return compareStr(_password,password);
     }
 
@@ -22,21 +24,33 @@ contract BoT{
 
     /******************************************************************/
     /** Device
+     * 设备数据结构
+     * Getter, Setter
+     *   getDeviceNum     获取设备数量
+     *   getDeviceInfo    获取设备信息
+     *   getDeviceInfoByIndex
+     *   setDeviceName    设置设备名称
+     *   setDeviceInfo    设置设备信息
+     *
+     * 删除设备
+     *   reduceDevice     删除设备
+     * 设备认证
+     *   authDevice       设备认证
      */
     /******************************************************************/
 
     // 设备信息
     struct Device{
-        address account;
+        address account; // <-判空条件
         string password;
         string name;
         string detail;
     }
-    // 注意设备index从1开始, 0代表不存在
+    
     mapping(uint8 => Device) public devices;
+    uint8 public devicesNum=0;
     mapping(address => uint8) public deviceAccountToIndex;
     mapping(uint8 => address) public deviceIndexToAccount;
-    uint8 public devicesNum=0;
 
     // 设备账户到下标转换函数
     function _deviceAccountToIndex(address account) private view returns(uint8){
@@ -46,18 +60,36 @@ contract BoT{
     }
 
     // 添加设备
-    function _addDevice(uint8 index, address _account, string memory _password, string memory _name, string memory _detail) private{
-        devices[index].name    =_name;
-        devices[index].detail  =_detail;
-        devices[index].account =_account;
-        devices[index].password=_password;
-        deviceIndexToAccount[index] = _account;
-        deviceAccountToIndex[_account] = index;
+    function _addDevice(uint8 i, address _account, string memory _password, string memory _name, string memory _detail) private{
+        devices[i].name    =_name;
+        devices[i].detail  =_detail;
+        devices[i].account =_account;
+        devices[i].password=_password;
+        deviceIndexToAccount[i] = _account;
+        deviceAccountToIndex[_account] = i;
+    }
+
+    // 删除设备(仅操作设备列表)
+    function _reduceDevice(uint8 i) private{
+        devices[i].account = 0x0000000000000000000000000000000000000000;
+        deviceAccountToIndex[deviceIndexToAccount[i]] = 0;
+        deviceIndexToAccount[i] = 0x0000000000000000000000000000000000000000;
+        devicesNum--;
     }
 
     // 获取设备数量
     function getDeviceNum() view public returns(uint8){
         return devicesNum;
+    }
+
+    // 获取设备信息
+    function getDeviceInfo(address account) view public returns(string memory, string memory){
+        uint8 index=_deviceAccountToIndex(account);
+        return (devices[index].name,devices[index].detail);
+    }
+    function getDeviceInfoByIndex(uint8 index) view public returns(uint8, address,string memory, string memory){
+        require(devices[index].account!=0x0000000000000000000000000000000000000000);
+        return (index,devices[index].account,devices[index].name,devices[index].detail);
     }
 
     // 设置设备名称
@@ -77,15 +109,65 @@ contract BoT{
         emit SetDeviceInfo(identity);
     }
 
-    // 获取设备信息
-    function getDeviceInfo(address account) view public returns(string memory, string memory){
-        uint8 index=_deviceAccountToIndex(account);
-        return (devices[index].name,devices[index].detail);
+    // 删除设备
+    event ReduceDevice(uint identity);
+    function reduceDevice(address account,uint identity) public{
+        // 清除设备列表
+        uint8 index = _deviceAccountToIndex(account);
+        uint8 last = devicesNum;
+        if(index!=last){
+            _addDevice(index,devices[last].account,devices[last].password,devices[last].name,devices[last].detail);
+        }
+        _reduceDevice(last);
+        // 清除代办清单
+        for(uint8 i=1;i<toDoListLen+1;i++){
+            if(toDoList[i].device!=account)continue;
+            if(i!=toDoListLen){
+                toDoList[i].device=toDoList[toDoListLen].device;
+                toDoList[i].eventType=toDoList[toDoListLen].eventType;
+                toDoList[i].refer=toDoList[toDoListLen].refer;
+            }
+            toDoList[toDoListLen].device=0x0000000000000000000000000000000000000000;
+            toDoListLen--;
+        }
+        // 清除申请信息
+        for(uint8 i=1;i<eventsNum[account]+1;i++){
+            eventsById[account][i].class=0;
+        }
+        eventsNum[account]=0;
+        // 清除申请种类计数
+        for(uint8 i=1;i<eventsClassNum+1;i++){
+            eventsClass[i].count-=eventsClass[i].deviceCount[account];
+            eventsClass[i].deviceCount[account]=0;
+        }
+    
+        emit ReduceDevice(identity);
     }
-    function getDeviceInfoByIndex(uint8 index) view public returns(uint8, address,string memory, string memory){
-        require(devices[index].account!=0x0000000000000000000000000000000000000000);
-        return (index,devices[index].account,devices[index].name,devices[index].detail);
+
+    // 设备认证
+    function authDevice(address _account, string memory _password) view public returns(bool){
+        uint8 index = _addDeviceAccountToIndex(_account);
+        return (compareStr(_password,devices[index].password)==true);
     }
+
+    /******************************************************************/
+    /** Add Device
+     * 添加设备数据结构
+     * 
+     * Getter, Setter
+     *   getAddDevListLen         获取设备申请表长
+     *   getAddDevListInfo        获取设备申请信息
+     *   getAddDevListInfoByIndex 获取设备申请信息
+     * 
+     * 添加测试设备
+     *   addDeviceTest            添加测试设备
+     * 
+     * 添加设备申请
+     *   addDevice                添加设备申请提交
+     *   addDeviceApprove         添加设备申请审批
+     *   addDeviceReply           添加设备申请回复
+     */
+    /******************************************************************/
 
     // 添加设备申请
     struct AddDeviceList{
@@ -104,49 +186,8 @@ contract BoT{
     // 设备申请账户到下标转换函数
     function _addDeviceAccountToIndex(address account) private view returns(uint8){
         uint8 index = addDeviceAccountToIndex[account];
-        require(index!=0);
         require(addDeviceList[index].account!=0x0000000000000000000000000000000000000000);
         return index;
-    }
-
-    // 添加测试设备
-    event AddDeviceTest(uint identity);
-    function addDeviceTest(address _account, string memory _password, string memory _name, string memory _detail,uint identity) public{
-        require(deviceAccountToIndex[_account]==0,"Get repeated account!");
-        devicesNum++;
-        deviceIndexToAccount[devicesNum] = _account;
-        deviceAccountToIndex[_account] = devicesNum;
-        devices[devicesNum].account = _account;
-        devices[devicesNum].password = _password;
-        devices[devicesNum].name = _name;
-        devices[devicesNum].detail = _detail;
-        emit AddDeviceTest(identity);
-    }
-
-    // 添加设备申请
-    event AddDevice(bool result,uint identity);
-    function addDevice(address _account, string memory _password, string memory _name, string memory _detail,uint identity) public{
-        require(_account!=0x0000000000000000000000000000000000000000);
-        addDeviceListLen++;
-        uint8 index=addDeviceListLen;
-        addDeviceAccountToIndex[_account]=index;
-        addDeviceIndexToAccount[index]=_account;
-        addDeviceList[index].name=_name;
-        addDeviceList[index].detail=_detail;
-        addDeviceList[index].account=_account;
-        addDeviceList[index].password=_password;
-        addDeviceList[index].read=false;
-        addDeviceList[index].approve=false;
-        emit AddDevice(true,identity);
-    }
-
-    // 添加设备通过
-    event AddDeviceApprove(address account, bool approve,uint identity);
-    function addDeviceApprove(address _account,bool _approve,uint identity) public{
-        uint8 index = _addDeviceAccountToIndex(_account);
-        addDeviceList[index].read=true;
-        addDeviceList[index].approve=_approve;
-        emit AddDeviceApprove(_account,_approve,identity);
     }
 
     // 获取设备申请表长
@@ -173,19 +214,96 @@ contract BoT{
                 addDeviceList[index].approve);
     }
 
+    // 添加测试设备
+    event AddDeviceTest(uint identity);
+    function addDeviceTest(address _account, string memory _password, string memory _name, string memory _detail,uint identity) public{
+        require(deviceAccountToIndex[_account]==0,"Get repeated account!");
+        devicesNum++;
+        deviceIndexToAccount[devicesNum] = _account;
+        deviceAccountToIndex[_account] = devicesNum;
+        devices[devicesNum].account = _account;
+        devices[devicesNum].password = _password;
+        devices[devicesNum].name = _name;
+        devices[devicesNum].detail = _detail;
+        emit AddDeviceTest(identity);
+    }
+
+    // 添加设备申请
+    event AddDevice(bool approve,bool wait,uint identity);
+    function addDevice(address _account, string memory _password, string memory _name, string memory _detail,uint identity) public{
+        require(_account!=0x0000000000000000000000000000000000000000);
+        if(eventsClass[1].class==4){
+            emit AddDevice(false,false,identity);
+            return;
+        }
+        if(eventsClass[1].class<3){
+            devicesNum++;
+            _addDevice(devicesNum,_account,_password,_name,_detail);
+            if(eventsClass[1].class==2){
+                eventsClass[1].count++;
+                eventsClass[1].deviceCount[_account]++;
+                eventsNum[_account]++;
+                eventsById[_account][eventsNum[_account]].class==1;
+                eventsById[_account][eventsNum[_account]].time==block.timestamp;
+                eventsById[_account][eventsNum[_account]].state1==false;
+                eventsById[_account][eventsNum[_account]].state2==false;
+            }
+            emit AddDevice(true,false,identity);
+            return;
+        }
+        if(eventsClass[1].class==3){
+            addDeviceListLen++;
+            uint8 index=addDeviceListLen;
+            addDeviceAccountToIndex[_account]=index;
+            addDeviceIndexToAccount[index]=_account;
+            addDeviceList[index].name=_name;
+            addDeviceList[index].detail=_detail;
+            addDeviceList[index].account=_account;
+            addDeviceList[index].password=_password;
+            addDeviceList[index].read=false;
+            addDeviceList[index].approve=false;
+            emit AddDevice(false,true,identity);
+            return;
+        }
+    }
+
+    // 添加设备通过
+    event AddDeviceApprove(address account, bool approve,uint identity);
+    function addDeviceApprove(address _account,bool _approve,uint identity) public{
+        uint8 index = _addDeviceAccountToIndex(_account);
+        addDeviceList[index].read=true;
+        addDeviceList[index].approve=_approve;
+        emit AddDeviceApprove(_account,_approve,identity);
+    }
+
     // 批准回复
     event AddDeviceReply(uint identity);
     function addDeviceReply(address account, uint identity)public{
+        // 获取设备信息
         uint8 index = _addDeviceAccountToIndex(account);
         require(addDeviceList[index].read==true);
 
+        // 添加设备
         if(addDeviceList[index].approve==true){
             devicesNum++;
             _addDevice(devicesNum, account, addDeviceList[index].password, addDeviceList[index].name, addDeviceList[index].detail);
         }
         emit AddDeviceReply(identity);
 
-        addDeviceListLen--;
+        // 添加事件记录
+        if(addDeviceList[index].approve==true){
+            eventsNum[account]++;
+            eventsById[account][eventsNum[account]].class==1;
+            eventsById[account][eventsNum[account]].time==block.timestamp;
+            eventsById[account][eventsNum[account]].state1==true;
+            eventsById[account][eventsNum[account]].state2==true;
+        }
+
+        // 事件计数
+        eventsClass[1].count++;
+        eventsClass[1].deviceCount[account]++;
+
+        // 清除添加设备清单
         if(addDeviceListLen>0 && index!=addDeviceListLen){
             addDeviceList[index].name    =addDeviceList[addDeviceListLen].name;
             addDeviceList[index].detail  =addDeviceList[addDeviceListLen].detail;
@@ -197,50 +315,19 @@ contract BoT{
             addDeviceIndexToAccount[index]=addDeviceList[index].account;
         }
         addDeviceList[addDeviceListLen].account=0x0000000000000000000000000000000000000000;
-    }
-
-    // 删除设备
-    event ReduceDevice(uint identity);
-    function reduceDevice(address account,uint identity) public{
-        // 清除设备列表
-        uint8 index = _addDeviceAccountToIndex(account);
-        if(index!=devicesNum){
-            _addDevice(index,devices[devicesNum].account,devices[devicesNum].password,devices[devicesNum].name,devices[devicesNum].detail);
-        }
-        devices[devicesNum].account=0x0000000000000000000000000000000000000000;
-        deviceAccountToIndex[deviceIndexToAccount[devicesNum]] = 0;
-        deviceIndexToAccount[devicesNum] = 0x0000000000000000000000000000000000000000;
-        devicesNum--;
-        // 清除代办清单
-        for(uint8 i=1;i<toDoListLen+1;i++){
-            if(toDoList[i].device!=index){
-                continue;
-            }
-            if(i!=toDoListLen){
-                toDoList[i].device=toDoList[toDoListLen].device;
-                toDoList[i].eventType=toDoList[toDoListLen].eventType;
-                toDoList[i].refer=toDoList[toDoListLen].refer;
-            }
-            toDoList[toDoListLen].device=0;
-            toDoListLen--;
-        }
-        // 清除申请信息
-        for(uint8 i=1;i<eventsNum[index]+1;i++){
-            eventsById[index][i].class=0;
-        }
-        eventsNum[index]=0;
-
-        emit ReduceDevice(identity);
-    }
-
-    // 设备认证
-    function authDevice(address _account, string memory _password) view public returns(bool){
-        uint8 index = _addDeviceAccountToIndex(_account);
-        return (compareStr(_password,devices[index].password)==true);
+        addDeviceListLen--;
     }
 
     /******************************************************************/
     /** 敏感事件类别
+     * 数据结构
+     * 
+     * Getter, Setter
+     *   getEventsClassLength    获取敏感事件类型个数
+     *   getEventsClassInfo      获取敏感事件信息
+     *   getEventsClassCount     获取敏感事件计数
+     *   setEventTypePlan        修改敏感事件应对方案
+     *   setEventTypeName        修改敏感事件应对名称
      * 
      */
     /******************************************************************/
@@ -249,6 +336,7 @@ contract BoT{
     struct EventsClass{
         uint8 class;     // 事件标志(1,2,3,4)
         uint8 count;     // 事件发生次数
+        mapping(address => uint8) deviceCount; // 根据设备种类事件发生的次数
         string name;     // 事件名称
     }
     // 注意设备index从1开始, 0代表不存在
@@ -264,6 +352,12 @@ contract BoT{
     function getEventsClassInfo(uint8 id)public view returns(uint8,uint8,string memory){
         require(eventsClass[id].class!=0);
         return (id,eventsClass[id].class,eventsClass[id].name);
+    }
+
+    // 获取敏感事件计数
+    function getEventsClassCount(uint8 id)view public returns(uint8){
+        require(eventsClass[id].class!=0);
+        return eventsClass[id].count;
     }
 
     // 修改敏感事件应对方案
@@ -283,25 +377,135 @@ contract BoT{
         emit SetEventTypeName(identity);
     }
 
-    // 添加敏感事件类型
-    event AddEventType(uint8 eventsClassId,uint identity);
-    function addEventType(uint8 eventClass,string memory eventName,uint identity)public{
+    /******************************************************************/
+    /** Add Event Type
+     * 添加事件类型数据结构
+     * 
+     * Getter, Setter
+     *   getAddEventsClassLen      获取敏感事件申请表长
+     *   getAddEventsClassInfo     获取敏感事件申请信息
+     * 
+     * 添加测试事件类型
+     *   addEventsClassTest        添加测试事件类型
+     * 
+     * 添加事件类型
+     *   addEventsClass            添加事件类型申请
+     *   addEventsClassApprove     添加事件类型审批
+     *   addEventsClassReply       添加事件类型回复
+     */
+    /******************************************************************/
+
+    // 添加敏感类别事件申请
+    struct AddEventsClassList{
+        address account; // 申请添加的设备地址
+        uint8 class;     // 事件标志(1,2,3,4)
+        string name;     // 事件名称
+        bool read;       // 等待批准
+        bool approve;    // 批准结果
+    }
+    mapping(uint8 => AddEventsClassList) public addEventsClassList;
+    uint8 public addEventsClassLen=0;
+
+    // 获取敏感事件申请表长
+    function getAddEventsClassLen()public view returns(uint8){
+        return addEventsClassLen;
+    }
+
+    // 获取敏感事件申请信息
+    function getAddEventsClassInfo(uint8 index) view public returns(uint8, address,uint8, string memory, bool){
+        require(addEventsClassList[index].class!=0);
+        return (index,
+                addEventsClassList[index].account,
+                addEventsClassList[index].class,
+                addEventsClassList[index].name,
+                addEventsClassList[index].approve);
+    }
+
+    // 添加测试敏感事件类型
+    event AddEventsClass(uint8 eventsClassId,uint identity);
+    function addEventsClassTest(uint8 eventClass,string memory eventName,uint identity)public{
         require(eventClass>0 && eventClass<5);
         eventsClassNum++;
         eventsClass[eventsClassNum].class = eventClass;
         eventsClass[eventsClassNum].count = 0;
         eventsClass[eventsClassNum].name = eventName;
-        emit AddEventType(eventsClassNum,identity);
+        emit AddEventsClass(eventsClassNum,identity);
     }
 
-    // 获取敏感事件计数
-    function getEventsClassCount(uint8 id)view public returns(uint8){
-        require(eventsClass[id].class!=0);
-        return eventsClass[id].count;
+    // 添加敏感类别事件申请
+    event AddEventsClass(bool approve,bool wait,uint identity);
+    function addEventsClass(address _account, string memory _password, uint8 _class,string memory _name,uint identity) public{
+        require(_account!=0x0000000000000000000000000000000000000000);
+        uint8 eventId = addEvent(_account,_password,1,0);
+        if(eventId<3){
+            emit AddEventsClass(true,false,identity);
+        }else if(eventId==4){
+            emit AddEventsClass(false,false,identity);
+        }else{
+            addEventsClassLen++;
+            addEventsClassList[addEventsClassLen].account = _account;
+            addEventsClassList[addEventsClassLen].class = _class;
+            addEventsClassList[addEventsClassLen].name = _name;
+            addEventsClassList[addEventsClassLen].read=false;
+            addEventsClassList[addEventsClassLen].approve=false;
+            emit AddEventsClass(false,true,identity);
+        }
+    }
+
+    // 添加敏感类别事件通过
+    event AddEventsClassApprove(uint8 index, bool approve,uint identity);
+    function addEventsClassApprove(uint8 index,bool _approve,uint identity) public{
+        require(addEventsClassList[index].class!=0);
+        addEventsClassList[index].read=true;
+        addEventsClassList[index].approve=_approve;
+        emit AddEventsClassApprove(index,_approve,identity);
+    }
+
+    // 添加敏感类别事件批准回复
+    event AddEventsClassReply(uint identity);
+    function addEventsClassReply(uint8 index, uint identity)public{
+        // 获取敏感事件信息
+        require(addEventsClassList[index].class!=0);
+        require(addEventsClassList[index].read==true);
+        address account = addEventsClassList[index].account;
+        
+        // 添加敏感事件
+        if(addDeviceList[index].approve==true){
+            eventsClassNum++;
+            eventsClass[eventsClassNum].class = addEventsClassList[index].class;
+            eventsClass[eventsClassNum].count = 0;
+            eventsClass[eventsClassNum].name = addEventsClassList[index].name;
+        }
+        emit AddEventsClassReply(identity);
+
+        // 添加事件记录
+        eventsNum[account]++;
+        eventsById[account][eventsNum[account]].class==2;
+        eventsById[account][eventsNum[account]].time==block.timestamp;
+        eventsById[account][eventsNum[account]].state1==true;
+        eventsById[account][eventsNum[account]].state2==addDeviceList[index].approve;
+
+        // 清除新事件类型清单
+        if(index!=addEventsClassLen){
+            addEventsClassList[index].account =addEventsClassList[addEventsClassLen].account;
+            addEventsClassList[index].class   =addEventsClassList[addEventsClassLen].class;
+            addEventsClassList[index].name    =addEventsClassList[addEventsClassLen].name;
+            addEventsClassList[index].read    =addEventsClassList[addEventsClassLen].read;
+            addEventsClassList[index].approve =addEventsClassList[addEventsClassLen].approve;
+        }
+        addEventsClassList[addEventsClassLen].class=0;
+        addEventsClassLen--;
     }
 
     /******************************************************************/
     /** 敏感事件
+     * 
+     * 敏感事件数据结构
+     * 
+     * getEventLength     获取事件长度函数
+     * getEvent           获取事件的测试函数
+     * 
+     * addEvent           敏感事件申请
      * 
      */
     /******************************************************************/
@@ -315,78 +519,46 @@ contract BoT{
     }
     // 每一个设备的所有事件
     //mapping(uint8 => Event) public events;
-    mapping(uint8 => uint8) public eventsNum;
     // 所有设备的事件
-    mapping(uint8 => mapping(uint8 => Event)) public eventsById;
+    mapping(address => mapping(uint8 => Event)) public eventsById;
+    mapping(address => uint8) public eventsNum;
     
     // 获取事件长度函数
     function getEventLength(uint8 deviceId) view public returns(uint){
         require(devices[deviceId].account!=0x0000000000000000000000000000000000000000);
-        return eventsNum[deviceId];
+        return eventsNum[deviceIndexToAccount[deviceId]];
     }
 
     // 获取事件的测试函数
     function getEvent(uint8 deviceId,uint8 eventId) view public returns(uint8,uint,bool,bool){
         require(devices[deviceId].account!=0x0000000000000000000000000000000000000000);
-        require(eventsById[deviceId][eventId].class!=0);
-        return (eventsById[deviceId][eventId].class,
-            eventsById[deviceId][eventId].time,
-            eventsById[deviceId][eventId].state1,
-            eventsById[deviceId][eventId].state2);
-    }
-
-    // 敏感事件申请
-    // return: 0-通过, 1-等待, 2-拒绝
-    event SetEvent(uint res,uint identity);
-    function setEvent(address _account, string memory _password, uint8 eventId,uint identity) public{
-        // 设备认证失败
-        require(authDevice(_account,_password));
-        // 事件Id合法认证
-        require(eventsClass[eventId].class!=0);
-        // 获取设备id
-        uint8 deviceId = _deviceAccountToIndex(_account);
-        // 进行敏感事件申请
-        if(eventsClass[eventId].class==1){
-            // 默认自动通过, 不进行记录
-            emit SetEvent(0,identity);
-        }else{
-            // 进行计数
-            eventsClass[eventId].count++;
-            eventsNum[deviceId]++;
-            eventsById[deviceId][eventsNum[deviceId]].class==eventId;
-            eventsById[deviceId][eventsNum[deviceId]].time==block.timestamp;
-            if(eventsClass[eventId].class==2){
-                // 默认记录后通过
-                eventsById[deviceId][eventsNum[deviceId]].state1==false;
-                eventsById[deviceId][eventsNum[deviceId]].state2==false;
-                emit SetEvent(0,identity);
-            }else if(eventsClass[eventId].class==3){
-                // 需要等待
-                eventsById[deviceId][eventsNum[deviceId]].state1==true;
-                eventsById[deviceId][eventsNum[deviceId]].state2==false;
-                // 加入申请列表
-                toDoListLen++;
-                toDoList[toDoListLen].device=deviceId;
-                toDoList[toDoListLen].eventType=eventId;
-                toDoList[toDoListLen].refer=eventsClass[eventId].count;
-                emit SetEvent(1,identity);
-            }else{
-                // 默认记录后拒绝
-                eventsById[deviceId][eventsNum[deviceId]].state1==false;
-                eventsById[deviceId][eventsNum[deviceId]].state2==true;
-                emit SetEvent(2,identity);
-            }
-        }
+        address _account = deviceIndexToAccount[deviceId];
+        require(eventsById[_account][eventId].class!=0);
+        return (eventsById[_account][eventId].class,
+            eventsById[_account][eventId].time,
+            eventsById[_account][eventId].state1,
+            eventsById[_account][eventId].state2);
     }
 
     /******************************************************************/
     /** 代办清单
+     * 
+     * 代办清单数据结构
+     * 
+     * Geter, Settter
+     *  getToDoListLength    获取待办清单长度
+     *  getToDoListInfo      获取待办清单信息
+     * 
+     * 添加事件
+     *  addEvent             敏感事件申请
+     *  toDoListDo           同意/拒绝
+     * 
      */
     /******************************************************************/
 
     // 敏感事件待办清单
     struct ToDoList{
-        uint8 device;   // 设备id
+        address device;   // 设备地址
         uint8 eventType;// 事件类型id
         uint8 refer;    // 在事件列表的下标
     }
@@ -400,15 +572,61 @@ contract BoT{
     }
 
     // 获取待办清单信息(返回：设备id,事件类型id,在事件列表的下标)
-    function getToDoListInfo(uint8 i)public view returns(uint8,uint8,uint8,uint8){
-        require(toDoList[i].device!=0);
+    function getToDoListInfo(uint8 i)public view returns(address,uint8,uint8,uint8){
+        require(toDoList[i].device!=0x0000000000000000000000000000000000000000);
         return (toDoList[i].device,toDoList[i].eventType,toDoList[i].refer,i);
+    }
+
+    // 敏感事件申请
+    event AddEvent(bool approve,bool wait,uint identity);
+    function addEvent(address _account, string memory _password, uint8 eventId,uint identity) public returns(uint8){
+        // 设备认证失败
+        require(authDevice(_account,_password));
+        // 事件Id合法认证
+        require(eventsClass[eventId].class!=0);
+        // 进行敏感事件申请
+        if(eventsClass[eventId].class==1){
+            // 默认自动通过, 不进行记录
+            emit AddEvent(true,false,identity);
+            return 1;
+        }else{
+            // 进行计数
+            eventsClass[eventId].count++;
+            eventsClass[eventId].deviceCount[_account]++;
+            eventsNum[_account]++;
+            eventsById[_account][eventsNum[_account]].class==eventId;
+            eventsById[_account][eventsNum[_account]].time==block.timestamp;
+            if(eventsClass[eventId].class==2){
+                // 默认记录后通过
+                eventsById[_account][eventsNum[_account]].state1==false;
+                eventsById[_account][eventsNum[_account]].state2==false;
+                emit AddEvent(true,false,identity);
+                return 2;
+            }else if(eventsClass[eventId].class==3){
+                // 需要等待
+                eventsById[_account][eventsNum[_account]].state1==true;
+                eventsById[_account][eventsNum[_account]].state2==false;
+                // 加入申请列表
+                toDoListLen++;
+                toDoList[toDoListLen].device=_account;
+                toDoList[toDoListLen].eventType=eventId;
+                toDoList[toDoListLen].refer=eventsClass[eventId].count;
+                emit AddEvent(false,true,identity);
+                return 3;
+            }else{
+                // 默认记录后拒绝
+                eventsById[_account][eventsNum[_account]].state1==false;
+                eventsById[_account][eventsNum[_account]].state2==true;
+                emit AddEvent(false,false,identity);
+                return 4;
+            }
+        }
     }
 
     // 同意/拒绝
     event ToDoListDo(uint identity);
     function toDoListDo(uint8 index,bool approve,uint identity)public {
-        require(toDoList[index].device!=0);
+        require(toDoList[index].device!=0x0000000000000000000000000000000000000000);
         require(eventsById[toDoList[index].device][toDoList[index].refer].state1);// warning 类型
         eventsById[toDoList[index].device][toDoList[index].refer].state2=approve; // 同意或拒绝
         if(index!=toDoListLen){
@@ -416,7 +634,7 @@ contract BoT{
             toDoList[index].eventType=toDoList[toDoListLen].eventType;
             toDoList[index].refer=toDoList[toDoListLen].refer;
         }
-        toDoList[toDoListLen].device=0;
+        toDoList[toDoListLen].device=0x0000000000000000000000000000000000000000;
         toDoListLen--;
         emit ToDoListDo(identity);
     }
@@ -431,24 +649,15 @@ contract BoT{
         // 初始化密码为空
         password="";
 
-        // 初始化事件类别
-            // 为定义的标准事件,默认【同意】，【不记录】
-        eventsClass[1].class = 1;
+        // 初始化事件类别 - 添加新设备申请
+        eventsClass[1].class = 3;
         eventsClass[1].count = 0;
-        eventsClass[1].name = "Plain";
-            // 为定义的警告事件,默认【同意】并【记录】
+        eventsClass[1].name = "Add Device";
+        // 初始化事件类别 - 添加新类型申请
         eventsClass[2].class = 2;
         eventsClass[2].count = 0;
-        eventsClass[2].name = "Normal";
-            // 为定义的警告事件,默认等待，需要【申请】并【记录】
-        eventsClass[3].class = 3;
-        eventsClass[3].count = 0;
-        eventsClass[3].name = "Warning";
-            // 为定义的拒绝事件,默认【不同意】并【记录】
-        eventsClass[4].class = 4;
-        eventsClass[4].count = 0;
-        eventsClass[4].name = "Reject";
-        eventsClassNum=4;
+        eventsClass[2].name = "Add Event Type";
+        eventsClassNum=2;
     }
     /******************************************************************/
     /** Tools
@@ -456,11 +665,9 @@ contract BoT{
     /******************************************************************/
     // 比较字符串
     function compareStr(string memory _str1, string memory _str2) pure public returns(bool) {
-        if(bytes(_str1).length == bytes(_str2).length){
-            if(keccak256(abi.encodePacked(_str1)) == keccak256(abi.encodePacked(_str2))){
+        if(bytes(_str1).length == bytes(_str2).length)
+            if(keccak256(abi.encodePacked(_str1)) == keccak256(abi.encodePacked(_str2)))
                 return true;
-            }
-        }
         return false;
     }
 }
