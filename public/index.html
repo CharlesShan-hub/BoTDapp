@@ -23,6 +23,7 @@
         <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+        <link href="assets/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
     </head>
 
@@ -199,7 +200,7 @@
                                                         </div>
                                                         <div class="col-6 text-right">
                                                             <button type="button" class="btn btn-light mr-1" id="AddEventTypeTestBC" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-success" id="AddEventTypeTestB" onclick="doAddEventTypeTest()">Save</button>
+                                                            <button type="submit" class="btn btn-success" id="AddEventTypeTestB" onclick="doAddEventsClassTest()">Save</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -218,22 +219,6 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">Device Account</label>
-                                                                <input class="form-control" placeholder="0x......"
-                                                                    id="AddEventTestI1" required value="" />
-                                                                <div class="invalid-feedback">0x......</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label">Password</label>
-                                                                <input class="form-control" placeholder="Input the device account password"
-                                                                    id="AddEventTestI2" required value="" />
-                                                                <div class="invalid-feedback">Input the device account password</div>
-                                                            </div>
-                                                        </div>
                                                         <div class="col-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Device ID</label>
@@ -259,7 +244,7 @@
                                                         </div>
                                                         <div class="col-6 text-right">
                                                             <button type="button" class="btn btn-light mr-1" id="AddEventTestBC" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-success" id="AddEventTestB" onclick="doAddEventTest()">Save</button>
+                                                            <button type="submit" class="btn btn-success" id="AddEventTestB" onclick="doAddEventTest()">Add</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -269,7 +254,7 @@
                                 </div>
                                 <!--****todolist-->
                                 <div class="col-sm-6 col-md-3 mt-4">
-                                    <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="DoToDoList">
+                                    <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="DoAddEventApprove">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -288,11 +273,11 @@
                                                     </div>
                                                     <div class="row mt-2">
                                                         <div class="col-6">
-                                                            <button type="button" class="btn btn-danger" id="ToDoListB2" onclick="doToDoList(false)">Reject</button>
+                                                            <button type="button" class="btn btn-danger" id="ToDoListB2" onclick="doAddEventApprove(false)">Reject</button>
                                                         </div>
                                                         <div class="col-6 text-right">
                                                             <button type="button" class="btn btn-light mr-1" id="ToDoListBC" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-success" id="ToDoListB1" onclick="doToDoList(true)">Approve</button>
+                                                            <button type="submit" class="btn btn-success" id="ToDoListB1" onclick="doAddEventApprove(true)">Approve</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1478,6 +1463,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="assets/js/chart.js"></script>
         <script src="assets/js/chart.min.js"></script>
+        <script src="assets/js/sweetalert2.min.js"></script>
         <script src="assets/js/init.js"></script>
         <script src="assets/js/main.js"></script>
 

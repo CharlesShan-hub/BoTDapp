@@ -19,8 +19,8 @@ var web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8546'))
 
 // 创建合约
 function getInstance(){
-    var CONTRACT = "0x9456E6A8DF8677d31133b2CCF14c49D1Eb52CE15";
-    var abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"result","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"eventsClassId","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventType","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"ReduceDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceInfo","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"res","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypeName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypePlan","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetPassword","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"ToDoListDo","type":"event"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"addDeviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceList","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"},{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"addDeviceListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventClass","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventType","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_password","type":"string"}],"name":"auth","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"}],"name":"authDevice","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_str1","type":"string"},{"internalType":"string","name":"_str2","type":"string"}],"name":"compareStr","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"deviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"deviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"devices","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devicesNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsById","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint256","name":"time","type":"uint256"},{"internalType":"bool","name":"state1","type":"bool"},{"internalType":"bool","name":"state2","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsClass","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint8","name":"count","type":"uint8"},{"internalType":"string","name":"name","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"eventsClassNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddDevListInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getAddDevListInfoByIndex","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddDevListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getDeviceInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getDeviceInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDeviceNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"},{"internalType":"uint8","name":"eventId","type":"uint8"}],"name":"getEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"}],"name":"getEventLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassCount","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getEventsClassLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"i","type":"uint8"}],"name":"getToDoListInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getToDoListLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"reduceDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceInfo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEvent","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint8","name":"planId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypePlan","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"oldPassword","type":"string"},{"internalType":"string","name":"newPassword","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setPassword","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"toDoList","outputs":[{"internalType":"uint8","name":"device","type":"uint8"},{"internalType":"uint8","name":"eventType","type":"uint8"},{"internalType":"uint8","name":"refer","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"toDoListDo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"toDoListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"}]';
+    var CONTRACT = "0xD9320a3B9aa291Cd096d102b1F70eC9e23c73995";
+    var abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClass","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"index","type":"uint8"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"eventsClassId","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"ReduceDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceInfo","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypeName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypePlan","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetPassword","type":"event"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"_addEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"addDeviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceList","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"},{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"addDeviceListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventTest","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"uint8","name":"_class","type":"uint8"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClass","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"addEventsClassLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addEventsClassList","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"string","name":"name","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventClass","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_password","type":"string"}],"name":"auth","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"}],"name":"authDevice","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_str1","type":"string"},{"internalType":"string","name":"_str2","type":"string"}],"name":"compareStr","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"deviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"deviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"devices","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devicesNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsById","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint256","name":"time","type":"uint256"},{"internalType":"bool","name":"state1","type":"bool"},{"internalType":"bool","name":"state2","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsClass","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint8","name":"count","type":"uint8"},{"internalType":"string","name":"name","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"eventsClassNameToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"eventsClassNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"eventsNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getAddDevListInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddDevListInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddDevListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddEventsClassLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getDeviceInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getDeviceInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDeviceNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"},{"internalType":"uint8","name":"eventId","type":"uint8"}],"name":"getEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"}],"name":"getEventLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassCount","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"getEventsClassIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getEventsClassLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"i","type":"uint8"}],"name":"getToDoListInfo","outputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getToDoListLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"reduceDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceInfo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint8","name":"planId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypePlan","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"oldPassword","type":"string"},{"internalType":"string","name":"newPassword","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setPassword","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"toDoList","outputs":[{"internalType":"address","name":"device","type":"address"},{"internalType":"uint8","name":"eventType","type":"uint8"},{"internalType":"uint8","name":"refer","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"toDoListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"}]';
     return new web3.eth.Contract(JSON.parse(abi),CONTRACT);
 }
 var contract = getInstance();
@@ -177,7 +177,7 @@ async function auth(password){
 }
 
 /**
- * 控制面板修改密码(原API)
+ * 控制面板修改密码
  */
 async function _setPassword(oldPassword,newPassword,identity){
     var account = await getAccount0();
@@ -196,10 +196,6 @@ async function _setPassword(oldPassword,newPassword,identity){
         });
     });
 }
-
-/**
- * 控制面板修改密码
- */
 async function setPassword(oldPassword,newPassword,identity){
     var identity = randomNum(100000,999999);
     if(await _setPassword(oldPassword,newPassword,identity)==false){
@@ -242,7 +238,37 @@ function getDeviceNum(){
 }
 
 /**
- * 设置设备名称(原API)
+ * 获取设备信息
+ */
+function getDeviceInfo(account){
+    return new Promise(function(result){
+        contract.methods.getDeviceInfo(account).call(function(error, res){
+            if(error){
+                console.log("Get Device Info Error: ", account, error);
+                result(false);
+            }else{
+                console.log("Get Device Info: ",res);
+                result(res);
+            }
+        });
+    });
+}
+function getDeviceInfoByIndex(index){
+    return new Promise(function(result){
+        contract.methods.getDeviceInfoByIndex(index).call(function(error, res){
+            if(error){
+                console.log("Get Device Info Error: ",index,error);
+                result(false);
+            }else{
+                console.log("Get Device Info: ",res);
+                result(res);
+            }
+        });
+    });
+}
+
+/**
+ * 设置设备名称
  */
 async function _setDeviceName(_account,name,identity){
     var account = await getAccount0();
@@ -261,10 +287,6 @@ async function _setDeviceName(_account,name,identity){
         });
     });
 }
-
-/**
- * 设置设备名称
- */
 async function setDeviceName(_account,name){
     var identity = randomNum(100000,999999);
     if(await _setDeviceName(_account,name,identity)==false){
@@ -287,7 +309,7 @@ async function setDeviceName(_account,name){
 }
 
 /**
- * 设置设备信息(原API)
+ * 设置设备信息
  */
 async function _setDeviceInfo(_account,name,detail,identity){
     var account = await getAccount0();
@@ -306,10 +328,6 @@ async function _setDeviceInfo(_account,name,detail,identity){
         });
     });
 }
-
-/**
- * 设置设备信息
- */
 async function setDeviceInfo(_account,name,detail){
     var identity = randomNum(100000,999999);
     if(await _setDeviceInfo(_account,name,detail,identity)==false){
@@ -332,160 +350,7 @@ async function setDeviceInfo(_account,name,detail){
 }
 
 /**
- * 获取设备信息
- */
-function getDeviceInfo(account){
-    return new Promise(function(result){
-        contract.methods.getDeviceInfo(account).call(function(error, res){
-            if(error){
-                console.log("Get Device Info Error: ",error);
-                result(false);
-            }else{
-                console.log("Get Device Info: ",res);
-                result(res);
-            }
-        });
-    });
-}
-function getDeviceInfoByIndex(index){
-    return new Promise(function(result){
-        contract.methods.getDeviceInfoByIndex(index).call(function(error, res){
-            if(error){
-                console.log("Get Device Info Error: ",error);
-                result(false);
-            }else{
-                console.log("Get Device Info: ",res);
-                result(res);
-            }
-        });
-    });
-}
-
-/**
- * 添加测试设备(原API)
- */
-async function _addDeviceTest(_account,password,name,detail,identity){
-    var account = await getAccount0();
-    return new Promise(function(result){
-        if(account==false){
-            result(false);
-        }
-        contract.methods.addDeviceTest(_account,password,name,detail,identity).send({from:account})
-        .then(function(res){
-            console.log("Add Device Request Send ",identity);
-            result(true);
-        }, function(reason) {
-            console.log("Add Device failed!",reason);
-            result(false);
-        });
-    });
-}
-
-/**
- * 添加测试设备
- */
-async function addDeviceTest(_account,password,name,detail){
-    var identity = randomNum(100000,999999);
-    if(await _addDeviceTest(_account,password,name,detail,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('AddDeviceTest',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
-}
-
-/**
- * 添加设备批准(原API)
- */
-async function _addDeviceApprove(_account,approve,identity){
-    var account = await getAccount0();
-    return new Promise(function(result){
-        if(account==false){
-            console.log("getAccount0 failed ",identity);
-            result(false);
-        }
-        contract.methods.addDeviceApprove(_account,approve,identity).send({from:account})
-        .then(function(res){
-            console.log("Add Device Approve Request Send ",identity);
-            result(true);
-        }, function(reason) {
-            console.log("Add Device Approve failed!",reason);
-            result(false);
-        });
-    });
-}
-
-/**
- * 添加设备批准
- */
-async function addDeviceApprove(account,approve){
-    var identity = randomNum(100000,999999);
-    if(await _addDeviceApprove(account,approve,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('AddDeviceApprove',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
-}
-
-/**
- * 获取设备申请表长
- */
-function getAddDevListLen(){
-    return new Promise(function(result){
-        contract.methods.getAddDevListLen().call(function(error, number){
-            if(error){
-                console.log("Error: ",error);
-                result(false);
-            }else{
-                console.log("Add Device Request Number: ",number);
-                result(parseInt(number));
-            }
-        });
-    });
-}
-
-/**
- * 获取设备申请信息
- */
-function getAddDevListInfo(requestId){
-    return new Promise(function(result){
-        contract.methods.getAddDevListInfo(requestId).call(function(error, res){
-            if(error){
-                console.log("Get Device Add Request Info Error: ",error);
-                result(false);
-            }else{
-                console.log("Get Device Add Request Info: ",res);
-                result(res);
-            }
-        });
-    });
-}
-
-/**
- * 删除设备(原API)
+ * 删除设备
  */
 async function _reduceDevice(_account,identity){
     var account = await getAccount0();
@@ -495,8 +360,8 @@ async function _reduceDevice(_account,identity){
             result(false);
         }
         contract.methods.reduceDevice(_account,identity).send({from:account})
-        .then(function(result){
-            console.log("Deleted Device Request Send",result);
+        .then(function(res){
+            console.log("Deleted Device Request Send",res);
             result(true);
         }, function(error) {
             console.log("Reduce Device Failed!",error);
@@ -504,10 +369,6 @@ async function _reduceDevice(_account,identity){
         });
     });
 }
-
-/**
- * 删除设备
- */
 async function reduceDevice(_account){
     var identity = randomNum(100000,999999);
     if(await _reduceDevice(_account,identity)==false){
@@ -546,6 +407,136 @@ async function authDevice(_account,password,deviceId){
     });
 }
 
+/**
+ * 获取设备申请表长
+ */
+function getAddDevListLen(){
+    return new Promise(function(result){
+        contract.methods.getAddDevListLen().call(function(error, number){
+            if(error){
+                console.log("Error: ",error);
+                result(false);
+            }else{
+                console.log("Add Device Request Number: ",number);
+                result(parseInt(number));
+            }
+        });
+    });
+}
+
+/**
+ * 获取设备申请信息
+ */
+function getAddDevListInfo(address){
+    return new Promise(function(result){
+        contract.methods.getAddDevListInfo(address).call(function(error, res){
+            if(error){
+                console.log("Get Device Add Request Info Error: ",error);
+                result(false);
+            }else{
+                console.log("Get Device Add Request Info: ",res);
+                result(res);
+            }
+        });
+    });
+}
+function getAddDevListInfoByIndex(requestId){
+    return new Promise(function(result){
+        contract.methods.getAddDevListInfoByIndex(requestId).call(function(error, res){
+            if(error){
+                console.log("Get Device Add Request Info Error: ",error);
+                result(false);
+            }else{
+                console.log("Get Device Add Request Info: ",res);
+                result(res);
+            }
+        });
+    });
+}
+
+/**
+ * 添加测试设备
+ */
+async function _addDeviceTest(_account,password,name,detail,identity){
+    var account = await getAccount0();
+    return new Promise(function(result){
+        if(account==false){
+            console.log("getAccount0 failed ",identity);
+            result(false);
+        }
+        contract.methods.addDeviceTest(_account,password,name,detail,identity).send({from:account})
+        .then(function(res){
+            console.log("Add Test Device Request Send ",identity);
+            result(true);
+        }, function(reason) {
+            console.log("Add Test Device failed!",reason);
+            result(false);
+        });
+    });
+}
+async function addDeviceTest(_account,password,name,detail){
+    var identity = randomNum(100000,999999);
+    if(await _addDeviceTest(_account,password,name,detail,identity)==false){
+        return false;
+    }
+    return new Promise(function(result){
+        contract.getPastEvents('AddDeviceTest',function(err, res){
+            if(err){
+                console.log("watcher err",err);
+                result(false);
+            }else{
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
+                }
+            }
+        });
+    });
+}
+
+/**
+ * 添加设备批准
+ */
+async function _addDeviceApprove(_account,approve,identity){
+    var account = await getAccount0();
+    return new Promise(function(result){
+        if(account==false){
+            console.log("getAccount0 failed ",identity);
+            result(false);
+        }
+        contract.methods.addDeviceApprove(_account,approve,identity).send({from:account})
+        .then(function(res){
+            console.log("Add Device Approve Request Send ",identity);
+            result(true);
+        }, function(reason) {
+            console.log("Add Device Approve failed!",reason);
+            result(false);
+        });
+    });
+}
+async function addDeviceApprove(account,approve){
+    var identity = randomNum(100000,999999);
+    if(await _addDeviceApprove(account,approve,identity)==false){
+        return false;
+    }
+    return new Promise(function(result){
+        contract.getPastEvents('AddDeviceApprove',function(err, res){
+            if(err){
+                console.log("watcher err",err);
+                result(false);
+            }else{
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(true);
+                    }
+                }
+            }
+        });
+    });
+}
+
+
 // 合约接口API - 敏感事件类别 ---------------------------------------------------
 
 /**
@@ -559,7 +550,7 @@ function getEventsClassLength(){
                 result(false);
             }else{
                 console.log("Event Type Number: ",number);
-                result(number);
+                result(parseInt(number));
             }
         });
     });
@@ -583,7 +574,24 @@ async function getEventsClassInfo(eventTypeId){
 }
 
 /**
- * 修改敏感事件应对方案(原API)
+ * 获取敏感事件类别数量
+ */
+async function getEventsClassCount(eventTypeId){
+    return new Promise(function(result){
+        contract.methods.getEventsClassCount(eventTypeId).call(function(error, number){
+            if(error){
+                console.log("Error: ",error);
+                result(false);
+            }else{
+                console.log("Event Type Num: ",parseInt(number));
+                result(parseInt(number));
+            }
+        });
+    });
+}
+
+/**
+ * 修改敏感事件应对方案
  */
 async function _setEventTypePlan(eventId,newClass,identity){
     var account = await getAccount0();
@@ -593,8 +601,8 @@ async function _setEventTypePlan(eventId,newClass,identity){
             result(false);
         }
         contract.methods.setEventTypePlan(eventId,newClass,identity).send({from:account})
-        .then(function(result){
-            console.log("EventType Class Change Request Send",result);
+        .then(function(res){
+            console.log("EventType Class Change Request Send",res);
             result(true)
         }, function(error) {
             console.log("EventType Class Change Failed!",error);
@@ -602,10 +610,6 @@ async function _setEventTypePlan(eventId,newClass,identity){
         });
     });
 }
-
-/**
- * 修改敏感事件应对方案
- */
 async function setEventTypePlan(eventId,newClass){
     var identity = randomNum(100000,999999);
     if(await _setEventTypePlan(eventId,newClass,identity)==false){
@@ -628,7 +632,7 @@ async function setEventTypePlan(eventId,newClass){
 }
 
 /**
- * 修改敏感事件名称(原API)
+ * 修改敏感事件名称
  */
 async function _setEventTypeName(eventId,newName,identity){
     var account = await getAccount0();
@@ -638,8 +642,8 @@ async function _setEventTypeName(eventId,newName,identity){
             result(false);
         }
         contract.methods.setEventTypeName(eventId,newName,identity).send({from:account})
-        .then(function(result){
-            console.log("EventType Name Change Request Send",result);
+        .then(function(res){
+            console.log("EventType Name Change Request Send",res);
             result(true);
         }, function(error) {
             console.log("EventType Name Change Failed!",error);
@@ -647,10 +651,6 @@ async function _setEventTypeName(eventId,newName,identity){
         });
     });
 }
-
-/**
- * 修改敏感事件名称
- */
 async function setEventTypeName(eventId,newName){
     var identity = randomNum(100000,999999);
     if(await _setEventTypeName(eventId,newName,identity)==false){
@@ -673,18 +673,69 @@ async function setEventTypeName(eventId,newName){
 }
 
 /**
- * 添加事件类型(原API)
+ * 添加事件类型列表长度
  */
-async function _addEventType(eventClass,eventName,identity){
+function getEventsClassIndex(name){
+    return new Promise(function(result){
+        contract.methods.getEventsClassIndex(name).call(function(error, number){
+            if(error){
+                console.log("Error: ",error);
+                result(false);
+            }else{
+                console.log("Event Type Index: ",number);
+                result(parseInt(number));
+            }
+        });
+    });
+}
+
+/**
+ * 添加事件类型列表长度
+ */
+function getAddEventsClassLen(){
+    return new Promise(function(result){
+        contract.methods.getAddEventsClassLen().call(function(error, number){
+            if(error){
+                console.log("Error: ",error);
+                result(false);
+            }else{
+                console.log("Add Event Type List Number: ",number);
+                result(parseInt(number));
+            }
+        });
+    });
+}
+
+/**
+ * 添加事件类型列表信息
+ */
+function getAddEventsClassInfo(){
+    return new Promise(function(result){
+        contract.methods.getAddEventsClassInfo().call(function(error, number){
+            if(error){
+                console.log("Error: ",error);
+                result(false);
+            }else{
+                console.log("Add Event Type List Number: ",number);
+                result(parseInt(number));
+            }
+        });
+    });
+}
+
+/**
+ * 添加测试事件类型
+ */
+async function _addEventsClassTest(eventClass,eventName,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
             console.log("getAccount0 failed ",identity);
             result(false);
         }
-        contract.methods.addEventType(eventClass,eventName,identity).send({from:account})
-        .then(function(result){
-            console.log("Add EventType Request Send",result);
+        contract.methods.addEventsClassTest(eventClass,eventName,identity).send({from:account})
+        .then(function(res){
+            console.log("Add EventType Request Send",res);
             result(true);
         }, function(error) {
             console.log("Add EventType Failed!",error);
@@ -692,17 +743,54 @@ async function _addEventType(eventClass,eventName,identity){
         });
     });
 }
-
-/**
- * 添加事件类型
- */
-async function addEventType(eventClass,eventName){
+async function addEventsClassTest(eventClass,eventName){
     var identity = randomNum(100000,999999);
-    if(await _addEventType(eventClass,eventName,identity)==false){
+    if(await _addEventsClassTest(eventClass,eventName,identity)==false){
         return false;
     }
     return new Promise(function(result){
-        contract.getPastEvents('AddEventType',function(err, res){
+        contract.getPastEvents('AddEventsClassTest',function(err, res){
+            if(err){
+                console.log("watcher err",err);
+                result(false);
+            }else{
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        result(parseInt(res[i]["returnValues"]["eventsClassId"]));
+                    }
+                }
+            }
+        });
+    });
+}
+
+/**
+ * 添加事件类型批准
+ */
+async function _addEventsClassApprove(index,approve,identity){
+    var account = await getAccount0();
+    return new Promise(function(result){
+        if(account==false){
+            console.log("getAccount0 failed ",identity);
+            result(false);
+        }
+        contract.methods.addEventsClassApprove(index,approve,identity).send({from:account})
+        .then(function(res){
+            console.log("Add Event Type Approve Request Send ",identity);
+            result(true);
+        }, function(reason) {
+            console.log("Add Event Type Approve failed!",reason);
+            result(false);
+        });
+    });
+}
+async function addEventsClassApprove(index,approve){
+    var identity = randomNum(100000,999999);
+    if(await _addEventsClassApprove(index,approve,identity)==false){
+        return false;
+    }
+    return new Promise(function(result){
+        contract.getPastEvents('AddEventsClassApprove',function(err, res){
             if(err){
                 console.log("watcher err",err);
                 result(false);
@@ -717,12 +805,31 @@ async function addEventType(eventClass,eventName){
     });
 }
 
+// 合约接口API - 敏感事件 ----------------------------------------------------
+
 /**
- * 获取敏感事件类别计数
+ * 获取代办清单长度
  */
-function getEventsClassCount(eventTypeId){
+function getEventLength(deviceId){
     return new Promise(function(result){
-        contract.methods.getEventsClassCount(eventTypeId).call(function(error, res){
+        contract.methods.getEventLength(deviceId).call(function(error, number){
+            if(error){
+                console.log("Error: ",error);
+                result(false);
+            }else{
+                console.log("Event Number: ",number);
+                result(parseInt(number));
+            }
+        });
+    });
+}
+
+/**
+ * 获取事件信息
+ */
+function getEvent(deviceId,index){
+    return new Promise(function(result){
+        contract.methods.getEvent(deviceId,index).call(function(error, res){
             if(error){
                 console.log("Error: ",error);
                 result(false);
@@ -747,7 +854,7 @@ function getToDoListLength(){
                 result(false);
             }else{
                 console.log("To Do List Number: ",number);
-                result(number);
+                result(parseInt(number));
             }
         });
     });
@@ -771,122 +878,81 @@ function getToDoListInfo(id){
 }
 
 /**
- * 清单信息同意/拒绝(原API)
+ * 敏感测试事件申请
  */
-async function _toDoListDo(index,approve,identity){
+async function _addEventTest(_account,eventId,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
+            console.log("getAccount0 failed ",identity);
             result(false);
         }
-        contract.methods.toDoListDo(index,approve,identity).send({from:account})
-        .then(function(result){
-            console.log("To do list reply Request Send",result);
+        contract.methods.addEventTest(_account,eventId,identity).send({from:account})
+        .then(function(res){
+            console.log("Add Event Request Send",res);
+            result(true);
+        }, function(error) {
+            console.log("Add Event Failed!",error);
+            result(false);
+        });
+    });
+}
+async function addEventTest(_account,eventId){
+    var identity = randomNum(100000,999999);
+    if(await _addEventTest(_account,eventId,identity)==false){
+        return false;
+    }
+    return new Promise(function(result){
+        contract.getPastEvents('AddEvent',function(err, res){
+            if(err){
+                console.log("watcher err",err);
+                result(false);
+            }else
+                for(var i=0;i<res.length;i++)
+                    if(res[i]["returnValues"]["identity"]==identity)
+                        result({"approve":res[i]["returnValues"]["approve"],
+                            "wait":res[i]["returnValues"]["wait"]});
+        });
+    });
+}
+
+/**
+ * 清单信息同意/拒绝
+ */
+async function _addEventApprove(index,approve,identity){
+    var account = await getAccount0();
+    return new Promise(function(result){
+        if(account==false){
+            console.log("getAccount0 failed ",identity);
+            result(false);
+        }
+        contract.methods.addEventApprove(index,approve,identity).send({from:account})
+        .then(function(res){
+            console.log("To do list reply Request Send",res);
+            result(true);
         }, function(error) {
             console.log("To do list reply Failed!",error);
             result(false);
         });
     });
 }
-
-/**
- * 清单信息同意/拒绝
- */
-async function toDoListDo(index,approve){
+async function addEventApprove(index,approve){
     var identity = randomNum(100000,999999);
+    if(await _addEventApprove(index,approve,identity)==false){
+        return false;
+    }
     return new Promise(function(result){
-        contract.events.ToDoListDo({},function(err,res){
+        contract.getPastEvents('AddEventApprove',function(err, res){
             if(err){
-                console.log("watch err",err);
+                console.log("watcher err",err);
                 result(false);
-            }else{
-                if(res["returnValues"]["identity"] == identity){
-                    this.unsubscribe();
-                    result(res["returnValues"][0]);
-                }
-            }
-        });
-        _toDoListDo(index,approve,identity);
-    });
-}
-
-
-// 合约接口API - 敏感事件 ----------------------------------------------------
-
-/**
- * 获取代办清单长度
- */
-function getEventLength(deviceId){
-    return new Promise(function(result){
-        contract.methods.getEventLength(deviceId).call(function(error, number){
-            if(error){
-                console.log("Error: ",error);
-                result(false);
-            }else{
-                console.log("Event Number: ",number);
-                result(number);
-            }
+            }else
+                for(var i=0;i<res.length;i++)
+                    if(res[i]["returnValues"]["identity"]==identity)
+                        result(true);
         });
     });
 }
-
-/**
- * 获取事件信息
- */
-function getEvent(deviceId,index){
-    return new Promise(function(result){
-        contract.methods.getEvent(deviceId,index).call(function(error, res){
-            if(error){
-                console.log("Error: ",error);
-                result(false);
-            }else{
-                console.log("Event Type Info: ",res);
-                result(res);
-            }
-        });
-    });
-}
-
-/**
- * 敏感事件申请
- */
-async function _setEvent(_account,password,deviceId,eventId,identity){
-    var account = await getAccount0();
-    return new Promise(function(result){
-        if(account==false){
-            result(2);
-        }
-        contract.methods.setEvent(_account,password,deviceId,eventId,identity).send({from:account})
-        .then(function(res){
-            console.log("Set Event Request Send",res);
-        }, function(error) {
-            console.log("Set Event Failed!",error);
-            result(2);
-        });
-    });
-}
-
-/**
- * 清单信息同意/拒绝
- */
-async function setEvent(_account,password,deviceId,eventId){
-    var identity = randomNum(100000,999999);
-    return new Promise(function(result){
-        contract.events.SetEvent({},function(err,res){
-            if(err){
-                console.log("watch err",err);
-                result(2);
-            }else{
-                if(res["returnValues"]["identity"] == identity){
-                    this.unsubscribe();
-                    result(res["returnValues"][0]);
-                }
-            }
-        });
-        _setEvent(_account,password,deviceId,eventId,identity);
-    });
-}
-
 
 /*************************************************************************/
 /** 工具接口API
@@ -928,4 +994,29 @@ function getColor(len,mode=0){
     }
     return colorArray;
 }
+
+/**
+ * 提示窗口
+ */
+function sweetAlert(type,word){
+    if(type==1){
+        Swal.fire({
+            title:word,
+            //text:"You clicked the button!",
+            type:"success",
+            showCancelButton:0,
+            confirmButtonColor:"#556ee6"
+            //cancelButtonColor:"#f46a6a"
+        })
+    }else if(type==2){
+        Swal.fire({
+            title:word,
+            //text:"You won't be able to revert this!",
+            type:"warning",
+            showCancelButton:0,
+            confirmButtonColor:"#34c38f"
+        })
+    }
+}
+
 

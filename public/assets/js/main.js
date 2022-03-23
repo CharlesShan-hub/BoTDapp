@@ -41,7 +41,7 @@
  * 事件 ------------------------------------------------------------------
  * 
  * 测试添加事件            doAddEventTest()
- * 同意或拒绝申请          doToDoList(approve)
+ * 同意或拒绝申请          doAddEventApprove(approve)
  * 
  */
 /*************************************************************************/
@@ -52,11 +52,8 @@
  * 登陆
  */
 async function doLogin(){
-    var password = document.getElementById("UserPassword").value;
-    var res = await auth(password);
-    if(res==true){
+    if(await auth(document.getElementById("UserPassword").value))
         uiLogin();
-    }
 }
 
 /**
@@ -68,16 +65,17 @@ async function doSetPassword(){
     var newPassword = document.getElementById("ResetPasswordNew1").value;
     var new2Password = document.getElementById("ResetPasswordNew2").value;
     if(newPassword!=new2Password){
-        alert("Two new Password Not Identical!");
+        sweetAlert(2,"Two new Password Not Identical!");
         return false;
     }
 
-    var res = await setPassword(oldPassword,newPassword);
-    if(res==true){
-        alert("Password Reset");
+    if(await setPassword(oldPassword,newPassword)){
+        sweetAlert(1,"Set Password");
         document.getElementById("ResetPasswordOld").value="";
         document.getElementById("ResetPasswordNew1").value="";
         document.getElementById("ResetPasswordNew2").value="";
+    }else{
+        sweetAlert(2,"ReSet Password Failed!");
     }
 }
 
@@ -97,13 +95,14 @@ async function doAddDeviceTest(){
 
     var info = await addAccount(newName,newDetail);
     if(info==false){
-        alert("Fail to add new test device")
-    }
-    
-    var res=await addDeviceTest(info["account"],info["password"],newName,newDetail);
-    if(res!=0){
-        alert("added new test device",newName);
-        uiInitDashboardGallery();
+        sweetAlert(2,"Fail to add new test device");
+    }else{
+        if(await addDeviceTest(info["account"],info["password"],newName,newDetail)){
+            sweetAlert(1,"added new test device "+newName);
+            uiInitDashboardGallery();
+        }else{
+            sweetAlert(2,"Fail to add new test device");
+        }
     }
 
     document.getElementById("AddDeviceTestB").disabled=false;
@@ -119,9 +118,9 @@ async function doEditDevice(){
     var a = document.getElementById("DashboardGalleryWindowI1").value;
     var b = document.getElementById("DashboardGalleryWindowI2").value;
 
-    var result = await setDeviceInfo(CURRENT_DEVICE_ID,a,b);
+    var result = await setDeviceInfo(CURRENT_DEVICE_ADDRESS,a,b);
     if(result==true){
-        alert("Device Info Changed");
+        sweetAlert(1,"Device Info Changed");
         uiInitDashboardGallery();
     }
 
@@ -134,24 +133,26 @@ async function doEditDevice(){
  * 删除设备
  */
 async function doDeleteDevice(){
-    if(CURRENT_DEVICE_ID==-1){
+    if(CURRENT_DEVICE_ADDRESS==0){
+        sweetAlert(2,"Fail to Get Current Device!");
         return;
     }
 
     document.getElementById("DashboardGalleryWindowB2").disabled="disabled";
     document.getElementById("DashboardGalleryWindowB").disabled="disabled";
 
-    var result = await reduceDevice(CURRENT_DEVICE_ID);
+    var result = await reduceDevice(CURRENT_DEVICE_ADDRESS);
     if(result==true){
-        alert("Device Deleted");
+        sweetAlert(1,"Device Deleted");
         uiInitDashboardGallery();
+    }else{
+        sweetAlert(2,"Device Delete Failed");
     }
 
     document.getElementById("DashboardGalleryWindowB").disabled=false;
     document.getElementById("DashboardGalleryWindowB2").disabled=false;
     document.getElementById("DashboardGalleryWindowBC").click();
-    uiInitDashboardGallery();
-    CURRENT_DEVICE_ID=-1;
+    CURRENT_DEVICE_ADDRESS=0;
 }
 
 // JS功能API - 事件类型 -------------------------------------------------
@@ -159,19 +160,18 @@ async function doDeleteDevice(){
 /**
  * 添加事件类型测试
  */
-async function doAddEventTypeTest(){
+async function doAddEventsClassTest(){
     var newName = document.getElementById("AddEventTypeTestI").value;
-    var newPlan = document.getElementById("AddEventTypeTestS").selectedIndex;
+    var newPlan = document.getElementById("AddEventTypeTestS").selectedIndex+1;
     document.getElementById("AddEventTypeTestI").value="";
     document.getElementById("AddEventTypeTestS").selectedIndex=1;
     document.getElementById("AddEventTypeTestB").disabled="disabled";
 
-    var result = await addEventType(newPlan,newName);
-    if(result!=0){ //addEventType()返回添加后的数组长度，错误返回0
-        alert("Event Type Added");
+    if(await addEventsClassTest(newPlan,newName)){
+        sweetAlert(1,"Event Type Added");
         uiInitSettingEventType();
     }else{
-        alert("Event Type Add Failed!");
+        sweetAlert(2,"Event Type Add Failed!");
     }
 
     document.getElementById("AddEventTypeTestB").disabled=false;
@@ -185,15 +185,15 @@ async function doSetEventClassName(num){
     // 获取名称
     var newName = document.getElementById("ASRI"+num.toString()).value;
     if(newName==""){
+        sweetAlert(2,"Get Current Event Type Failed!");
         return false;
     }
 
-    var result = await setEventTypeName(num,newName);
-    if(result==true){
-        alert("Event Type Name Setted");
+    if(await setEventTypeName(num,newName)){
+        sweetAlert(1,"Event Type Name Setted");
         uiInitSettingEventType();
     }else{
-        alert("Event Type Name Set Failed!");
+        sweetAlert(2,"Event Type Name Set Failed!");
     }
 }
 
@@ -201,14 +201,12 @@ async function doSetEventClassName(num){
  * 修改记录类型应对方案
  */
 async function doSetEventClassPlan(num){
-    var newPlan = document.getElementById("ASRS"+num.toString()).selectedIndex;
-
-    var result = await setEventTypePlan(num,newPlan);
-
-    if(result==true){
-        alert("Event Type Plan Setted");
+    var newPlan = document.getElementById("ASRS"+num.toString()).selectedIndex+1;
+    
+    if(await setEventTypePlan(num,newPlan)){
+        sweetAlert(1,"Event Type Plan Setted");
     }else{
-        alert("Event Type Plan Set Failed!");
+        sweetAlert(2,"Event Type Plan Set Failed!");
     }
 }
 
@@ -218,61 +216,73 @@ async function doSetEventClassPlan(num){
  * 添加事件测试
  */
 async function doAddEventTest(){
-    var account   = document.getElementById("AddEventTestI1").value;
-    var password  = document.getElementById("AddEventTestI2").value;
+    //var account   = document.getElementById("AddEventTestI1").value;
+    //var password  = document.getElementById("AddEventTestI2").value;
     var deviceId  = document.getElementById("AddEventTestI3").value;
-    var eventType = document.getElementById("AddEventTestS").selectedIndex;
-    document.getElementById("AddEventTestI1").value="";
-    document.getElementById("AddEventTestI2").value="";
-    document.getElementById("AddEventTypeTestS").selectedIndex=1;
-    document.getElementById("AddEventTypeTestB").disabled="disabled";
+    var eventType = document.getElementById("AddEventTestS").selectedIndex+1;
+    //document.getElementById("AddEventTestI1").value="";
+    //document.getElementById("AddEventTestI2").value="";
+    document.getElementById("AddEventTestS").selectedIndex=1;
+    document.getElementById("AddEventTestB").disabled="disabled";
 
-    var result = await setEvent(account,password,deviceId,eventType);
-    if(result!=2){
-        alert("Event Added");
-        uiInitDashboardNote();
+    var deviceInfo = await getDeviceInfoByIndex(deviceId);
+    if(deviceInfo==false){
+        sweetAlert(2,"Failed to get Device Info!");
     }else{
-        alert("Event Add Failed!");
+        var result = await addEventTest(deviceInfo[1],eventType);
+        if(result==false){
+            sweetAlert(2,"Event Add Failed!");
+        }else if(result["approve"]==true){
+            sweetAlert(1,"Event Approved");
+            uiInitDashboardNote();
+        }else if(result["wait"]==true){
+            sweetAlert(1,"Event Request Send!");
+            uiInitDashboardNote();
+        }else{
+            sweetAlert(2,"Event Rejected!");
+        }
     }
 
-    document.getElementById("AddEventTypeTestB").disabled=false;
-    document.getElementById("AddEventTypeTestBC").click();
+    document.getElementById("AddEventTestB").disabled=false;
+    document.getElementById("AddEventTestBC").click();
 }
 
 /**
  * 同意或拒绝申请
  */
-async function doToDoList(approve){
-    if(CURRENT_TODOLIST_ID==-1||CURRENT_TODOLIST_TYPE==-1){
-        console.log('wrong');
+async function doAddEventApprove(approve){
+    if(CURRENT_TODOLIST_ID==0||CURRENT_TODOLIST_TYPE==0){
+        sweetAlert(2,"Failed to Get Current Info!");
         console.log(CURRENT_TODOLIST_ID);
         console.log(CURRENT_TODOLIST_TYPE);
         return;
     }
 
     var result;
-    if(CURRENT_TODOLIST_TYPE=='toDoList'){
-        result = await toDoListDo(CURRENT_TODOLIST_ID,approve);
-    }else{
+    if(CURRENT_TODOLIST_TYPE=='AddDevice'){
         result = await addDeviceApprove(CURRENT_TODOLIST_ID,approve);
+    }else if(CURRENT_TODOLIST_TYPE=='AddEventType'){
+        result = await addEventsClassApprove(CURRENT_TODOLIST_ID,approve);
+    }else if(CURRENT_TODOLIST_TYPE=='AddEvent'){
+        result = await addEventApprove(CURRENT_TODOLIST_ID,approve);
     }
     
-    if(result==true){
+    if(result!=false){
         if(approve==true){
-            alert("Request Apprrove successful");
+            sweetAlert(1,"Request Approve successful");
         }else{
-            alert("Request Reject successful");
+            sweetAlert(1,"Request Reject successful");
         }
     }else{
-        alert("Request Reply Failed!");
+        sweetAlert(2,"Request Reply Failed!");
     }
 
     document.getElementById("ToDoListB1").disabled=false;
     document.getElementById("ToDoListB2").disabled=false;
     document.getElementById("ToDoListBC").click();
     uiInitDashboardNote();
-    CURRENT_TODOLIST_ID=-1;
-    CURRENT_TODOLIST_TYPE=-1;
+    CURRENT_TODOLIST_ID=0;
+    CURRENT_TODOLIST_TYPE=0;
 }
 
 
@@ -397,11 +407,12 @@ function uiInitDashboard(){
 async function uiInitDashboardGallery(){
     uiClearDashboardGallery();
     var info;
-    var len = await getDeviceLength();
-    for(var num = 0;num<len;num++){
-        info = await getDeviceInfo(num);
+    var len = await getDeviceNum();
+    for(var num = 1;num<len+1;num++){
+        info = await getDeviceInfoByIndex(num);
         if(info!=false){
-            uiAddDashboardGallery(info[0],info[1],info[2]);
+            //console.log(info);
+            uiAddDashboardGallery(info[0],info[1],info[2],info[3]);
         }
     }
 }
@@ -417,7 +428,7 @@ function uiClearDashboardGallery(){
 /**
  * 添加设备
  */
-function uiAddDashboardGallery(id,name,detail_){
+function uiAddDashboardGallery(id,address,name,detail_){
     var img_path="assets/images/gallery/"+id.toString()+".jpg";
     var detail="";
     for(var i=0;i<detail_.split(" ").length;i++){
@@ -427,15 +438,16 @@ function uiAddDashboardGallery(id,name,detail_){
             detail+='<br>';
         }
     }
+
     var temp='\
-        <a class="gallery-popup" data-toggle="modal" onclick="uiWinDashboardGallery('
-            +id.toString()+')"data-target="#DashboardGalleryWindow">\
+        <a class="gallery-popup" data-toggle="modal" onclick="uiWinDashboardGallery(\''
+            +address+'\')"data-target="#DashboardGalleryWindow">\
             <div class="project-item">\
                 <div class="overlay-container">\
                     <img src="'+img_path+'" alt="img" class="gallery-thumb-img">\
                     <div class="project-item-overlay">\
                         <h4>'+name+'</h4>\
-                        <p>'+detail+'</p>\
+                        <p>('+id.toString()+') '+detail_+'</p>\
                     </div>\
                 </div>\
             </div>\
@@ -448,17 +460,17 @@ function uiAddDashboardGallery(id,name,detail_){
 }
 
 // 目前选择的设备
-var CURRENT_DEVICE_ID=-1;
+var CURRENT_DEVICE_ADDRESS=0;
 
 /**
  * 设备操作弹窗
  */
-async function uiWinDashboardGallery(id){
-    CURRENT_DEVICE_ID = id;
-    var info = await getDeviceInfo(CURRENT_DEVICE_ID);
+async function uiWinDashboardGallery(address){
+    CURRENT_DEVICE_ADDRESS = address;
+    var info = await getDeviceInfo(CURRENT_DEVICE_ADDRESS);
     if(info!=false){
-        document.getElementById("DashboardGalleryWindowI1").value=info[1];
-        document.getElementById("DashboardGalleryWindowI2").value=info[2];
+        document.getElementById("DashboardGalleryWindowI1").value=info[0];
+        document.getElementById("DashboardGalleryWindowI2").value=info[1];
     }
 }
 
@@ -474,17 +486,39 @@ async function uiInitDashboardNote(){
     var addDeviceName;
     var addDeviceLen = await getAddDevListLen();
     console.log("addDeviceLen: "+addDeviceLen.toString());
-    for(var num = 0;num<addDeviceLen;num++){
+    for(var num = 1;num<addDeviceLen+1;num++){
         addDeviceInfo = await getAddDevListInfo(num);
         if(addDeviceInfo==false){
             continue;
         }
-        addDeviceName = addDeviceInfo[1];
+        addDeviceName = addDeviceInfo[0];
         uiAddDashboardNote(
-            addDeviceInfo[3], // account
+            addDeviceInfo[2], // account
             -1,               // 没有用
             addDeviceName,
             'Add Device',"",'addDevice');
+    }
+
+    // 填充新申请类型添加信息
+    var addEventTypeInfo;
+    var addEventTypeName;
+    var deviceName;
+    var addEventTypeLen = await getAddEventsClassLen();
+    console.log("addEventTypeLen: "+addEventTypeLen.toString());
+    for(var num = 1;num<addEventTypeLen+1;num++){
+        addEventTypeInfo = await getAddEventsClassInfo(num);
+        if(addEventTypeInfo==false){
+            continue;
+        }
+        deviceName = await getDeviceInfo(addEventTypeInfo[1]);
+        if(deviceName==false){
+            continue;
+        }
+        uiAddDashboardNote(
+            addDeviceInfo[3], // account
+            -1,               // 没有用
+            deviceName[0],
+            'Add Event Type',"",'addEventType');
     }
 
     // 填充设备行为申请信息
@@ -493,7 +527,7 @@ async function uiInitDashboardNote(){
     var eventTypeInfo;
     var toDoListLen = await getToDoListLength();
     console.log("toDoListLen: "+toDoListLen.toString());
-    for(var num = 0;num<toDoListLen;num++){
+    for(var num = 1;num<toDoListLen+1;num++){
         toDoListInfo = await getToDoListInfo(num);
         if(toDoListInfo==false){
             continue;
@@ -510,7 +544,7 @@ async function uiInitDashboardNote(){
             toDoListInfo[3],
             toDoListInfo[0],
             deviceName[1],
-            eventTypeInfo[2],"");
+            eventTypeInfo[2],"","addEvent");
     }
 }
 
@@ -525,13 +559,13 @@ function uiClearDashboardNote(){
 /** 
  * 添加消息提示显示区
  */
-function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail,toDoListType='toDoList'){
-    if(toDoListType!='toDoList' && toDoListType!='addDevice'){
+function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail,toDoListType='addEvent'){
+    if(toDoListType!='addEvent' && toDoListType!='addEventType' && toDoListType!='addDevice' ){
         console.log('wrong `toDoListType`!');
     }
     var temp = '\
     <a href="" class="text-reset notification-item" data-toggle="modal" \
-        data-target="#DoToDoList" onclick="uiNotificationRecord(\''+toDoListId.toString()+'\',\''+toDoListType+'\')">\
+        data-target="#DoAddEventApprove" onclick="uiNotificationRecord(\''+toDoListId.toString()+'\',\''+toDoListType+'\')">\
         <div class="media">\
             <div class="avatar-xs mr-3">\
                 <span class="avatar-title bg-success rounded-circle font-size-16">\
@@ -550,8 +584,8 @@ function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail,t
 }
 
 // 目前选择的申请
-var CURRENT_TODOLIST_ID=-1;
-var CURRENT_TODOLIST_TYPE=-1; // -1, 'AddDevice', 'toDoList'
+var CURRENT_TODOLIST_ID=0;
+var CURRENT_TODOLIST_TYPE=0; // 0, 'AddDevice', 'AddEventType', 'AddEvent'
 
 /**
  * 申请通过弹窗
@@ -594,7 +628,6 @@ async function listenAddDevice(argument) {
                     //this.unsubscribe();
                     console.log("New Device Add Request Get!");
                     uiInitDashboardNote();
-                    console.log('hahahahahahahah');
                     result(true);
                 }
             }
@@ -645,10 +678,10 @@ async function uiInitStatisticalDevicePie(){
     var eventNum = new Array();
     var eventsNum=0;
 
-    var deviceLength = await getDeviceLength();
+    var deviceLength = await getDeviceNum();
     var res;
     var deviceName = new Array();
-    for(var num = 0;num<deviceLength;num++){
+    for(var num = 1;num<deviceLength+1;num++){
         res = await getEventLength(num);
         if(res==false) continue;
         eventNum.push(parseInt(res))
@@ -702,7 +735,7 @@ async function uiInitStatisticalEventTypePie(){
 
     var res;
     var eventName = new Array();
-    for(var num = 0;num<eventTypeLength;num++){
+    for(var num = 1;num<eventTypeLength+1;num++){
         res = await getEventsClassCount(num);
         if(res==false) continue;
         eventNum.push(parseInt(res));
@@ -819,7 +852,7 @@ async function uiInitSettingEventType(){
     uiClearSettingEventType();
     var info;
     var len = await getEventsClassLength();
-    for(var num = 0;num<len;num++){
+    for(var num = 1;num<len+1;num++){
         info = await getEventsClassInfo(num);
         if(info!=false){
             uiAddSettingEventType(info[0],info[1],info[2]);
@@ -838,7 +871,7 @@ function uiClearSettingEventType(){
 /**
  * 事件种类设置
  */
-function uiAddSettingEventType(class_,id_,name_){
+function uiAddSettingEventType(id_,class_,name_){
     /**
      * ASRS: Add Setting Record Selection, 用于记录修改后的应对方案
      * ASRI: Add Setting Record Input, 用于记录修改后的名称
@@ -875,17 +908,17 @@ function uiAddSettingEventType(class_,id_,name_){
  * 事件种类设置(下拉框)
  */
 function uiAddSettingEventTypeForm(class_){
-    if(class_==0){
+    if(class_==1){
         return '<option selected="selected">Plain Mode</option>\
                 <option>Normal Mode</option>\
                 <option>Warning Mode</option>\
                 <option>Reject Mode</option>';
-    }else if(class_==1){
+    }else if(class_==2){
         return '<option>Plain Mode</option>\
                 <option selected="selected">Normal Mode</option>\
                 <option>Warning Mode</option>\
                 <option>Reject Mode</option>';
-    }else if(class_==2){
+    }else if(class_==3){
         return '<option>Plain Mode</option>\
                 <option>Normal Mode</option>\
                 <option selected="selected">Warning Mode</option>\
