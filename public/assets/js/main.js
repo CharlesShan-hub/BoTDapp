@@ -267,24 +267,21 @@ async function doAddEventApprove(approve){
         result = await addEventApprove(CURRENT_TODOLIST_ID,approve);
     }
     
-    if(result!=false){
-        if(approve==true){
+    if(result!=false)
+        if(approve==true)
             sweetAlert(1,"Request Approve successful");
-        }else{
+        else
             sweetAlert(1,"Request Reject successful");
-        }
-    }else{
+    else
         sweetAlert(2,"Request Reply Failed!");
-    }
 
     document.getElementById("ToDoListB1").disabled=false;
     document.getElementById("ToDoListB2").disabled=false;
     document.getElementById("ToDoListBC").click();
-    uiInitDashboardNote();
     CURRENT_TODOLIST_ID=0;
     CURRENT_TODOLIST_TYPE=0;
+    uiInitDashboardNote();
 }
-
 
 /*************************************************************************/
 /** 界面API
@@ -346,6 +343,9 @@ async function doAddEventApprove(approve){
 function uiInit(){
     document.getElementById("UiStatistical").style.display="none";//让表格先加载一下再隐藏
     document.getElementById("UiAfterLogin").style.display="none";//让表格先加载一下再隐藏
+    listenAddDevice();
+    listenAddEventsClass();
+    listenAddEvent();
     uiInitSetting();
     uiInitDashboard();
 }
@@ -515,7 +515,7 @@ async function uiInitDashboardNote(){
             continue;
         }
         uiAddDashboardNote(
-            addDeviceInfo[3], // account
+            addEventTypeInfo[1], // account
             -1,               // 没有用
             deviceName[0],
             'Add Event Type',"",'addEventType');
@@ -591,51 +591,73 @@ var CURRENT_TODOLIST_TYPE=0; // 0, 'AddDevice', 'AddEventType', 'AddEvent'
  * 申请通过弹窗
  */
 async function uiNotificationRecord(id,type){
-    console.log(id);
-    console.log(type);
     CURRENT_TODOLIST_ID = id;
     CURRENT_TODOLIST_TYPE = type;
 }
 
-
-
 /**
- * 监听添加设备通过事件
+ * 监听添加设备
  */
-async function listenAddDevice(argument) {
+async function listenAddDevice() {
     return new Promise(function(result){
-        contract.events.AddDeviceApprove({},function(err,res){
-            if(err){
-                console.log("watch err",err);
-                result(false);
-            }else{
-                if(res["returnValues"]["approve"] == true && res["returnValues"]["result"] == true){
-                    //this.unsubscribe();
-                    console.log("Get Add Devices Event from user");
-                    console.log(res["returnValues"]["account"]);
-                    uiInitDashboardNote();
-                    result(res["returnValues"]["account"]);
-                }
-            }
-        });
-
         contract.events.AddDevice({},function(err,res){
             if(err){
                 console.log("watch err",err);
                 result(false);
             }else{
                 if(res["returnValues"]["result"] == true){
-                    //this.unsubscribe();
                     console.log("New Device Add Request Get!");
                     uiInitDashboardNote();
                     result(true);
                 }
             }
         });
+
+        contract.events.AddDeviceReply({},function(err,res){
+            if(err){
+                console.log("watch err",err);
+                result(false);
+            }else{
+                if(res["returnValues"]["approve"] == true && res["returnValues"]["result"] == true){
+                    sweetAlert(1,"Add New Device!");
+                    result(true);
+                }
+            }
+        });
     });
 }
-listenAddDevice();
 
+/**
+ * 监听添加事件类型
+ */
+async function listenAddEventsClass() {
+    return new Promise(function(result){
+        contract.events.AddEventsClass({},function(err,res){
+            if(err){
+                console.log("watch err",err);
+                result(false);
+            }else{
+                if(res["returnValues"]["result"] == true){
+                    console.log("New Event Class Add Request Get!");
+                    uiInitDashboardNote();
+                    result(true);
+                }
+            }
+        });
+
+        contract.events.AddEventsClassReply({},function(err,res){
+            if(err){
+                console.log("watch err",err);
+                result(false);
+            }else{
+                if(res["returnValues"]["approve"] == true && res["returnValues"]["result"] == true){
+                    sweetAlert(1,"Add New Event Type!");
+                    result(true);
+                }
+            }
+        });
+    });
+}
 
 // 界面API - Statistical ------------------------------------------------------------
 
@@ -686,7 +708,7 @@ async function uiInitStatisticalDevicePie(){
         if(res==false) continue;
         eventNum.push(parseInt(res))
         eventsNum+=parseInt(res);
-        res = await getDeviceInfo(num);
+        res = await getDeviceInfoByIndex(num);
         deviceName.push(res[1]);
     }
     document.getElementById("SSimplePieH2").innerHTML=eventsNum;

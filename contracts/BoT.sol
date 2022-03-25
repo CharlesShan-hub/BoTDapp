@@ -125,6 +125,11 @@ contract BoT{
             if(toDoList[i].device==account)
                 _reduceToDoList(i);
 
+        // 清除申请事件类型清单
+        for(uint8 i=1;i<addEventsClassLen+1;i++)
+            if(addEventsClassList[i].account==account)
+                _reduceAddEventsClass(i);
+
         // 清除申请信息
         for(uint8 i=1;i<eventsNum[account]+1;i++)
             eventsById[account][i].class=0;
@@ -403,12 +408,25 @@ contract BoT{
     mapping(uint8 => AddEventsClassList) public addEventsClassList;
     uint8 public addEventsClassLen=0;
 
+    function _reduceAddEventsClass(uint8 i){
+        require(addEventsClassList[i].class!=0);
+        if(i==addEventsClassLen){
+            addEventsClassList[i].account = addEventsClassList[addEventsClassLen].account;
+            addEventsClassList[i].class   = addEventsClassList[addEventsClassLen].class;
+            addEventsClassList[i].name    = addEventsClassList[addEventsClassLen].name;
+            addEventsClassList[i].read    = addEventsClassList[addEventsClassLen].read;
+            addEventsClassList[i].approve = addEventsClassList[addEventsClassLen].approve;
+        }
+        addEventsClassList[addEventsClassLen].class = 0;
+        addEventsClassLen--;
+    }
+
     // 获取敏感事件类型序号
     function getEventsClassIndex(string memory name)public view returns(uint8){
         require(eventsClassNameToIndex[name]!=0);
         return eventsClassNameToIndex[name];
     }
-    
+
     // 获取敏感事件申请表长
     function getAddEventsClassLen()public view returns(uint8){
         return addEventsClassLen;
@@ -488,7 +506,6 @@ contract BoT{
             eventsClass[eventsClassNum].count = 0;
             eventsClass[eventsClassNum].name = addEventsClassList[index].name;
         }
-        emit AddEventsClassReply(identity);
 
         // 添加事件记录
         eventsNum[account]++;
@@ -498,15 +515,9 @@ contract BoT{
         eventsById[account][eventsNum[account]].state2==addDeviceList[index].approve;
 
         // 清除新事件类型清单
-        if(index!=addEventsClassLen){
-            addEventsClassList[index].account =addEventsClassList[addEventsClassLen].account;
-            addEventsClassList[index].class   =addEventsClassList[addEventsClassLen].class;
-            addEventsClassList[index].name    =addEventsClassList[addEventsClassLen].name;
-            addEventsClassList[index].read    =addEventsClassList[addEventsClassLen].read;
-            addEventsClassList[index].approve =addEventsClassList[addEventsClassLen].approve;
-        }
-        addEventsClassList[addEventsClassLen].class=0;
-        addEventsClassLen--;
+        _reduceAddEventsClass(index);
+
+        emit AddEventsClassReply(identity);
     }
 
     /******************************************************************/
@@ -535,15 +546,17 @@ contract BoT{
     
     // 获取事件长度函数
     function getEventLength(uint8 deviceId) view public returns(uint){
-        require(devices[deviceId].account!=0x0000000000000000000000000000000000000000);
+        require(devices[deviceId].account!=0x0000000000000000000000000000000000000000,
+            "Undfined Device");
         return eventsNum[deviceIndexToAccount[deviceId]];
     }
 
     // 获取事件的测试函数
     function getEvent(uint8 deviceId,uint8 eventId) view public returns(uint8,uint,bool,bool){
-        require(devices[deviceId].account!=0x0000000000000000000000000000000000000000);
+        require(devices[deviceId].account!=0x0000000000000000000000000000000000000000,
+            "Undefined Device!");
         address _account = deviceIndexToAccount[deviceId];
-        require(eventsById[_account][eventId].class!=0);
+        require(eventsById[_account][eventId].class!=0,"Undefined Event Class!");
         return (eventsById[_account][eventId].class,
             eventsById[_account][eventId].time,
             eventsById[_account][eventId].state1,
@@ -609,7 +622,7 @@ contract BoT{
     }
     function _addEvent(address _account, uint8 eventId,uint identity) public returns(uint8){
         // 事件Id合法认证
-        require(eventsClass[eventId].class!=0);
+        require(eventsClass[eventId].class!=0,"Undefined Class Type!");
         // 进行敏感事件申请
         if(eventsClass[eventId].class==1){
             // 默认自动通过, 不进行记录
@@ -620,18 +633,18 @@ contract BoT{
             eventsClass[eventId].count++;
             eventsClass[eventId].deviceCount[_account]++;
             eventsNum[_account]++;
-            eventsById[_account][eventsNum[_account]].class==eventId;
-            eventsById[_account][eventsNum[_account]].time==block.timestamp;
+            eventsById[_account][eventsNum[_account]].class=eventId;
+            eventsById[_account][eventsNum[_account]].time=block.timestamp;
             if(eventsClass[eventId].class==2){
                 // 默认记录后通过
-                eventsById[_account][eventsNum[_account]].state1==false;
-                eventsById[_account][eventsNum[_account]].state2==false;
+                eventsById[_account][eventsNum[_account]].state1=false;
+                eventsById[_account][eventsNum[_account]].state2=false;
                 emit AddEvent(true,false,identity);
                 return 2;
             }else if(eventsClass[eventId].class==3){
                 // 需要等待
-                eventsById[_account][eventsNum[_account]].state1==true;
-                eventsById[_account][eventsNum[_account]].state2==false;
+                eventsById[_account][eventsNum[_account]].state1=true;
+                eventsById[_account][eventsNum[_account]].state2=false;
                 // 加入申请列表
                 toDoListLen++;
                 toDoList[toDoListLen].device=_account;
@@ -641,8 +654,8 @@ contract BoT{
                 return 3;
             }else{
                 // 默认记录后拒绝
-                eventsById[_account][eventsNum[_account]].state1==false;
-                eventsById[_account][eventsNum[_account]].state2==true;
+                eventsById[_account][eventsNum[_account]].state1=false;
+                eventsById[_account][eventsNum[_account]].state2=true;
                 emit AddEvent(false,false,identity);
                 return 4;
             }
@@ -652,8 +665,10 @@ contract BoT{
     // 同意/拒绝
     event AddEventApprove(uint identity);
     function addEventApprove(uint8 index,bool approve,uint identity)public {
-        require(toDoList[index].device!=0x0000000000000000000000000000000000000000);
-        require(eventsById[toDoList[index].device][toDoList[index].refer].state1);// warning 类型
+        require(toDoList[index].device!=0x0000000000000000000000000000000000000000,
+            "Cannot find toDoList initiator!");
+        require(eventsById[toDoList[index].device][toDoList[index].refer].state1,
+            "Not Warning Type");// warning 类型
         eventsById[toDoList[index].device][toDoList[index].refer].state2=approve; // 同意或拒绝
         _reduceToDoList(index);
         emit AddEventApprove(identity);
