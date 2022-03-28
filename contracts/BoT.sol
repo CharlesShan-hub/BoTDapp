@@ -196,22 +196,24 @@ contract BoT{
     }
 
     // 获取设备申请信息
-    function getAddDevListInfo(address account) view public returns(string memory, string memory,address, string memory,bool){
+    function getAddDevListInfo(address account) view public returns(string memory, string memory,address, string memory,bool,bool){
         uint8 index = _addDeviceAccountToIndex(account);
         return (addDeviceList[index].name,
                 addDeviceList[index].detail,
                 addDeviceList[index].account,
                 addDeviceList[index].password,
-                addDeviceList[index].approve);
+                addDeviceList[index].approve,
+                addDeviceList[index].read);
     }
-    function getAddDevListInfoByIndex(uint8 index) view public returns(uint8, string memory, string memory,address, string memory,bool){
+    function getAddDevListInfoByIndex(uint8 index) view public returns(uint8, string memory, string memory,address, string memory,bool,bool){
         require(addDeviceList[index].account!=0x0000000000000000000000000000000000000000);
         return (index,
                 addDeviceList[index].name,
                 addDeviceList[index].detail,
                 addDeviceList[index].account,
                 addDeviceList[index].password,
-                addDeviceList[index].approve);
+                addDeviceList[index].approve,
+                addDeviceList[index].read);
     }
 
     // 添加测试设备
@@ -267,6 +269,12 @@ contract BoT{
         }
     }
 
+    // 是否在添加列表中
+    function addDeviceState(address account)public view returns(bool,string memory){
+        uint8 index = _addDeviceAccountToIndex(account);
+        return (addDeviceList[index].approve,addDeviceList[index].password);
+    }
+
     // 添加设备通过
     event AddDeviceApprove(address account, bool approve,uint identity);
     function addDeviceApprove(address _account,bool _approve,uint identity) public{
@@ -276,34 +284,41 @@ contract BoT{
         emit AddDeviceApprove(_account,_approve,identity);
     }
 
+    mapping(uint8 => bool) public test; 
+
     // 批准回复
     event AddDeviceReply(uint identity);
     function addDeviceReply(address account, uint identity)public{
         // 获取设备信息
+        test[0] = true;
         uint8 index = _addDeviceAccountToIndex(account);
         require(addDeviceList[index].read==true);
 
         // 添加设备
+        test[1] = true;
         if(addDeviceList[index].approve==true){
             devicesNum++;
             _addDevice(devicesNum, account, addDeviceList[index].password, addDeviceList[index].name, addDeviceList[index].detail);
         }
 
         // 添加事件记录
+        test[2] = true;
         if(addDeviceList[index].approve==true){
             eventsNum[account]++;
-            eventsById[account][eventsNum[account]].class==1;
-            eventsById[account][eventsNum[account]].time==block.timestamp;
-            eventsById[account][eventsNum[account]].state1==true;
-            eventsById[account][eventsNum[account]].state2==true;
+            eventsById[account][eventsNum[account]].class=1;
+            eventsById[account][eventsNum[account]].time=block.timestamp;
+            eventsById[account][eventsNum[account]].state1=true;
+            eventsById[account][eventsNum[account]].state2=true;
         }
 
         // 事件计数
+        test[3] = true;
         eventsClass[1].count++;
         eventsClass[1].deviceCount[account]++;
 
         // 清除添加设备清单
-        if(addDeviceListLen>0 && index!=addDeviceListLen){
+        test[4] = true;
+        if(index!=addDeviceListLen){
             addDeviceList[index].name    =addDeviceList[addDeviceListLen].name;
             addDeviceList[index].detail  =addDeviceList[addDeviceListLen].detail;
             addDeviceList[index].account =addDeviceList[addDeviceListLen].account;
@@ -316,7 +331,11 @@ contract BoT{
         addDeviceList[addDeviceListLen].account=0x0000000000000000000000000000000000000000;
         addDeviceListLen--;
 
+        test[5] = true;
+
         emit AddDeviceReply(identity);
+
+        test[6] = true;
     }
 
     /******************************************************************/
@@ -408,7 +427,7 @@ contract BoT{
     mapping(uint8 => AddEventsClassList) public addEventsClassList;
     uint8 public addEventsClassLen=0;
 
-    function _reduceAddEventsClass(uint8 i){
+    function _reduceAddEventsClass(uint8 i)public {
         require(addEventsClassList[i].class!=0);
         if(i==addEventsClassLen){
             addEventsClassList[i].account = addEventsClassList[addEventsClassLen].account;
@@ -509,10 +528,10 @@ contract BoT{
 
         // 添加事件记录
         eventsNum[account]++;
-        eventsById[account][eventsNum[account]].class==2;
-        eventsById[account][eventsNum[account]].time==block.timestamp;
-        eventsById[account][eventsNum[account]].state1==true;
-        eventsById[account][eventsNum[account]].state2==addDeviceList[index].approve;
+        eventsById[account][eventsNum[account]].class=2;
+        eventsById[account][eventsNum[account]].time=block.timestamp;
+        eventsById[account][eventsNum[account]].state1=true;
+        eventsById[account][eventsNum[account]].state2=addDeviceList[index].approve;
 
         // 清除新事件类型清单
         _reduceAddEventsClass(index);

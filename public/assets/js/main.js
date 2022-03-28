@@ -259,12 +259,14 @@ async function doAddEventApprove(approve){
     }
 
     var result;
-    if(CURRENT_TODOLIST_TYPE=='AddDevice'){
+    if(CURRENT_TODOLIST_TYPE=='addDevice'){
         result = await addDeviceApprove(CURRENT_TODOLIST_ID,approve);
-    }else if(CURRENT_TODOLIST_TYPE=='AddEventType'){
+    }else if(CURRENT_TODOLIST_TYPE=='addEventType'){
         result = await addEventsClassApprove(CURRENT_TODOLIST_ID,approve);
-    }else if(CURRENT_TODOLIST_TYPE=='AddEvent'){
+    }else if(CURRENT_TODOLIST_TYPE=='addEvent'){
         result = await addEventApprove(CURRENT_TODOLIST_ID,approve);
+    }else{
+        console.log("Wrong Type!");
     }
     
     if(result!=false)
@@ -340,7 +342,7 @@ async function doAddEventApprove(approve){
 /** 
  * 初始化界面
  */
-function uiInit(){
+async function uiInit(){
     document.getElementById("UiStatistical").style.display="none";//让表格先加载一下再隐藏
     document.getElementById("UiAfterLogin").style.display="none";//让表格先加载一下再隐藏
     listenAddDevice();
@@ -487,15 +489,16 @@ async function uiInitDashboardNote(){
     var addDeviceLen = await getAddDevListLen();
     console.log("addDeviceLen: "+addDeviceLen.toString());
     for(var num = 1;num<addDeviceLen+1;num++){
-        addDeviceInfo = await getAddDevListInfo(num);
+        addDeviceInfo = await getAddDevListInfoByIndex(num);
         if(addDeviceInfo==false){
             continue;
+        }else if(addDeviceInfo["read"]==true){
+            continue;
         }
-        addDeviceName = addDeviceInfo[0];
         uiAddDashboardNote(
-            addDeviceInfo[2], // account
+            addDeviceInfo['account'], // account
             -1,               // 没有用
-            addDeviceName,
+            addDeviceInfo['name'],
             'Add Device',"",'addDevice');
     }
 
@@ -605,7 +608,13 @@ async function listenAddDevice() {
                 console.log("watch err",err);
                 result(false);
             }else{
-                if(res["returnValues"]["result"] == true){
+                console.log(res["returnValues"]);
+                if(res["returnValues"]["approve"] == true){
+                    console.log("New Device Add!");
+                    sweetAlert(1,"Add New Device!");
+                    uiInitDashboard();
+                    result(true);
+                }else if(res["returnValues"]["wait"] == true){
                     console.log("New Device Add Request Get!");
                     uiInitDashboardNote();
                     result(true);
@@ -626,11 +635,31 @@ async function listenAddDevice() {
         });
     });
 }
+listenAddDevice();
 
 /**
  * 监听添加事件类型
  */
 async function listenAddEventsClass() {
+    return new Promise(function(result){
+        contract.events.AddEventsClassReply({},function(err,res){
+            if(err){
+                console.log("watch err",err);
+                result(false);
+            }else{
+                if(res["returnValues"]["approve"] == true && res["returnValues"]["result"] == true){
+                    sweetAlert(1,"Add New Event Type!");
+                    result(true);
+                }
+            }
+        });
+    });
+}
+
+/**
+ * 监听添加事件
+ */
+async function listenAddEvent() {
     return new Promise(function(result){
         contract.events.AddEventsClass({},function(err,res){
             if(err){
@@ -640,18 +669,6 @@ async function listenAddEventsClass() {
                 if(res["returnValues"]["result"] == true){
                     console.log("New Event Class Add Request Get!");
                     uiInitDashboardNote();
-                    result(true);
-                }
-            }
-        });
-
-        contract.events.AddEventsClassReply({},function(err,res){
-            if(err){
-                console.log("watch err",err);
-                result(false);
-            }else{
-                if(res["returnValues"]["approve"] == true && res["returnValues"]["result"] == true){
-                    sweetAlert(1,"Add New Event Type!");
                     result(true);
                 }
             }

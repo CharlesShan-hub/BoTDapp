@@ -122,3 +122,35 @@ async function test4(){
 	//console.log("好戏开始");
 	//await setPassword("","");
 }
+
+async function test(){
+	var account = await getAccount0();
+    return new Promise(function(result){
+        if(account==false){
+            console.log("getAccount0 failed ",document.getElementById("input").value);
+            result(false);
+        }
+        contract.methods.test(document.getElementById("input").value).send({from:account})
+        .then(function(res){
+            console.log("Reset Device Name Request Send ",document.getElementById("input").value);
+            result(true);
+        }, function(reason) {
+            console.log("Reset Device Name failed!",reason);
+            result(false);
+        });
+    });
+}
+
+async function listen() {
+    return new Promise(function(result){
+        contract.events.Test({},function(err,res){
+            if(err){
+                console.log("watch err",err);
+                result(false);
+            }else{
+                alert(res["returnValues"][0]);
+            }
+        });
+    });
+}
+listen();
