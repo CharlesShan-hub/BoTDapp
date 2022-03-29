@@ -146,7 +146,7 @@ contract BoT{
 
     // 设备认证
     function authDevice(address _account, string memory _password) view public returns(bool){
-        uint8 index = _addDeviceAccountToIndex(_account);
+        uint8 index = _deviceAccountToIndex(_account);
         return (compareStr(_password,devices[index].password)==true);
     }
 
@@ -158,6 +158,7 @@ contract BoT{
      *   getAddDevListLen         获取设备申请表长
      *   getAddDevListInfo        获取设备申请信息
      *   getAddDevListInfoByIndex 获取设备申请信息
+     *   authAddDevice            验证测试设备
      * 
      * 添加测试设备
      *   addDeviceTest            添加测试设备
@@ -216,6 +217,11 @@ contract BoT{
                 addDeviceList[index].read);
     }
 
+    // 添加设备认证
+    function authAddDevice(address _account) view public returns(bool){
+        return (addDeviceList[addDeviceAccountToIndex[_account]].account!=0x0000000000000000000000000000000000000000);
+    }
+
     // 添加测试设备
     event AddDeviceTest(uint identity);
     function addDeviceTest(address _account, string memory _password, string memory _name, string memory _detail,uint identity) public{
@@ -270,9 +276,13 @@ contract BoT{
     }
 
     // 是否在添加列表中
-    function addDeviceState(address account)public view returns(bool,string memory){
+    function addDeviceState(address account)public view returns(bool,bool,string memory){
         uint8 index = _addDeviceAccountToIndex(account);
-        return (addDeviceList[index].approve,addDeviceList[index].password);
+        bool wait = true;
+        if(addDeviceList[index].approve==false && addDeviceList[index].read==true){
+            wait = false;
+        }
+        return (addDeviceList[index].approve,wait,addDeviceList[index].password);
     }
 
     // 添加设备通过
@@ -284,25 +294,21 @@ contract BoT{
         emit AddDeviceApprove(_account,_approve,identity);
     }
 
-    mapping(uint8 => bool) public test; 
-
     // 批准回复
-    event AddDeviceReply(uint identity);
+    event AddDeviceReply(bool refresh,uint identity);
     function addDeviceReply(address account, uint identity)public{
         // 获取设备信息
-        test[0] = true;
         uint8 index = _addDeviceAccountToIndex(account);
         require(addDeviceList[index].read==true);
+        bool refresh = addDeviceList[index].approve;
 
         // 添加设备
-        test[1] = true;
         if(addDeviceList[index].approve==true){
             devicesNum++;
             _addDevice(devicesNum, account, addDeviceList[index].password, addDeviceList[index].name, addDeviceList[index].detail);
         }
 
         // 添加事件记录
-        test[2] = true;
         if(addDeviceList[index].approve==true){
             eventsNum[account]++;
             eventsById[account][eventsNum[account]].class=1;
@@ -312,12 +318,10 @@ contract BoT{
         }
 
         // 事件计数
-        test[3] = true;
         eventsClass[1].count++;
         eventsClass[1].deviceCount[account]++;
 
         // 清除添加设备清单
-        test[4] = true;
         if(index!=addDeviceListLen){
             addDeviceList[index].name    =addDeviceList[addDeviceListLen].name;
             addDeviceList[index].detail  =addDeviceList[addDeviceListLen].detail;
@@ -325,17 +329,11 @@ contract BoT{
             addDeviceList[index].password=addDeviceList[addDeviceListLen].password;
             addDeviceList[index].read    =addDeviceList[addDeviceListLen].read;
             addDeviceList[index].approve =addDeviceList[addDeviceListLen].approve;
-            addDeviceAccountToIndex[addDeviceList[index].account]=index;
-            addDeviceIndexToAccount[index]=addDeviceList[index].account;
         }
         addDeviceList[addDeviceListLen].account=0x0000000000000000000000000000000000000000;
         addDeviceListLen--;
 
-        test[5] = true;
-
-        emit AddDeviceReply(identity);
-
-        test[6] = true;
+        emit AddDeviceReply(refresh,identity);
     }
 
     /******************************************************************/
@@ -711,6 +709,8 @@ contract BoT{
         eventsClass[2].count = 0;
         eventsClass[2].name = "Add Event Type";
         eventsClassNum=2;
+
+        // 测试函数
     }
 
     /******************************************************************/

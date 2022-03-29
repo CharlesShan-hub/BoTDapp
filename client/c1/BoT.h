@@ -349,9 +349,10 @@ bool BoT_doPing(){
 bool BoT_doAuth(){
   Serial.println("Doing Device Auth...");
   
-  while(BoT_auth()==false){
-    BoT_addDeviceRequest();
-    delay(10000);
+  if(BoT_auth()==false){
+    while(BoT_addDeviceRequest()==false){
+      delay(10000);
+    }
   }
   return true;
 }

@@ -346,6 +346,7 @@ async function uiInit(){
     document.getElementById("UiStatistical").style.display="none";//让表格先加载一下再隐藏
     document.getElementById("UiAfterLogin").style.display="none";//让表格先加载一下再隐藏
     listenAddDevice();
+    listenAddDeviceReply();
     listenAddEventsClass();
     listenAddEvent();
     uiInitSetting();
@@ -621,21 +622,29 @@ async function listenAddDevice() {
                 }
             }
         });
+    });
+}
 
+/**
+ * 监听添加设备回复
+ */
+async function listenAddDeviceReply() {
+    return new Promise(function(result){
         contract.events.AddDeviceReply({},function(err,res){
             if(err){
                 console.log("watch err",err);
                 result(false);
             }else{
-                if(res["returnValues"]["approve"] == true && res["returnValues"]["result"] == true){
+                console.log(res["returnValues"]);
+                if(res["returnValues"]["refresh"] == true){
                     sweetAlert(1,"Add New Device!");
+                    uiInitDashboard();
                     result(true);
                 }
             }
         });
     });
 }
-listenAddDevice();
 
 /**
  * 监听添加事件类型
