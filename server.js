@@ -42,8 +42,8 @@ var Web3 = require('web3');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 web3.setProvider(new Web3.providers.WebsocketProvider('ws://localhost:8546'));
 function getInstance(){
-    var CONTRACT = "0xC72c8497aC3212d51F953C3985d925356F2dA87d";
-    var abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"refresh","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClass","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"index","type":"uint8"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"eventsClassId","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"ReduceDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceInfo","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypeName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypePlan","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetPassword","type":"event"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"_addEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"i","type":"uint8"}],"name":"_reduceAddEventsClass","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"addDeviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceList","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"},{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"addDeviceListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addDeviceState","outputs":[{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventTest","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"uint8","name":"_class","type":"uint8"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClass","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"addEventsClassLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addEventsClassList","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"string","name":"name","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventClass","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_password","type":"string"}],"name":"auth","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"authAddDevice","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"}],"name":"authDevice","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_str1","type":"string"},{"internalType":"string","name":"_str2","type":"string"}],"name":"compareStr","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"deviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"deviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"devices","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devicesNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsById","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint256","name":"time","type":"uint256"},{"internalType":"bool","name":"state1","type":"bool"},{"internalType":"bool","name":"state2","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsClass","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint8","name":"count","type":"uint8"},{"internalType":"string","name":"name","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"eventsClassNameToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"eventsClassNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"eventsNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getAddDevListInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddDevListInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddDevListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddEventsClassLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getDeviceInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getDeviceInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDeviceNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"},{"internalType":"uint8","name":"eventId","type":"uint8"}],"name":"getEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"}],"name":"getEventLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassCount","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"getEventsClassIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getEventsClassLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"i","type":"uint8"}],"name":"getToDoListInfo","outputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getToDoListLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"reduceDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceInfo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint8","name":"planId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypePlan","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"oldPassword","type":"string"},{"internalType":"string","name":"newPassword","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setPassword","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"test","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"toDoList","outputs":[{"internalType":"address","name":"device","type":"address"},{"internalType":"uint8","name":"eventType","type":"uint8"},{"internalType":"uint8","name":"refer","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"toDoListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"}]';
+    var CONTRACT = "0xcD6a42782d230D7c13A74ddec5dD140e55499Df9";
+    var abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"refresh","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClass","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"index","type":"uint8"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"refresh","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"eventsClassId","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"ReduceDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceInfo","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypeName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypePlan","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetPassword","type":"event"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"_addEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"i","type":"uint8"}],"name":"_reduceAddEventsClass","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"addDeviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceList","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"},{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"addDeviceListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addDeviceState","outputs":[{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"eventClass","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"addEventState","outputs":[{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventTest","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"uint8","name":"_class","type":"uint8"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClass","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addEventsClassIndexToName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"addEventsClassLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addEventsClassList","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"string","name":"name","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"addEventsClassNameToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"addEventsClassState","outputs":[{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventClass","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_password","type":"string"}],"name":"auth","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"authAddDevice","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"authAddEvent","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"authAddEventsClass","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"}],"name":"authDevice","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"authEventsClass","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_str1","type":"string"},{"internalType":"string","name":"_str2","type":"string"}],"name":"compareStr","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"deviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"deviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"devices","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devicesNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsById","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint256","name":"time","type":"uint256"},{"internalType":"bool","name":"state1","type":"bool"},{"internalType":"bool","name":"state2","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsClass","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint8","name":"count","type":"uint8"},{"internalType":"string","name":"name","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"eventsClassNameToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"eventsClassNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"eventsNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getAddDevListInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddDevListInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddDevListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"getAddEventsClassInfoByName","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddEventsClassLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getDeviceInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getDeviceInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDeviceNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"},{"internalType":"uint8","name":"eventId","type":"uint8"}],"name":"getEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"}],"name":"getEventLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassCount","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"getEventsClassIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"getEventsClassInfoByName","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getEventsClassLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"i","type":"uint8"}],"name":"getToDoListInfo","outputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getToDoListLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"reduceDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceInfo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint8","name":"planId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypePlan","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"oldPassword","type":"string"},{"internalType":"string","name":"newPassword","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setPassword","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"toDoList","outputs":[{"internalType":"address","name":"device","type":"address"},{"internalType":"uint8","name":"eventType","type":"uint8"},{"internalType":"uint8","name":"refer","type":"uint8"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"toDoListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"toDoListNameToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"}]';
     return new web3.eth.Contract(JSON.parse(abi),CONTRACT);
 }
 var contract = getInstance();
@@ -201,14 +201,25 @@ async function processRequest (request, response) {
  * 
  * 设备-------------------------------------------------------------------
  * 
+ * 设备认证                    authDevice(_account,password)
+ * 设备添加认证                 authAddDevice(_account)
  * 添加设备                    addDevice(account,password,name,detail)
+ * 添加设备状态                addDeviceState(account)
  * 添加设备批准回复             addDeviceReply(account)
  * 
  * 事件类型----------------------------------------------------------------
  * 
- * 添加事件类型                 addEventType(eventClass,eventName)
+ * 获取敏感事件序号             getEventsClassIndex(name)
+ * 事件类型认证                 authEventsClass(name)
+ * 添加事件类型认证             authAddEventsClass(name)
+ * 添加事件类型                 addEventsClass(_account,_password,eventClass,eventName)
  * 添加事件类型批准回复          addEventTypeReply(index)
  * 
+ * 事件-------------------------------------------------------------------
+ * 
+ * 敏感事件申请                 addEvent(_account,password,eventId)
+ * 添加事件状态查询              addEventState(name)
+ * 添加事件批准回复              addEventReply(name)
  */
 /*************************************************************************/
 
@@ -269,6 +280,40 @@ function addAccount(){
 // 合约接口API - 设备 -----------------------------------------------------
 
 /**
+ * 设备认证
+ */
+async function authDevice(_account,password){
+    return new Promise(function(result){
+        contract.methods.authDevice(_account,password).call(function(error, res){
+            if(error){
+                console.log("Error: Unknown User (authDevice)");
+                result(false);
+            }else{
+                console.log("Device Auth: ",res);
+                result(res);
+            }
+        });
+    });
+}
+
+/**
+ * 添加设备认证
+ */
+async function authAddDevice(_account){
+    return new Promise(function(result){
+        contract.methods.authAddDevice(_account).call(function(error, res){
+            if(error){
+                console.log("Error: Unknown User (authAddDevice)",_account);
+                result(false);
+            }else{
+                console.log("Add Device Auth: ",res);
+                result(res);
+            }
+        });
+    });
+}
+
+/**
  * 添加设备
  */
 async function _addDevice(account,password,name,detail,identity){
@@ -321,7 +366,10 @@ async function addDeviceState(account){
                 result(false);
             }else{
                 console.log("Adding device state: ",res);
-                result({"approve":res[0],"wait":res[1],"password":res[2]});
+                result({
+                    "0":res[0],"1":res[1],"2":res[2],
+                    "approve":res[0],"wait":res[1],"password":res[2]
+                });
             }
         });
     });
@@ -368,41 +416,24 @@ async function addDeviceReply(account){
     });
 }
 
-/**
- * 设备认证
- */
-async function authDevice(_account,password){
-    return new Promise(function(result){
-        contract.methods.authDevice(_account,password).call(function(error, res){
-            if(error){
-                console.log("Error: Unknown User (authDevice");
-                result(false);
-            }else{
-                console.log("Device Auth: ",res);
-                result(res);
-            }
-        });
-    });
-}
-
-/**
- * 添加设备认证
- */
-async function authAddDevice(_account){
-    return new Promise(function(result){
-        contract.methods.authAddDevice(_account).call(function(error, res){
-            if(error){
-                console.log("Error: Unknown User (authAddDevice)",_account);
-                result(false);
-            }else{
-                console.log("Add Device Auth: ",res);
-                result(res);
-            }
-        });
-    });
-}
-
 // 合约接口API - 事件类型----------------------------------------------------------------
+
+/**
+ * 获取敏感事件序号
+ */
+async function getEventsClassIndex(name){
+    return new Promise(function(result){
+        contract.methods.addEventsClassState(name).call(function(error, res){
+            if(error){
+                console.log("Adding events class state Error");
+                result(false);
+            }else{
+                console.log("Adding events class state: ",res);
+                result(parseInt(res));
+            }
+        });
+    });
+}
 
 /**
  * 获取敏感事件类别信息
@@ -415,6 +446,63 @@ async function getEventsClassInfo(eventTypeId){
                 result(false);
             }else{
                 console.log("Event Type Info: ",res);
+                result({
+                    '0':res[0],'1':res[1],'2':res[2],
+                    'id':res[0],'class':res[1],'name':res[2]
+                });
+            }
+        });
+    });
+}
+
+/**
+ * 获取敏感事件类别信息
+ */
+async function getEventsClassInfoByName(name){
+    return new Promise(function(result){
+        contract.methods.getEventsClassInfoByName(name).call(function(error, res){
+            if(error){
+                console.log("Error: ",error);
+                result(false);
+            }else{
+                console.log("Event Type Info: ",res);
+                result({
+                    '0':parseInt(res[0]),'1':parseInt(res[1]),'2':res[2],
+                    'id':parseInt(res[0]),'class':parseInt(res[1]),'name':res[2]
+                });
+            }
+        });
+    });
+}
+
+/**
+ * 事件类型认证
+ */
+async function authEventsClass(name){
+    return new Promise(function(result){
+        contract.methods.authEventsClass(name).call(function(error, res){
+            if(error){
+                console.log("Error: Unknown Events Class (authEventsClass) ",name);
+                result(false);
+            }else{
+                console.log("Events Class Auth: ",res);
+                result(res);
+            }
+        });
+    });
+}
+
+/**
+ * 添加事件类型认证
+ */
+async function authAddEventsClass(name){
+    return new Promise(function(result){
+        contract.methods.authAddEventsClass(name).call(function(error, res){
+            if(error){
+                console.log("Error: Unknown User (authEventsClass)");
+                result(false);
+            }else{
+                console.log("Events Class Auth: ",res);
                 result(res);
             }
         });
@@ -424,16 +512,15 @@ async function getEventsClassInfo(eventTypeId){
 /**
  * 添加事件类型
  */
-async function _addEventClass(eventClass,eventName,identity){
+async function _addEventsClass(_account,_password,eventClass,eventName,identity){
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
             console.log("getAccount0 failed ",identity);
             result(false);
         }
-        contract.methods.addEventClass(eventClass,eventName,identity).send({from:account})
-        .then(function(result){
-            console.log("Add EventType Request Send",result);
+        contract.methods.addEventsClass(_account,_password,eventClass,eventName,identity).send({from:account}).then(function(res){
+            console.log("Add EventType Request Send",identity);
             result(true);
         }, function(error) {
             console.log("Add EventType Failed!",error);
@@ -441,9 +528,9 @@ async function _addEventClass(eventClass,eventName,identity){
         });
     });
 }
-async function addEventClass(eventClass,eventName){
+async function addEventsClass(_account,_password,eventClass,eventName){
     var identity = randomNum(100000,999999);
-    if(await _addEventClass(eventClass,eventName,identity)==false){
+    if(await _addEventsClass(_account,_password,eventClass,eventName,identity)==false){
         return false;
     }
     return new Promise(function(result){
@@ -460,15 +547,32 @@ async function addEventClass(eventClass,eventName){
 }
 
 /**
+ * 设备是否添加列表中
+ */
+async function addEventsClassState(name){
+    return new Promise(function(result){
+        contract.methods.addEventsClassState(name).call(function(error, res){
+            if(error){
+                console.log("Adding events class state Error");
+                result(false);
+            }else{
+                console.log("Adding events class state: ",res);
+                result({"approve":res[0],"wait":res[1]});
+            }
+        });
+    });
+}
+
+/**
  * 添加事件类型批准回复
  */
-async function _addEventsClassReply(index,identity) {
+async function _addEventsClassReply(name,identity) {
     var account_ = await getAccount0();
     return new Promise(function(result){
         if(account_==false){
             result(false);
         }
-        contract.methods.addEventsClassReply(index,identity).send({from:account_})
+        contract.methods.addEventsClassReply(name,identity).send({from:account_})
         .then(function(res){
             console.log("Add Event Type Reply Request Send ",identity);
             result(true);
@@ -478,19 +582,20 @@ async function _addEventsClassReply(index,identity) {
         });
     });
 }
-async function addEventsClassReply(index){
+async function addEventsClassReply(name){
     var identity = randomNum(100000,999999);
-    if(await _addEventsClassReply(index,identity)==false){
+    if(await _addEventsClassReply(name,identity)==false){
         return false;
     }
     return new Promise(function(result){
-        contract.getPastEvents('addEventsClassReply',function(err, res){
+        contract.getPastEvents('AddEventsClassReply',function(err, res){
             if(err){
                 console.log("watcher err",err);
                 result(false);
             }else{
                 for(var i=0;i<res.length;i++){
                     if(res[i]["returnValues"]["identity"]==identity){
+                        console.log("Add Event Type Reply Request Got Reply ",identity);
                         result(true);
                     }
                 }
@@ -500,6 +605,23 @@ async function addEventsClassReply(index){
 }
 
 // 合约接口API - 事件----------------------------------------------------------------
+
+/**
+ * 添加事件认证
+ */
+async function authAddEvent(name){
+    return new Promise(function(result){
+        contract.methods.authAddEvent(name).call(function(error, res){
+            if(error){
+                console.log("Error: Unknown Event (authAddEvent)");
+                result(false);
+            }else{
+                console.log("Event Auth: ",res);
+                result(res);
+            }
+        });
+    });
+}
 
 /**
  * 敏感事件申请
@@ -536,6 +658,64 @@ async function addEvent(_account,password,eventId){
                     if(res[i]["returnValues"]["identity"]==identity)
                         result({"approve":res[i]["returnValues"]["approve"],
                             "wait":res[i]["returnValues"]["wait"]});
+        });
+    });
+}
+
+/**
+ * 添加事件状态查询
+ */
+async function addEventState(name){
+    return new Promise(function(result){
+        contract.methods.addEventState(name).call(function(error, res){
+            if(error){
+                console.log("Adding events state Error");
+                result(false);
+            }else{
+                console.log("Adding events state: ",res);
+                result({"approve":res[0],"wait":res[1]});
+            }
+        });
+    });
+}
+
+/**
+ * 添加事件批准回复
+ */
+async function _addEventReply(name,identity) {
+    var account_ = await getAccount0();
+    return new Promise(function(result){
+        if(account_==false){
+            result(false);
+        }
+        contract.methods.addEventReply(name,identity).send({from:account_})
+        .then(function(res){
+            console.log("Add Event Reply Request Send ",identity);
+            result(true);
+        }, function(reason) {
+            console.log("Add Event Reply failed!",reason);
+            result(false);
+        });
+    });
+}
+async function addEventReply(name){
+    var identity = randomNum(100000,999999);
+    if(await _addEventReply(name,identity)==false){
+        return false;
+    }
+    return new Promise(function(result){
+        contract.getPastEvents('AddEventReply',function(err, res){
+            if(err){
+                console.log("watcher err",err);
+                result(false);
+            }else{
+                for(var i=0;i<res.length;i++){
+                    if(res[i]["returnValues"]["identity"]==identity){
+                        console.log("Add Event Reply Request Got Reply ",identity);
+                        result(true);
+                    }
+                }
+            }
         });
     });
 }
@@ -596,6 +776,15 @@ async function web3Operation(commandString_){
         }
         */
         return {'json':{'res':await authDevice(command.account,command.password)}};
+    }else if(command.type=="authEventsClass"){
+        /*
+        {
+            'json':{
+                'res': true
+            }
+        }
+        */
+        return {'json':{'res':await authEventsClass(command.name)}};
     }else if(command.type=="addDevice"){
         /*
         {
@@ -699,6 +888,177 @@ async function web3Operation(commandString_){
                 }}
             }
         }
+    }else if(command.type=="addEventsClass"){
+        /*
+        {
+            'json':{
+                'valid': true/false,     // 访问失败
+                'approve': true/false,   // 同意或拒绝
+                'wait': true/false,      // approve==false时判断是否需要等待
+            }
+        }
+         */
+        if(await authDevice(command.account,command.password)==false) return {'json':{'valid':false}};
+        if("name"  in command == false) return {'json':{'valid':false}};
+        if("class" in command == false) return {'json':{'valid':false}};
+        if(await authAddEventsClass(command.name)==false){
+            // 新设备添加
+            if(doAddEventsClassAvoid(command.name)){
+                // 申请
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':true
+                }}
+            }
+            var add_type = await getEventsClassInfo(2);
+            if(add_type==false) return {'json':{'valid':false}};
+            var res = doAddEventsClass(command.account,command.password,command.class,command.name);
+            if(add_type[1]==1 || add_type[1]==2){
+                // 直接通过
+                doAddEventsClassAvoidReduce(command["name"]);
+                return {'json':{
+                    'valid':true,
+                    'approve':true,
+                    'wait':true,
+                }}
+            }else if(add_type[1]==4){
+                // 拒绝
+                doAddEventsClassAvoidReduce(command["name"]);
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':false,
+                }}
+            }else{
+                // 申请
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':true,
+                }}
+            }
+        }else{
+            // 设备检查申请状态
+            var state = await addEventsClassState(command["name"]);
+            if(state==false){
+                // 失败
+                addEventsClassReply(command["name"]);
+                doAddEventsClassAvoidReduce(command["name"]);
+                return {'valid':false,'wait':false,'approve':false};
+            }else if(state['approve']==true){
+                // 同意
+                addEventsClassReply(command["name"]);
+                doAddEventsClassAvoidReduce(command["name"]);
+                return {'json':{
+                    'valid':true,
+                    'approve':true,
+                    'wait':true
+                }}
+            }else if(state['approve']==false && state['wait']==true){
+                // 等待
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':true
+                }}
+            }else{
+                // 拒绝
+                addEventsClassReply(command["name"]);
+                doAddEventsClassAvoidReduce(command["name"]);
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':false
+                }}
+            }
+        }
+    }else if(command.type=="addEvents"){
+        /*
+        {
+            'json':{
+                'valid': true/false,     // 访问失败
+                'approve': true/false,   // 同意或拒绝
+                'wait': true/false,      // approve==false时判断是否需要等待
+            }
+        }
+        */
+        if(await authDevice(command.account,command.password)==false) return {'json':{'valid':false}};
+        if("name"  in command == false) return {'json':{'valid':false}};
+        if(await authAddEventsClass(command.name)==false) return {'json':{'valid':false}};
+        if(await authAddEvent(command.name)==false){
+            // 新事件添加
+            if(doAddEventAvoid(command.name)){
+                // 申请
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':true
+                }}
+            }
+            var eventsClassInfo = await getEventsClassInfoByName(command.name);
+            var add_type = eventsClassInfo["class"];
+            if(add_type==false) return {'json':{'valid':false}};
+            var res = doAddEvent(command.account,command.password,command.name);
+            if(add_type==1 || add_type==2){
+                // 直接通过
+                doAddEventAvoidReduce(command["name"]);
+                return {'json':{
+                    'valid':true,
+                    'approve':true,
+                    'wait':true,
+                }}
+            }else if(add_type==4){
+                // 拒绝
+                doAddEventAvoidReduce(command["name"]);
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':false,
+                }}
+            }else{
+                // 申请
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':true,
+                }}
+            }
+        }else{
+            // 设备检查申请状态
+            var state = await addEventState(command["name"]);
+            if(state==false){
+                // 失败
+                addEventReply(command["name"]);
+                doAddEventAvoidReduce(command["name"]);
+                return {'valid':false,'wait':false,'approve':false};
+            }else if(state['approve']==true){
+                // 同意
+                addEventReply(command["name"]);
+                doAddEventsAvoidReduce(command["name"]);
+                return {'json':{
+                    'valid':true,
+                    'approve':true,
+                    'wait':true
+                }}
+            }else if(state['approve']==false && state['wait']==true){
+                // 等待
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':true
+                }}
+            }else{
+                // 拒绝
+                addEventReply(command["name"]);
+                doAddEventAvoidReduce(command["name"]);
+                return {'json':{
+                    'valid':true,
+                    'approve':false,
+                    'wait':false
+                }}
+            }
+        }
     }
     return false;
 }
@@ -758,6 +1118,110 @@ function doAddAccountAvoid(id){
 function doAddAccountAvoidReduce(id){
     var index = AddAdviceList.indexOf(id);
     delete AddAdviceList[index];
+    return true;
+}
+
+/**
+ * 添加事件类型
+ */
+async function doAddEventsClass(account,password,newClass,newName){  
+    var res=await addEventsClass(account,password,newClass,newName);
+    if(res==false){
+        console.log("Failed to send Add Events Class Request!");
+        return false;
+    }else if(res["approve"]==true){
+        console.log("Saved new events class ",newName);
+        return {
+            'approve':true,
+            'wait':false
+        }
+    }else if(res["wait"]==true){
+        console.log("Send Add events class Request ",newName);
+        return {
+            'approve':false,
+            'wait':true
+        }
+    }else{
+        console.log("Deny - Add New Events Class Request ",newName);
+        return {
+            'approve':false,
+            'wait':false
+        }
+    }
+}
+
+/**
+ * 添加事件类型避免
+ */
+var AddEventsClassList = new Array();
+function doAddEventsClassAvoid(name){
+    for(var i=0;i<AddEventsClassList.length;i++){
+        if(AddEventsClassList[i]==name){
+            return true;
+        }
+    }
+    AddEventsClassList.push(name);
+    return false;
+}
+
+/**
+ * 取消添加事件类型避免
+ */
+function doAddEventsClassAvoidReduce(name){
+    var index = AddEventsClassList.indexOf(name);
+    delete AddEventsClassList[index];
+    return true;
+}
+
+/**
+ * 添加事件类型
+ */
+async function doAddEvent(account,password,newClass){  
+    var res=await addEvent(account,password,newClass);
+    if(res==false){
+        console.log("Failed to send Add Event Request!");
+        return false;
+    }else if(res["approve"]==true){
+        console.log("Saved new event ",newName);
+        return {
+            'approve':true,
+            'wait':false
+        }
+    }else if(res["wait"]==true){
+        console.log("Send Add event Request ",newName);
+        return {
+            'approve':false,
+            'wait':true
+        }
+    }else{
+        console.log("Deny - Add New Event Request ",newName);
+        return {
+            'approve':false,
+            'wait':false
+        }
+    }
+}
+
+/**
+ * 添加事件避免
+ */
+var AddEventList = new Array();
+function doAddEventAvoid(name){
+    for(var i=0;i<AddEventList.length;i++){
+        if(AddEventList[i]==name){
+            return true;
+        }
+    }
+    AddEventList.push(name);
+    return false;
+}
+
+/**
+ * 取消添加事件避免
+ */
+function doAddEventAvoidReduce(name){
+    var index = AddEventList.indexOf(name);
+    delete AddEventList[index];
     return true;
 }
 

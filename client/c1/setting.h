@@ -6,6 +6,6 @@ const int BoT_httpPort = 80;
 int BoT_AP_number = 2;
 const char* BoT_AP = "{\"name\":[\"shan\",\"KIM\"],\"password\":[\"dukesaw7\",\"dukesaw7\"]}";
 // 设备名称
-String BoT_name = "Test";
+String BoT_name = "Dog";
 // 设备简介
 String BoT_info = "The+first+Internet+of+Things+device";

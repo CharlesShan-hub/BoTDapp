@@ -8,14 +8,14 @@
 
 主要用于Web和Http Server的Web3.js中的操作，辅助合约函数运行。
 
-|   类别    | Solidity函数 |  合约API-Web   |  合约API-Node  | JS-API-Web | JS-API-Node |      简介       |
-| :-------: | :----------: | :------------: | :------------: | :--------: | :---------: | :-------------: |
-| Auth-Web3 |      -       |  getAccount0   |  getAccount0   |     -      |      -      | 获取accounts[0] |
-| Auth-Web3 |      -       | unlockAccount0 | unlockAccount0 |     -      |      -      | 解锁accounts[0] |
-| Auth-Web3 |      -       |   addAccount   |   addAccount   |     -      |      -      |    添加账户     |
-| Auth-Web3 |      -       |    transfer    |       -        |     -      |      -      |      转账       |
+|   类别    | Solidity函数 |  合约API-Web   |  合约API-Node  | JS-API-Web | JS-API-Node | Introduction_of_function |
+| :-------: | :----------: | :------------: | :------------: | :--------: | :---------: | :----------------------: |
+| Auth-Web3 |      -       |  getAccount0   |  getAccount0   |     -      |      -      |     获取accounts[0]      |
+| Auth-Web3 |      -       | unlockAccount0 | unlockAccount0 |     -      |      -      |     解锁accounts[0]      |
+| Auth-Web3 |      -       |   addAccount   |   addAccount   |     -      |      -      |         添加账户         |
+| Auth-Web3 |      -       |    transfer    |       -        |     -      |      -      |           转账           |
 
-## 认证
+## 用户界面认证
 
 | 类别 | Solidity函数 | 合约API-Web | 合约API-Node | JS-API-Web    | JS-API-Node | 简介             |
 | ---- | ------------ | ----------- | ------------ | ------------- | ----------- | ---------------- |
@@ -36,13 +36,33 @@ Web->>+ETH: Set Password
 ETH->>-Web: Reply
 ```
 
+## 设备发起认证
+
+**设备认证函数**目前主要用于合约运行中的验证操作方为注册的设备；
+
+**添加设备认证函数**用于保证已经为进行申请的设备提供了合约账户；
+
+**事件类型认证函数**用于保证发起的事件的类型的合法性；
+
+**事件类型添加认证函数**用于保证设备发起的新事件类型在待确认列表中；
+
+**事件申请认证**用于保证申请的事件在待确认列表中；
+
+|  类别   |       Solidity函数       | 合约API-Web |       合约API-Node       | JS-API-Web | JS-API-Node |     简介     |
+| :-----: | :----------------------: | :---------: | :----------------------: | :--------: | :---------: | :----------: |
+| Device  |        authDevice        | authDevice  |        authDevice        |     -      |      -      |   设备认证   |
+| Device  |      authAddDevice       |      -      |      authAddDevice       |     -      |      -      | 设备添加认证 |
+| E-Class |     authEventsClass      |      -      |     authEventsClass      |     -      |      -      | 事件类型认证 |
+| E-Class | authAdd<br />EventsClass |      -      | authAdd<br />EventsClass |     -      |      -      |  新类型认证  |
+|  Event  |       authAddEvent       |      -      |       authAddEvent       |     -      |      -      | 事件申请认证 |
+
 ## 设备信息查改
 
 |  类别  |       Solidity函数        |        合约API-Web        | 合约API-Node |  JS-API-Web  | JS-API-Node |     简介     |
 | :----: | :-----------------------: | :-----------------------: | :----------: | :----------: | :---------: | :----------: |
 | Device |       getDeviceNum        |       getDeviceNum        |      -       |      -       |      -      |   设备数量   |
 | Device |       getDevieInfo        |       getDeviceInfo       |      -       |      -       |      -      | 获取设备信息 |
-| Device | getDevieInfo<br />ByIndex | getDevieInfo<br />ByIndex |      -       |      -       |      -      | 获取设备信息 |
+| Device | getDevie<br />InfoByIndex | getDevie<br />InfoByIndex |      -       |      -       |      -      | 获取设备信息 |
 | Device |       setDeviceName       |       setDeviceName       |      -       |      -       |      -      | 设置设备名称 |
 | Device |       setDeviceInfo       |       setDeviceInfo       |      -       | doEditDevice |      -      | 设置设备信息 |
 
@@ -81,9 +101,9 @@ end
 
 ## 添加测试设备
 
-|  类别  | Solidity函数  |  合约API-Web  | 合约API-Node |   JS-API-Web    | JS-API-Node |     简介     |
-| :----: | :-----------: | :-----------: | :----------: | :-------------: | :---------: | :----------: |
-| Device | addDeviceTest | addDeviceTest |      -       | doAddDeviceTest |      -      | 添加测试设备 |
+|  类别  | Solidity函数  |  合约API-Web  | 合约API-Node |   JS-API-Web    | JS-API-Node | Introduction_of_function |
+| :----: | :-----------: | :-----------: | :----------: | :-------------: | :---------: | :----------------------: |
+| Device | addDeviceTest | addDeviceTest |      -       | doAddDeviceTest |      -      |       添加测试设备       |
 
 ```mermaid
 sequenceDiagram
@@ -127,17 +147,9 @@ Note over ETH,Web: Web删除设备
 Note over Web: UI refresh
 ```
 
-## 设备认证
-
-设备认证函数目前主要用于合约运行中的验证操作方为注册的设备
-
-|  类别  | Solidity函数 | 合约API-Web | 合约API-Node | JS-API-Web | JS-API-Node |   简介   |
-| :----: | :----------: | :---------: | :----------: | :--------: | :---------: | :------: |
-| Device |  authDevice  | authDevice  |  authDevice  |     -      |      -      | 设备认证 |
-
 ## 添加设备
 
-| 类别   | Solidity函数             | 合约API-Web              | 合约API-Node   | JS-API-Web      | JS-API-Node     | 简介                           |
+| 类别   | Solidity函数             | 合约API-Web              | 合约API-Node   | JS-API-Web      | JS-API-Node     | Introduction_of_function       |
 | ------ | ------------------------ | ------------------------ | -------------- | --------------- | --------------- | ------------------------------ |
 | Device | getAddDevListLen         | getAddDevListLen         | -              |                 | -               | 获取设备申请表长               |
 | Device | getAddDevListInfo        | getAddDevListInfo        | -              |                 | -               | 获取设备申请信息               |
@@ -146,6 +158,7 @@ Note over Web: UI refresh
 | Device | addDevice                | -                        | addDevice      | -               | doAddDevice     | 添加设备                       |
 | Device | addDeviceApprove         | addDeviceApprove         | -              | -               | -               | 添加设备批准                   |
 | Device | addDeviceReply           | -                        | addDeviceReply | -               | listenAddDevice | 添加设备批准回复               |
+| Device | addDeviceState           | -                        | addDeviceState | -               | -               | 添加设备状态跟踪               |
 | Device | -                        | -                        | -              | listenAddDevice | -               | 监听添加设备相关事件           |
 
 ```mermaid
@@ -225,13 +238,15 @@ end
 
 ## 记录种类类别
 
-|    类别    |     Solidity函数     |     合约API-Web      | 合约API-Node |     JS-API-Web      | JS-API-Node |         简介         |
-| :--------: | :------------------: | :------------------: | :----------: | :-----------------: | :---------: | :------------------: |
-| EventClass | getEventsClassLength | getEventsClassLength |      -       |          -          |      -      | 获取敏感事件类型个数 |
-| EventClass |  getEventsClassInfo  |  getEventsClassInfo  |      -       |          -          |      -      |   获取敏感事件信息   |
-| EventClass | getEventsClassCount  | getEventsClassCount  |      -       |          -          |      -      |   获取敏感事件类别   |
-| EventClass |   setEventTypePlan   |   setEventTypePlan   |      -       | doSetEventClassPlan |      -      | 修改敏感事件应对方案 |
-| EventClass |   setEventTypeName   |   setEventTypeName   |      -       | doSetEventClassName |      -      | 修改敏感事件应对名称 |
+|    类别    |       Solidity函数       |     合约API-Web      |       合约API-Node       |     JS-API-Web      | JS-API-Node | Introduction_of_function |
+| :--------: | :----------------------: | :------------------: | :----------------------: | :-----------------: | :---------: | :----------------------: |
+| EventClass |   getEventsClassLength   | getEventsClassLength |            -             |          -          |      -      |   获取敏感事件类型个数   |
+| EventClass |    getEventsClassInfo    |  getEventsClassInfo  |    getEventsClassInfo    |          -          |      -      |     获取敏感事件信息     |
+| EventClass | getEventsClassInfoByName |          -           | getEventsClassInfoByName |          -          |      -      |     获取敏感事件信息     |
+| EventClass |   getEventsClassIndex    |          -           |   getEventsClassIndex    |          -          |      -      |     获取敏感事件序号     |
+| EventClass |   getEventsClassCount    | getEventsClassCount  |            -             |          -          |      -      |     获取敏感事件类别     |
+| EventClass |     setEventTypePlan     |   setEventTypePlan   |            -             | doSetEventClassPlan |      -      |   修改敏感事件应对方案   |
+| EventClass |     setEventTypeName     |   setEventTypeName   |            -             | doSetEventClassName |      -      |   修改敏感事件应对名称   |
 
 ```mermaid
 sequenceDiagram
@@ -268,16 +283,16 @@ end
 
 ## 添加事件类型
 
-|    类别    |     Solidity函数      |      合约API-Web      |    合约API-Node     | JS-API-Web | JS-API-Node |         简介         |
-| :--------: | :-------------------: | :-------------------: | :-----------------: | :--------: | :---------: | :------------------: |
-| EventClass |  getEventsClassIndex  |  getEventsClassIndex  |          -          |            |             | 获取敏感事件类型序号 |
-| EventClass | getAddEventsClassLen  | getAddEventsClassLen  |          -          |            |             | 获取敏感事件申请表长 |
-| EventClass | getAddEventsClassInfo | getAddEventsClassInfo |          -          |            |             | 获取敏感事件申请信息 |
-| EventClass |  addEventsClassTest   |  addEventsClassTest   |          -          |            |             |   添加测试事件类型   |
-| EventClass |    addEventsClass     |           -           |   addEventsClass    |            |             |   添加事件类型申请   |
-| EventClass | addEventsClassApprove | addEventsClassApprove |          -          |            |             |   添加事件类型审批   |
-| EventClass |  addEventsClassReply  |           -           | addEventsClassReply |            |             |   添加事件类型回复   |
-|            |                       |                       |                     |            |             |  aaaaaaaaaaaaaaaaa   |
+|    类别    |     Solidity函数      |      合约API-Web      |    合约API-Node     | JS-API-Web | JS-API-Node | Introduction_of_function |
+| :--------: | :-------------------: | :-------------------: | :-----------------: | :--------: | :---------: | :----------------------: |
+| EventClass |  getEventsClassIndex  |  getEventsClassIndex  |          -          |     -      |      -      |   获取敏感事件类型序号   |
+| EventClass | getAddEventsClassLen  | getAddEventsClassLen  |          -          |     -      |      -      |   获取敏感事件申请表长   |
+| EventClass | getAddEventsClassInfo | getAddEventsClassInfo |          -          |     -      |      -      |   获取敏感事件申请信息   |
+| EventClass |  addEventsClassTest   |  addEventsClassTest   |          -          |     -      |      -      |     添加测试事件类型     |
+| EventClass |    addEventsClass     |           -           |   addEventsClass    |     -      |      -      |     添加事件类型申请     |
+| EventClass | addEventsClassApprove | addEventsClassApprove |          -          |     -      |      -      |     添加事件类型审批     |
+| EventClass |    addEventsState     |           -           |   addEventsState    |     -      |      -      |     添加事件类型进度     |
+| EventClass |  addEventsClassReply  |           -           | addEventsClassReply |     -      |      -      |     添加事件类型回复     |
 
 ```mermaid
 sequenceDiagram
@@ -356,9 +371,9 @@ end
 
 ## 添加测试事件类型
 
-|    类别    |    Solidity函数    |    合约API-Web     | 合约API-Node |     JS-API-Web      | JS-API-Node |       简介       |
-| :--------: | :----------------: | :----------------: | :----------: | :-----------------: | :---------: | :--------------: |
-| EventClass | addEventsClassTest | addEventsClassTest |      -       | doAddEventClassTest |      -      | 添加敏感事件类型 |
+|    类别    |    Solidity函数    |    合约API-Web     | 合约API-Node |     JS-API-Web      | JS-API-Node | Introduction_of_function |
+| :--------: | :----------------: | :----------------: | :----------: | :-----------------: | :---------: | :----------------------: |
+| EventClass | addEventsClassTest | addEventsClassTest |      -       | doAddEventClassTest |      -      |     添加敏感事件类型     |
 
 ```mermaid
 sequenceDiagram
@@ -379,10 +394,10 @@ Note over Web: UI refresh
 
 ## 敏感事件
 
-| 类别  |  Solidity函数  |  合约API-Web   | 合约API-Node | JS-API-Web | JS-API-Node |        简介        |
-| :---: | :------------: | :------------: | :----------: | :--------: | :---------: | :----------------: |
-| Event | getEventLength | getEventLength |              |            |             |  获取事件长度函数  |
-| Event |    getEvent    |    getEvent    |              |            |             | 获取事件的测试函数 |
+| 类别  |  Solidity函数  |  合约API-Web   | 合约API-Node | JS-API-Web | JS-API-Node | Introduction_of_function |
+| :---: | :------------: | :------------: | :----------: | :--------: | :---------: | :----------------------: |
+| Event | getEventLength | getEventLength |      -       |     -      |      -      |     获取事件长度函数     |
+| Event |    getEvent    |    getEvent    |      -       |     -      |      -      |    获取事件的测试函数    |
 
 ```mermaid
 sequenceDiagram
@@ -406,13 +421,15 @@ end
 
 ## 代办清单
 
-|   类别   |   Solidity函数    |    合约API-Web    | 合约API-Node | JS-API-Web | JS-API-Node |       简介       |
-| :------: | :---------------: | :---------------: | :----------: | :--------: | :---------: | :--------------: |
-| ToDoList | getToDoListLength | getToDoListLength |      -       |            |             | 获取待办清单长度 |
-| ToDoList |  getToDoListInfo  |  getToDoListInfo  |      -       |            |             | 获取待办清单信息 |
-| ToDoList |     addEvent      |         -         |   addEvent   |            |             |   敏感事件申请   |
-| ToDoList |   addEventTest    |   addEventTest    |      -       |            |             | 敏感测试事件申请 |
-| ToDoList |  addEventApprove  |  addEventApprove  |      -       |            |             |    同意/拒绝     |
+|   类别   |   Solidity函数    |    合约API-Web    | 合约API-Node  | JS-API-Web | JS-API-Node | Introduction_of_function |
+| :------: | :---------------: | :---------------: | :-----------: | :--------: | :---------: | :----------------------: |
+| ToDoList | getToDoListLength | getToDoListLength |       -       |     -      |      -      |     获取待办清单长度     |
+| ToDoList |  getToDoListInfo  |  getToDoListInfo  |       -       |     -      |      -      |     获取待办清单信息     |
+| ToDoList |   addEventTest    |   addEventTest    |       -       |     -      |      -      |     敏感测试事件申请     |
+| ToDoList |     addEvent      |         -         |   addEvent    |     -      |      -      |       敏感事件申请       |
+| ToDoList |  addEventApprove  |  addEventApprove  |       -       |     -      |      -      |        同意/拒绝         |
+| ToDoList |   addEventState   |         -         | addEventState |     -      |      -      |         状态查询         |
+| ToDoList |   addEventReply   |         -         | addEventReply |     -      |      -      |           回复           |
 
 ```mermaid
 sequenceDiagram

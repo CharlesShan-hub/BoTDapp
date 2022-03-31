@@ -348,6 +348,7 @@ async function uiInit(){
     listenAddDevice();
     listenAddDeviceReply();
     listenAddEventsClass();
+    listenAddEventsClassReply();
     listenAddEvent();
     uiInitSetting();
     uiInitDashboard();
@@ -519,7 +520,7 @@ async function uiInitDashboardNote(){
             continue;
         }
         uiAddDashboardNote(
-            addEventTypeInfo[1], // account
+            addEventTypeInfo[0], // index
             -1,               // 没有用
             deviceName[0],
             'Add Event Type',"",'addEventType');
@@ -651,13 +652,43 @@ async function listenAddDeviceReply() {
  */
 async function listenAddEventsClass() {
     return new Promise(function(result){
+        contract.events.AddEventsClass({},function(err,res){
+            if(err){
+                console.log("watch err",err);
+                result(false);
+            }else{
+                console.log(res["returnValues"]);
+                if(res["returnValues"]["approve"] == true){
+                    console.log("New Events Class Add!");
+                    //sweetAlert(1,"Add New Events Class!");
+                    uiInitDashboard();
+                    uiInitSetting();
+                    result(true);
+                }else if(res["returnValues"]["wait"] == true){
+                    console.log("New Events Class Add Request Get!");
+                    uiInitDashboardNote();
+                    result(true);
+                }
+            }
+        });
+    });
+}
+
+/**
+ * 监听添加事件类型回复
+ */
+async function listenAddEventsClassReply() {
+    return new Promise(function(result){
         contract.events.AddEventsClassReply({},function(err,res){
             if(err){
                 console.log("watch err",err);
                 result(false);
             }else{
-                if(res["returnValues"]["approve"] == true && res["returnValues"]["result"] == true){
-                    sweetAlert(1,"Add New Event Type!");
+                console.log(res["returnValues"]);
+                if(res["returnValues"]["refresh"] == true){
+                    sweetAlert(1,"Add New Events Class!");
+                    uiInitDashboard();
+                    uiInitSetting();
                     result(true);
                 }
             }

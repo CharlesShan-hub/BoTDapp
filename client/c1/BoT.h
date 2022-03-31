@@ -19,7 +19,7 @@
 
 #include <ESP8266WiFiMulti.h>   // 使用WiFiMulti库
 #include <ESP8266WiFi.h>
-#include "ArduinoJson-v6.19.3.h"
+#include <ArduinoJson.h>
 #include <EEPROM.h> 
 
 int BoT_current_id = random(300);
@@ -209,6 +209,35 @@ bool BoT_auth(){
   return doc["res"].as<String>().equals("true");
 }
 
+bool BoT_eventsClassAuth(String name){
+  String account = BoT_get_String(0,42);
+  String password = BoT_get_String(42,8);
+
+  // 构造请求报文
+  String httpRequest;
+  String url = "/update"\
+               "?type=authEventsClass"\
+               "&account="+account+
+               "&password="+password+\
+               "&name="+name;
+  BoT_tool_httpRequest(httpRequest,url);
+
+  // 向服务器发送http请求信息
+  WiFiClient client;  
+  if(BoT_send(client,httpRequest)==false){
+    return false;
+  }
+
+  // 获取返回信息
+  StaticJsonDocument<256> doc;
+  if(BoT_get(client,doc)==false){
+    return false;
+  }
+
+  BoT_stop(client);
+  return doc["res"].as<String>().equals("true");
+}
+
 String BoT_get_account(){
   return BoT_get_String(0,42);
 }
@@ -218,13 +247,11 @@ String BoT_get_password(){
 }
 
 bool BoT_addDeviceRequest(){
-  
   // 构造请求报文
   String httpRequest;
   String url = "/update?"\
                "account="+BoT_get_account()+\
                "&password="\
-               "&index="\
                "&type=addDevice"\
                "&info="+BoT_info+\
                "&name="+BoT_name+\
@@ -270,17 +297,16 @@ bool BoT_addDeviceRequest(){
   }
 }
 
-bool BoT_AddEventType(){
+bool BoT_addEventsClassRequest(String name,int _class){
   
   // 构造请求报文
   String httpRequest;
   String url = "/update?"\
-               "id="\
-               "&password="+BoT_get_account()+\
-               "&index="\
-               "&type=addEventType"\
-               "&info="+BoT_info+\
-               "&name=Esp8266"+BoT_name;
+               "account="+BoT_get_account()+\
+               "&password="+BoT_get_password()+\
+               "&type=addEventsClass"\
+               "&class="+String(_class)+\
+               "&name="+name;
   BoT_tool_httpRequest(httpRequest,url);
 
   // 向服务器发送http请求信息
@@ -296,22 +322,66 @@ bool BoT_AddEventType(){
   }
 
   // 信息主体
-  if(doc["approve"] == false && doc["wait"] == false){
+  if(doc["approve"].as<bool>() == false && doc["wait"].as<bool>() == false){
     // 拒绝添加新设备
     BoT_stop(client);
     BoT_sleep();
     return false;
-  }else if(doc["approve"] == false && doc["wait"] == true){
+  }else if(doc["approve"].as<bool>() == false && doc["wait"].as<bool>() == true){
     // 等待用户通过
     Serial.println("Waiting User to Approve...");
-    BoT_set_String(0,doc["account"].as<String>());
     BoT_stop(client);
     return false;
-  }else if(doc["approve"] == true){
+  }else if(doc["approve"].as<bool>() == true){
     // 保存设备信息
-    Serial.println("User approved add device!");
-    BoT_set_String(0,doc["account"].as<String>());
-    BoT_set_String(42,doc["password"].as<String>());
+    Serial.println("User approved add events class!");
+    BoT_stop(client);
+    return true;
+  }else{
+    Serial.println("Unknow condition!");
+    BoT_stop(client);
+    return false;
+  }
+}
+
+bool BoT_addEventRequest(String name,int _class){
+  
+  // 构造请求报文
+  String httpRequest;
+  String url = "/update?"\
+               "account="+BoT_get_account()+\
+               "&password="+BoT_get_password()+\
+               "&type=addEvent"\
+               "&class="+String(_class)+\
+               "&name="+name;
+  BoT_tool_httpRequest(httpRequest,url);
+
+  // 向服务器发送http请求信息
+  WiFiClient client;  
+  if(BoT_send(client,httpRequest)==false){
+    return false;
+  }
+
+  // 获取返回信息
+  StaticJsonDocument<256> doc;
+  if(BoT_get(client,doc)==false){
+    return false;
+  }
+
+  // 信息主体
+  if(doc["approve"].as<bool>() == false && doc["wait"].as<bool>() == false){
+    // 拒绝添加新设备
+    BoT_stop(client);
+    BoT_sleep();
+    return false;
+  }else if(doc["approve"].as<bool>() == false && doc["wait"].as<bool>() == true){
+    // 等待用户通过
+    Serial.println("Waiting User to Approve...");
+    BoT_stop(client);
+    return false;
+  }else if(doc["approve"].as<bool>() == true){
+    // 保存设备信息
+    Serial.println("User approved add event!");
     BoT_stop(client);
     return true;
   }else{
@@ -351,16 +421,43 @@ bool BoT_doAuth(){
   
   if(BoT_auth()==false){
     while(BoT_addDeviceRequest()==false){
-      delay(10000);
+      delay(6000);
     }
+    delay(8000);
   }
   return true;
 }
 
-bool BoT_doAddEventType(){
+bool BoT_doAuthEventType(String name,int _class){
+  Serial.println("Doing Events Class Auth...");
+
+  if(BoT_eventsClassAuth(name)==false){
+    while(BoT_addEventsClassRequest(name,_class)==false){
+        delay(6000);
+    }
+    delay(8000);
+  }
   return true;
 }
 
-bool BoT_doAddEvent(){
+bool BoT_request(String name,int _class){
+  Serial.println("Doing Events Class Auth...");
+  BoT_doAuthEventType(name,_class);
+  while(BoT_addEventRequest(name,_class)==false){
+      delay(6000);
+  }
   return true;
+}
+
+bool BoT_init(){
+  // 启动串口通讯
+  Serial.begin(9600);
+  while (!Serial) continue;
+  EEPROM.begin(256);
+  
+  // 连接Wi-Fi
+  BoT_connectWiFi();
+  
+  // 进行设备登陆
+  BoT_doAuth();
 }
