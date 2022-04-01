@@ -294,7 +294,6 @@ contract BoT{
         if(eventsClass[1].class==3){
             addDeviceListLen++;
             _addAddDevice(addDeviceListLen,_name,_detail,_account,_password);
-            require(addDeviceListLen==1);
             emit AddDevice(false,true,identity);
             return;
         }
@@ -608,16 +607,14 @@ contract BoT{
         require(addEventsClassList[index].read==true);
         address account = addEventsClassList[index].account;
         bool refresh = addEventsClassList[index].approve;
-        
+
         // 添加敏感事件
         if(addEventsClassList[index].approve==true){
             _addEventsClass(addEventsClassList[index].class,name);
         }
 
         // 添加事件记录
-        eventsNum[account]++;
-        eventsById[account][eventsNum[account]].class=2;
-        eventsById[account][eventsNum[account]].time=block.timestamp;
+        eventsById[account][eventsNum[account]].time=block.timestamp+1000;
         eventsById[account][eventsNum[account]].state1=true;
         eventsById[account][eventsNum[account]].state2=addDeviceList[index].approve;
 
@@ -773,7 +770,7 @@ contract BoT{
                 eventsById[_account][eventsNum[_account]].state1=true;
                 eventsById[_account][eventsNum[_account]].state2=false;
                 // 如果是添加申请类型，这里只是接过一下
-                if(eventId==1){
+                if(eventId==1 || eventId==2){
                     return 3;
                 }
                 // 加入申请列表
@@ -843,16 +840,15 @@ contract BoT{
         eventsClass[1].class = 3;
         eventsClass[1].count = 0;
         eventsClass[1].name = "Add Device";
-        eventsClassNameToIndex["Add Device"] = 0;
+        eventsClassNameToIndex["Add Device"] = 1;
         // 初始化事件类别 - 添加新类型申请
         eventsClass[2].class = 3;
         eventsClass[2].count = 0;
         eventsClass[2].name = "Add Event Type";
-        eventsClassNameToIndex["Add Event Type"] = 1;
+        eventsClassNameToIndex["Add Event Type"] = 2;
         eventsClassNum=2;
 
         // 测试函数
-        /*
         addDevice(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,"12345678","Device","A Device",0);
         addDeviceApprove(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,true,1);
         addDeviceReply(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,2);
@@ -862,7 +858,6 @@ contract BoT{
         addEvent(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,"12345678","Hello",5);
         addEventApprove(1,false,6);
         addEventReply("Hello",7);
-        */
     }
 
     /******************************************************************/
