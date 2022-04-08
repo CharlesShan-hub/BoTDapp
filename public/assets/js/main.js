@@ -350,6 +350,7 @@ async function uiInit(){
     listenAddEventsClass();
     listenAddEventsClassReply();
     listenAddEvent();
+    listenAddEventReply();
     uiInitSetting();
     uiInitDashboard();
 }
@@ -701,16 +702,36 @@ async function listenAddEventsClassReply() {
  */
 async function listenAddEvent() {
     return new Promise(function(result){
-        contract.events.AddEventsClass({},function(err,res){
+        contract.events.AddEvent({},function(err,res){
             if(err){
                 console.log("watch err",err);
                 result(false);
             }else{
-                if(res["returnValues"]["result"] == true){
-                    console.log("New Event Class Add Request Get!");
+                console.log(res["returnValues"]);
+                console.log("woc!!!!!!");
+                if(res["returnValues"]["approve"] == false && res["returnValues"]["wait"] == true){
+                    console.log("New Event Request Get!");
                     uiInitDashboardNote();
                     result(true);
                 }
+            }
+        });
+    });
+}
+
+/**
+ * 监听添加事件成功
+ */
+async function listenAddEventReply() {
+    return new Promise(function(result){
+        contract.events.AddEventReply({},function(err,res){
+            if(err){
+                console.log("watch err",err);
+                result(false);
+            }else{
+                console.log("New Event Request Get!");
+                uiInitDashboardNote();
+                result(true);
             }
         });
     });
@@ -766,7 +787,7 @@ async function uiInitStatisticalDevicePie(){
         eventNum.push(parseInt(res))
         eventsNum+=parseInt(res);
         res = await getDeviceInfoByIndex(num);
-        deviceName.push(res[1]);
+        deviceName.push(res["name"]);
     }
     document.getElementById("SSimplePieH2").innerHTML=eventsNum;
 

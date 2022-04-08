@@ -704,20 +704,24 @@ contract BoT{
     mapping(string => uint8) public toDoListNameToIndex;
     //mapping(uint8 => string) public toDoListIndexToName;
 
-    function _addToDoList(uint8 i,address account,uint8 eventType,uint8 refer)private{
+    function _addToDoList(uint8 i,address account,uint8 eventType,uint8 refer,bool read,bool approve)private{
         toDoListNameToIndex[eventsClass[eventType].name] = i;
         toDoList[i].device=account;
         toDoList[i].eventType=eventType;
         toDoList[i].refer=refer;
+        toDoList[i].read=read;
+        toDoList[i].approve=approve;
     }
-
+    
     function _reduceToDoList(uint8 i)private{
         toDoListNameToIndex[eventsClass[toDoList[toDoListLen].eventType].name] = 0;
         if(i!=toDoListLen){
             _addToDoList(i,
                 toDoList[toDoListLen].device,
                 toDoList[toDoListLen].eventType,
-                toDoList[toDoListLen].refer);
+                toDoList[toDoListLen].refer,
+                toDoList[toDoListLen].read,
+                toDoList[toDoListLen].approve);
         }
         toDoList[toDoListLen].device=0x0000000000000000000000000000000000000000;
         toDoListLen--;
@@ -775,7 +779,7 @@ contract BoT{
                 }
                 // 加入申请列表
                 toDoListLen++;
-                _addToDoList(toDoListLen,_account,eventId,eventsClass[eventId].count);
+                _addToDoList(toDoListLen,_account,eventId,eventsNum[_account],false,false);
                 emit AddEvent(false,true,identity);
                 return 3;
             }else{
@@ -849,15 +853,16 @@ contract BoT{
         eventsClassNum=2;
 
         // 测试函数
-        addDevice(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,"12345678","Device","A Device",0);
-        addDeviceApprove(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,true,1);
-        addDeviceReply(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,2);
-        addEventsClass(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,"12345678",3,"Hello",3);
-        addEventsClassApprove(1,true,4);
-        addEventsClassReply("Hello",5);
-        addEvent(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,"12345678","Hello",5);
-        addEventApprove(1,false,6);
-        addEventReply("Hello",7);
+        //addDevice(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,"12345678","Device","A Device",0);
+        //addDeviceApprove(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,true,1);
+        //addDeviceReply(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,2);
+        //addEventsClass(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,"12345678",3,"Hello",3);
+        //addEventsClassApprove(1,true,4);
+        //addEventsClassReply("Hello",5);
+        //addEvent(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,"12345678","Hello",5);
+        //addEventApprove(1,true,6);
+        //addEventReply("Hello",7);
+        //require(eventsById[0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8]);
     }
 
     /******************************************************************/

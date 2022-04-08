@@ -4,7 +4,102 @@
 
 [TOC]
 
-## 认证相关辅助
+## 项目介绍
+
+本项目通过区块链技术增强物联网系统安全性。区块链采用本地搭建以太坊私链实现，物联网设备使用esp8266开发版进行模拟，服务器通过node.js构建。
+
+项目具体操作方法为：
+
+1. **物联网系统**进行特定操作前需要得到用户认可。需要**服务器**进行申请，并等待服务器反馈。
+2. **服务器**负责的一个功能是向**以太坊**申请设备操作许可，并将结果返回给物联网系统。
+3. **服务器**的另一个功能是担任**网站服务器**，在本地局域网开放控制终端，用户登陆后查看物联网系统信息，并通过需要批准的操作。
+
+## 操作流程
+
+1. 创建以太坊`genesis.json`
+
+   ```json
+   {
+   	"config": {
+   		"chainId": 15,
+   		"homesteadBlock": 0,
+   		"eip150Block": 0,
+   		"eip155Block": 0,
+   		"eip158Block": 0,
+   		"byzantiumBlock": 0,
+   		"constantinopleBlock": 0,
+   		"petersburgBlock": 0,
+   		"ethash": {}
+   	},
+   	"difficulty": "4500",
+   	"gasLimit": "80000000",
+   	"alloc": {}
+   	}
+   }
+   ```
+
+2. 创建空白文件`password.txt`
+
+3. 创建私链：`geth --datadir ./mychain/ init ./genesis.json`
+
+   第一个地址是私链文件存放目录，第二个是`genesis.json`目录
+
+4. 开启私链：`geth --datadir ./mychain/ --networkid 15 --dev --dev.period 0 --password password.txt --http --http.api personal,eth,net,web3 --http.corsdomain '*'  --ws --ws.api personal,eth,net,web3 --ws.origins '*' console --allow-insecure-unlock 2>output.log`
+
+## Arduino-API
+
+1. 引入方式
+
+   ```c++
+   #include "setting.h"
+   #include "BoT.h"
+   ```
+
+2. 编辑`setting.h`内容
+
+   ```c++
+   // 服务器IP
+   const char* BoT_host = "192.168.110.117";
+   // 服务器Port
+   const int BoT_httpPort = 80; 
+   // wifi-AP
+   int BoT_AP_number = 2;
+   const char* BoT_AP = "{\"name\":[\"name1\",\"name2\"],\"password\":[\"password1\",\"password2\"]}";
+   // 设备名称
+   String BoT_name = "Lignt";
+   // 设备简介
+   String BoT_info = "The+first+Internet+of+Things+device";//空格用加号表示!
+   ```
+
+3. 在初始化函数中，进行BoT初始化，（可选：并可以进行设备添加以及必要的事件类型添加）
+
+   1. 处理方案1: 直接通过，不记录
+   2. 处理方案2: 直接通过，进行记录
+   3. 处理方案3: 需要用户手动批准
+   4. 处理方案4: 直接拒绝
+
+   ```c++
+   void setup(void){
+     // 初始化(串口同步, EPROM初始化, 连接Wi-Fi, 设备登录)
+     BoT_init();
+     // 设备认证
+     BoT_doAuth();
+     // 事件类型认证 - 事件类型名称 处理方法(1~4)
+     BoT_doAuthEventType("Open",2);
+   }
+   ```
+
+4. 程序运行中进行事件申请（如果申请未通过，会一直执行这一条指令）
+
+   ```c++
+   BoT_request("Hello",3);
+   ```
+
+
+
+## 合约与JS-API
+
+### 认证相关辅助
 
 主要用于Web和Http Server的Web3.js中的操作，辅助合约函数运行。
 
@@ -15,7 +110,7 @@
 | Auth-Web3 |      -       |   addAccount   |   addAccount   |     -      |      -      |         添加账户         |
 | Auth-Web3 |      -       |    transfer    |       -        |     -      |      -      |           转账           |
 
-## 用户界面认证
+### 用户界面认证
 
 | 类别 | Solidity函数 | 合约API-Web | 合约API-Node | JS-API-Web    | JS-API-Node | 简介             |
 | ---- | ------------ | ----------- | ------------ | ------------- | ----------- | ---------------- |
@@ -36,7 +131,7 @@ Web->>+ETH: Set Password
 ETH->>-Web: Reply
 ```
 
-## 设备发起认证
+### 设备发起认证
 
 **设备认证函数**目前主要用于合约运行中的验证操作方为注册的设备；
 
@@ -56,7 +151,7 @@ ETH->>-Web: Reply
 | E-Class | authAdd<br />EventsClass |      -      | authAdd<br />EventsClass |     -      |      -      |  新类型认证  |
 |  Event  |       authAddEvent       |      -      |       authAddEvent       |     -      |      -      | 事件申请认证 |
 
-## 设备信息查改
+### 设备信息查改
 
 |  类别  |       Solidity函数        |        合约API-Web        | 合约API-Node |  JS-API-Web  | JS-API-Node |     简介     |
 | :----: | :-----------------------: | :-----------------------: | :----------: | :----------: | :---------: | :----------: |
@@ -99,7 +194,7 @@ else
 end
 ```
 
-## 添加测试设备
+### 添加测试设备
 
 |  类别  | Solidity函数  |  合约API-Web  | 合约API-Node |   JS-API-Web    | JS-API-Node | Introduction_of_function |
 | :----: | :-----------: | :-----------: | :----------: | :-------------: | :---------: | :----------------------: |
@@ -122,7 +217,7 @@ Note over ETH,Web: Web添加测试设备
 Note over Web: UI refresh
 ```
 
-## 删除设备
+### 删除设备
 
 删除设备操作会删除这个设备的一切历史信息，包括：设备信息，设备敏感事件申请记录，代办清单中该设备申请记录，事件列表中该设备的申请次数。
 
@@ -147,7 +242,7 @@ Note over ETH,Web: Web删除设备
 Note over Web: UI refresh
 ```
 
-## 添加设备
+### 添加设备
 
 | 类别   | Solidity函数             | 合约API-Web              | 合约API-Node   | JS-API-Web      | JS-API-Node     | Introduction_of_function       |
 | ------ | ------------------------ | ------------------------ | -------------- | --------------- | --------------- | ------------------------------ |
@@ -236,7 +331,7 @@ end
 
 ```
 
-## 记录种类类别
+### 记录种类类别
 
 |    类别    |       Solidity函数       |     合约API-Web      |       合约API-Node       |     JS-API-Web      | JS-API-Node | Introduction_of_function |
 | :--------: | :----------------------: | :------------------: | :----------------------: | :-----------------: | :---------: | :----------------------: |
@@ -281,7 +376,7 @@ else
 end
 ```
 
-## 添加事件类型
+### 添加事件类型
 
 |    类别    |     Solidity函数      |      合约API-Web      |    合约API-Node     | JS-API-Web | JS-API-Node | Introduction_of_function |
 | :--------: | :-------------------: | :-------------------: | :-----------------: | :--------: | :---------: | :----------------------: |
@@ -367,9 +462,7 @@ end
 
 ```
 
-
-
-## 添加测试事件类型
+### 添加测试事件类型
 
 |    类别    |    Solidity函数    |    合约API-Web     | 合约API-Node |     JS-API-Web      | JS-API-Node | Introduction_of_function |
 | :--------: | :----------------: | :----------------: | :----------: | :-----------------: | :---------: | :----------------------: |
@@ -392,7 +485,7 @@ Note over ETH,Web: Web添加测试事件类型
 Note over Web: UI refresh
 ```
 
-## 敏感事件
+### 敏感事件
 
 | 类别  |  Solidity函数  |  合约API-Web   | 合约API-Node | JS-API-Web | JS-API-Node | Introduction_of_function |
 | :---: | :------------: | :------------: | :----------: | :--------: | :---------: | :----------------------: |
@@ -419,7 +512,7 @@ loop: for i in num
 end
 ```
 
-## 代办清单
+### 代办清单
 
 |   类别   |   Solidity函数    |    合约API-Web    | 合约API-Node  | JS-API-Web | JS-API-Node | Introduction_of_function |
 | :------: | :---------------: | :---------------: | :-----------: | :--------: | :---------: | :----------------------: |
