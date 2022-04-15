@@ -599,3 +599,94 @@ end
 
 ```
 
+
+
+
+
+```mermaid
+sequenceDiagram
+participant Web
+participant ETH
+participant Http Server
+participant Devices
+
+alt: Plan1/2 - Approve with(out) record
+
+  Note over Devices: Add Device / Event Class / Event
+  Devices->>Http Server: Add Request
+  activate Http Server
+  Http Server->>ETH: Add Request
+  activate ETH
+  Note over ETH: Append Add Device / Event Class / Event List
+  ETH -->>Http Server: Reply(Approve)
+  Http Server -->>Devices: Reply(Approve)
+  deactivate Http Server
+  Note over Devices: Save Auth Info
+  ETH->>Web: Notice
+  Note over Web: Refresh UI
+  Devices->>ETH: Auth Device / Event Class
+  ETH->>Devices: false
+  Note over ETH: Blocks confirmed
+  Devices->>ETH: Auth Device / Event Class
+  ETH->>Devices: true
+  activate Web
+  deactivate ETH
+
+else:Plan3 - Need Wait
+  Note over Devices: New Device wants to add in
+  Devices->>Http Server: Add Request
+  activate Http Server
+  Http Server->>ETH: Add Request
+  activate ETH
+  Note over ETH: Add to Add Devices Request Queue
+  ETH -->>Http Server: (ACK)
+  deactivate Http Server
+  ETH->>Web: Notice
+  activate Web
+  deactivate ETH
+  Note over Web: Wait for user
+  Devices->>ETH: Auth Device / Event Class
+  ETH->>Devices: false
+  Web->>ETH: Approve/Deny
+  activate ETH
+  Note over ETH: Change Add Devices Request Queue Info
+  ETH -->>Web: (ACK)
+  deactivate Web
+  ETH->>Http Server: Approve/Deny
+  Http Server -->>ETH: (ACK)
+  deactivate ETH
+  Devices->>Http Server: Auth Device / Event Class
+  activate Http Server
+  Http Server->>ETH: Auth Device / Event Class
+  activate ETH
+  ETH->>Http Server: false
+  deactivate ETH
+  Http Server->>Devices: false
+  deactivate Http Server
+  Note over Devices: Save Auth Info
+  Http Server->>ETH: Result Notice
+  activate ETH
+  Note over ETH: Clear Add Devices Request Queue
+  Note over ETH: Add to Device Queue
+  ETH -->>Http Server: (ACK)
+  ETH->>Web: Notice
+  Note over Web: Refresh UI
+  deactivate ETH
+  
+else: Plan4 - Reject
+
+	Note over Devices: New Device wants to add in
+  Devices->>Http Server: Add Request
+  activate Http Server
+  Http Server->>ETH: Add Request
+  activate ETH
+  ETH -->>Http Server: Reply(Reject)
+  deactivate ETH
+  Http Server -->>Devices: Reply(Reject)
+  deactivate Http Server
+  
+end
+
+
+```
+

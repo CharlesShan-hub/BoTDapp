@@ -2,15 +2,22 @@
 #include "BoT.h"
 
 void setup(void){
-  // 初始化(串口同步, EPROM初始化, 连接Wi-Fi, 设备登录)
+  pinMode(A0, INPUT);
+  pinMode(D2, OUTPUT);
+  // Init
   BoT_init();
-
-  // 进行事件申请
-  BoT_request("Hello",3);
+  // Add Event Type
+  BoT_doAuthEventType("Light",2);
 }
 
 void loop(void){
- // 发送请求
- Serial.println("something.....");
- delay(1000);
+  Serial.println(analogRead(A0));
+  if(analogRead(A0)<900){
+    BoT_request_set("Light",2);
+    digitalWrite(D2, LOW);
+  }else{
+    BoT_request_clear("Light");
+    digitalWrite(D2, HIGH);
+  }
+  delay(500);
 }

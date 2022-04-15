@@ -9,3 +9,5 @@ const char* BoT_AP = "{\"name\":[\"shan\",\"KIM\"],\"password\":[\"dukesaw7\",\"
 String BoT_name = "Light";
 // 设备简介
 String BoT_info = "Be+the+little+light+that+lights+up+your+world";
+// 最大申请类型数量
+const int MAXSIZE = 5;

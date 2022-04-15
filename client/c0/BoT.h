@@ -344,7 +344,12 @@ bool BoT_addEventsClassRequest(String name,int _class){
   }
 }
 
-bool BoT_addEventRequest(String name,int _class){
+int BoT_addEventRequest(String name,int _class){
+  /**
+   * return -1: 错误或拒绝
+   * return 0:  需要保持探寻
+   * return 1:  同意
+   */
   
   // 构造请求报文
   String httpRequest;
@@ -359,35 +364,34 @@ bool BoT_addEventRequest(String name,int _class){
   // 向服务器发送http请求信息
   WiFiClient client;  
   if(BoT_send(client,httpRequest)==false){
-    return false;
+    return -1;
   }
 
   // 获取返回信息
   StaticJsonDocument<256> doc;
   if(BoT_get(client,doc)==false){
-    return false;
+    return -1;
   }
 
   // 信息主体
   if(doc["approve"].as<bool>() == false && doc["wait"].as<bool>() == false){
     // 拒绝添加新设备
     BoT_stop(client);
-    BoT_sleep();
-    return false;
+    return -1;
   }else if(doc["approve"].as<bool>() == false && doc["wait"].as<bool>() == true){
     // 等待用户通过
     Serial.println("Waiting User to Approve...");
     BoT_stop(client);
-    return false;
+    return 0;
   }else if(doc["approve"].as<bool>() == true){
     // 保存设备信息
     Serial.println("User approved add event!");
     BoT_stop(client);
-    return true;
+    return 1;
   }else{
     Serial.println("Unknow condition!");
     BoT_stop(client);
-    return false;
+    return -1;
   }
 }
 
@@ -449,8 +453,63 @@ bool BoT_doAuthEventType(String name,int _class){
 bool BoT_request(String name,int _class){
   Serial.println("Doing Events Class Auth...");
   BoT_doAuthEventType(name,_class);
-  while(BoT_addEventRequest(name,_class)==false){
-      delay(6000);
+  while(true){
+    int i = BoT_addEventRequest(name,_class);
+    if(i==0){
+      delay(6000); // continue to check request state
+    }else if(i==-1){
+      return false;// deny
+    }else{
+      return true; // approve
+    }
+  }
+}
+
+typedef struct{
+  String name;
+  bool state;
+}request;
+int Requests_Num = 0;
+request Requests[MAXSIZE];
+
+bool BoT_reuqest_set(String name,int _class){
+  bool flag = true;
+  for(int i=0;i<Requests_Num;i++){
+    if(name.equals(Requests[i].name)){
+      flag = false;
+      if(BoT_Request_State[i]==true){ // true代表已经打开标识
+        return true;
+      }else{
+        bool state = BoT_request(name,_class);
+        BoT_Request_State[i]=state;
+        if(state==false){
+          BoT_sleep();
+        }
+        return state;
+      }
+    }
+  }
+  if(flag){
+    if(MAXSIZE==Requests_Num){
+      return false;
+    }
+    Requests[Requests_Num].name = name;
+    Requests[Requests_Num].state= true;
+    Requests_Num++;
+    bool state = BoT_request(name,_class);
+    BoT_Request_State[Requests_Num-1]=state;
+    if(state==false){
+      BoT_sleep();
+    }
+    return state;
+  }
+}
+
+bool BoT_reuqest_clear(String name){
+  for(int i=0;i<BoT_Request_State;i++){
+    if(name.equals(Requests[i].name)){
+      BoT_Request_State[i] = false; // false代表已经关闭标识
+    }
   }
   return true;
 }
