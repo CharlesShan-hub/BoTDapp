@@ -1,4 +1,4 @@
-// 服务器IP
+// ServerIP
 const char* BoT_host = "192.168.110.118";
 // 服务器Port
 const int BoT_httpPort = 80; 

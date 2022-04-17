@@ -472,22 +472,17 @@ typedef struct{
 int Requests_Num = 0;
 request Requests[MAXSIZE];
 
-bool BoT_reuqest_set(String name,int _class){
+bool BoT_request_set(String name,int _class){
   bool flag = true;
   for(int i=0;i<Requests_Num;i++){
-    if(name.equals(Requests[i].name)){
-      flag = false;
-      if(BoT_Request_State[i]==true){ // true代表已经打开标识
-        return true;
-      }else{
-        bool state = BoT_request(name,_class);
-        BoT_Request_State[i]=state;
-        if(state==false){
-          BoT_sleep();
-        }
-        return state;
-      }
-    }
+    // 选择本次事件类型
+    if(name.equals(Requests[i].name)==false) continue;
+    flag = false;
+    // true代表已经打开标识
+    if(Requests[i].state) return true;
+    // false代表本次需要申请
+    Requests[i].state=true;
+    return BoT_request(name,_class);
   }
   if(flag){
     if(MAXSIZE==Requests_Num){
@@ -496,19 +491,14 @@ bool BoT_reuqest_set(String name,int _class){
     Requests[Requests_Num].name = name;
     Requests[Requests_Num].state= true;
     Requests_Num++;
-    bool state = BoT_request(name,_class);
-    BoT_Request_State[Requests_Num-1]=state;
-    if(state==false){
-      BoT_sleep();
-    }
-    return state;
+    return BoT_request(name,_class);
   }
 }
 
-bool BoT_reuqest_clear(String name){
-  for(int i=0;i<BoT_Request_State;i++){
+bool BoT_request_clear(String name){
+  for(int i=0;i<Requests_Num;i++){
     if(name.equals(Requests[i].name)){
-      BoT_Request_State[i] = false; // false代表已经关闭标识
+      Requests[i].state = false; // false代表已经关闭标识
     }
   }
   return true;

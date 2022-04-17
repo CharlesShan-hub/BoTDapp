@@ -22,6 +22,25 @@
 #include <ArduinoJson.h>
 #include <EEPROM.h> 
 
+#define GpsSerial  Serial
+#define DebugSerial Serial
+
+struct{
+  char GPS_Buffer[80];
+  bool isGetData;   //是否获取到GPS数据
+  bool isParseData; //是否解析完成
+  char UTCTime[11];   //UTC时间
+  char latitude[11];    //纬度
+  char N_S[2];    //N/S
+  char longitude[12];   //经度
+  char E_W[2];    //E/W
+  bool isUsefull;   //定位信息是否有效
+} Save_Data;
+
+const unsigned int gpsRxBufferLength = 600;
+char gpsRxBuffer[gpsRxBufferLength];
+unsigned int ii = 0;
+
 int BoT_current_id = random(300);
 
 //a写入字符串长度，b是起始位，str为要保存的字符串
@@ -42,6 +61,14 @@ String BoT_get_String(int b,int a){
     data += char(EEPROM.read(b + i));
   }
   return data;
+}
+
+String BoT_get_account(){
+  return BoT_get_String(0,42);
+}
+
+String BoT_get_password(){
+  return BoT_get_String(42,8);
 }
 
 /******************************************************
@@ -112,9 +139,124 @@ bool BoT_stop(WiFiClient &client){
     return true;
 }
 
+void errorLog(int num){
+  DebugSerial.print("ERROR");
+  DebugSerial.println(num);
+  BoT_sleep();
+}
+
+void printGpsBuffer(){
+  if (Save_Data.isParseData)
+  {
+    Save_Data.isParseData = false;
+    
+    DebugSerial.print("Save_Data.UTCTime = ");
+    DebugSerial.println(Save_Data.UTCTime);
+
+    if(Save_Data.isUsefull)
+    {
+      Save_Data.isUsefull = false;
+      DebugSerial.print("Save_Data.latitude = ");
+      DebugSerial.println(Save_Data.latitude);
+      DebugSerial.print("Save_Data.N_S = ");
+      DebugSerial.println(Save_Data.N_S);
+      DebugSerial.print("Save_Data.longitude = ");
+      DebugSerial.println(Save_Data.longitude);
+      DebugSerial.print("Save_Data.E_W = ");
+      DebugSerial.println(Save_Data.E_W);
+    }
+    else
+    {
+      DebugSerial.println("GPS DATA is not usefull!");
+    }
+    
+  }
+}
+
+void clrGpsRxBuffer(void){
+  memset(gpsRxBuffer, 0, gpsRxBufferLength);      //清空
+  ii = 0;
+}
+
+void parseGpsBuffer(){
+  char *subString;
+  char *subStringNext;
+  if (Save_Data.isGetData)
+  {
+    Save_Data.isGetData = false;
+    DebugSerial.println("**************");
+    DebugSerial.println(Save_Data.GPS_Buffer);
+
+    
+    for (int i = 0 ; i <= 6 ; i++)
+    {
+      if (i == 0)
+      {
+        if ((subString = strstr(Save_Data.GPS_Buffer, ",")) == NULL)
+          errorLog(1);  //解析错误
+      }
+      else
+      {
+        subString++;
+        if ((subStringNext = strstr(subString, ",")) != NULL)
+        {
+          char usefullBuffer[2]; 
+          switch(i)
+          {
+            case 1:memcpy(Save_Data.UTCTime, subString, subStringNext - subString);break; //获取UTC时间
+            case 2:memcpy(usefullBuffer, subString, subStringNext - subString);break; //获取UTC时间
+            case 3:memcpy(Save_Data.latitude, subString, subStringNext - subString);break;  //获取纬度信息
+            case 4:memcpy(Save_Data.N_S, subString, subStringNext - subString);break; //获取N/S
+            case 5:memcpy(Save_Data.longitude, subString, subStringNext - subString);break; //获取纬度信息
+            case 6:memcpy(Save_Data.E_W, subString, subStringNext - subString);break; //获取E/W
+
+            default:break;
+          }
+
+          subString = subStringNext;
+          Save_Data.isParseData = true;
+          if(usefullBuffer[0] == 'A')
+            Save_Data.isUsefull = true;
+          else if(usefullBuffer[0] == 'V')
+            Save_Data.isUsefull = false;
+
+        }
+        else
+        {
+          errorLog(2);  //解析错误
+        }
+      }
+
+
+    }
+  }
+}
+
+void gpsRead() {
+  while (GpsSerial.available())
+  {
+    gpsRxBuffer[ii++] = GpsSerial.read();
+    if (ii == gpsRxBufferLength)clrGpsRxBuffer();
+  }
+
+  char* GPS_BufferHead;
+  char* GPS_BufferTail;
+  if ((GPS_BufferHead = strstr(gpsRxBuffer, "$GPRMC,")) != NULL || (GPS_BufferHead = strstr(gpsRxBuffer, "$GNRMC,")) != NULL )
+  {
+    if (((GPS_BufferTail = strstr(GPS_BufferHead, "\r\n")) != NULL) && (GPS_BufferTail > GPS_BufferHead))
+    {
+      memcpy(Save_Data.GPS_Buffer, GPS_BufferHead, GPS_BufferTail - GPS_BufferHead);
+      Save_Data.isGetData = true;
+
+      clrGpsRxBuffer();
+
+    }
+  }
+}
+
 /******************************************************
  * 
- * 连接Wi-Fi
+ * 通信API
  * 
  ******************************************************/
 
@@ -150,12 +292,6 @@ bool BoT_connectWiFi(){
   return true;
 }
 
-/******************************************************
- * 
- * 通信API
- * 
- ******************************************************/
-
 bool BoT_ping(){
   // 构造请求报文
   String httpRequest;
@@ -182,15 +318,12 @@ bool BoT_ping(){
 }
 
 bool BoT_auth(){
-  String account = BoT_get_String(0,42);
-  String password = BoT_get_String(42,8);
-
   // 构造请求报文
   String httpRequest;
   String url = "/update"\
                "?type=auth"\
-               "&account="+account+
-               "&password="+password;
+               "&account="+BoT_get_account()+
+               "&password="+BoT_get_password();
   BoT_tool_httpRequest(httpRequest,url);
 
   // 向服务器发送http请求信息
@@ -210,15 +343,12 @@ bool BoT_auth(){
 }
 
 bool BoT_eventsClassAuth(String name){
-  String account = BoT_get_String(0,42);
-  String password = BoT_get_String(42,8);
-
   // 构造请求报文
   String httpRequest;
   String url = "/update"\
                "?type=authEventsClass"\
-               "&account="+account+
-               "&password="+password+\
+               "&account="+BoT_get_account()+
+               "&password="+BoT_get_password()+\
                "&name="+name;
   BoT_tool_httpRequest(httpRequest,url);
 
@@ -236,14 +366,6 @@ bool BoT_eventsClassAuth(String name){
 
   BoT_stop(client);
   return doc["res"].as<String>().equals("true");
-}
-
-String BoT_get_account(){
-  return BoT_get_String(0,42);
-}
-
-String BoT_get_password(){
-  return BoT_get_String(42,8);
 }
 
 bool BoT_addDeviceRequest(){
@@ -298,7 +420,6 @@ bool BoT_addDeviceRequest(){
 }
 
 bool BoT_addEventsClassRequest(String name,int _class){
-  
   // 构造请求报文
   String httpRequest;
   String url = "/update?"\
@@ -350,7 +471,7 @@ int BoT_addEventRequest(String name,int _class){
    * return 0:  需要保持探寻
    * return 1:  同意
    */
-  
+
   // 构造请求报文
   String httpRequest;
   String url = "/update?"\
@@ -399,13 +520,14 @@ int BoT_addEventRequest(String name,int _class){
  * 
  * 功能API
  * 
- * * 数据结构
- * - 设备信息
- * 
- * * API
- * - BoT_doPing()      确认可以连接服务器
- * - BoT_doAuth()      确认设备连入服务器
- * - BoT_sleep()       设备永久停止(直到重置设备)
+ * BoT_init()        进行设备初始化(包含doAuth)
+ * BoT_doPing()      确认可以连接服务器
+ * BoT_doAuth()      确认设备连入服务器
+ * BoT_sleep()       设备永久停止(直到重置设备)
+ * BoT_request       进行事件申请
+ * BoT_request_set   为循环结构优化的事件申请(触发部分)
+ * BoT_request_clear 为循环结构优化的事件申请(复位部分)
+ * BoT_position      发送定位
  * 
  ******************************************************/
 
@@ -472,22 +594,17 @@ typedef struct{
 int Requests_Num = 0;
 request Requests[MAXSIZE];
 
-bool BoT_reuqest_set(String name,int _class){
+bool BoT_request_set(String name,int _class){
   bool flag = true;
   for(int i=0;i<Requests_Num;i++){
-    if(name.equals(Requests[i].name)){
-      flag = false;
-      if(BoT_Request_State[i]==true){ // true代表已经打开标识
-        return true;
-      }else{
-        bool state = BoT_request(name,_class);
-        BoT_Request_State[i]=state;
-        if(state==false){
-          BoT_sleep();
-        }
-        return state;
-      }
-    }
+    // 选择本次事件类型
+    if(name.equals(Requests[i].name)==false) continue;
+    flag = false;
+    // true代表已经打开标识
+    if(Requests[i].state) return true;
+    // false代表本次需要申请
+    Requests[i].state=true;
+    return BoT_request(name,_class);
   }
   if(flag){
     if(MAXSIZE==Requests_Num){
@@ -496,29 +613,73 @@ bool BoT_reuqest_set(String name,int _class){
     Requests[Requests_Num].name = name;
     Requests[Requests_Num].state= true;
     Requests_Num++;
-    bool state = BoT_request(name,_class);
-    BoT_Request_State[Requests_Num-1]=state;
-    if(state==false){
-      BoT_sleep();
-    }
-    return state;
+    return BoT_request(name,_class);
   }
 }
 
-bool BoT_reuqest_clear(String name){
-  for(int i=0;i<BoT_Request_State;i++){
+bool BoT_request_clear(String name){
+  for(int i=0;i<Requests_Num;i++){
     if(name.equals(Requests[i].name)){
-      BoT_Request_State[i] = false; // false代表已经关闭标识
+      Requests[i].state = false; // false代表已经关闭标识
     }
   }
   return true;
+}
+
+bool BoT_position(){
+  /**
+   * return true: 发送成功
+   * return false:  各种失败
+   */
+  Serial.println("Doing Send Position...");
+  gpsRead();  //获取GPS数据
+  parseGpsBuffer();//解析GPS数据
+  //printGpsBuffer();
+  // 获取位置
+  if (Save_Data.isParseData==false) return false;
+  Save_Data.isParseData = false;
+  if(Save_Data.isUsefull==false) return false;
+  Save_Data.isUsefull = false;
+  
+  // 构造请求报文
+  String httpRequest;
+  String url = "/update?"\
+               "account="+BoT_get_account()+\
+               "&password="+BoT_get_password()+\
+               "&type=position"\
+               "&UTCTime="+String(Save_Data.UTCTime)+\
+               "&latitude="+String(Save_Data.latitude)+\
+               "&N_S="+String(Save_Data.N_S)+\
+               "&longitude="+String(Save_Data.longitude)+\
+               "&E_W="+String(Save_Data.E_W);
+  BoT_tool_httpRequest(httpRequest,url);
+
+  // 向服务器发送http请求信息
+  WiFiClient client;  
+  if(BoT_send(client,httpRequest)==false){
+    return false;
+  }else{
+    return true;
+  }
+
+  // 获取返回信息
+  StaticJsonDocument<256> doc;
+  if(BoT_get(client,doc)==false){
+    return false;
+  }
 }
 
 bool BoT_init(){
   // 启动串口通讯
   Serial.begin(9600);
   while (!Serial) continue;
+  GpsSerial.begin(9600);
+  DebugSerial.begin(9600);
   EEPROM.begin(256);
+
+  Save_Data.isGetData = false;
+  Save_Data.isParseData = false;
+  Save_Data.isUsefull = false;
   
   // 连接Wi-Fi
   BoT_connectWiFi();

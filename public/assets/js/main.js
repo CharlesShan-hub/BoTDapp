@@ -868,6 +868,13 @@ async function uiInitStatisticalEventTypePie(){
     });
 }
 
+/**
+ * 测试与后台交互
+ */
+function getData(){
+
+}
+
 // 界面API - Profile ----------------------------------------------------------------
 
 /**
@@ -1032,3 +1039,15 @@ function uiAddSettingEventTypeForm(class_){
 }
 
 
+$("#btn").click(function(){
+    $.ajax({
+        url: 'http://localhost:3000/testInfo',
+        type: 'GET',
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (xhr, status, error) {
+            console.log('Error: ' + error.message);
+        },
+    });
+});

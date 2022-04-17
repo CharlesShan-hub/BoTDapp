@@ -13,8 +13,8 @@ void setup(void){
 void loop(void){
   Serial.println(analogRead(A0));
   if(analogRead(A0)<900){
-    BoT_request_set("Light",2);
-    digitalWrite(D2, LOW);
+    if(BoT_request_set("Light",2))
+      digitalWrite(D2, LOW);
   }else{
     BoT_request_clear("Light");
     digitalWrite(D2, HIGH);

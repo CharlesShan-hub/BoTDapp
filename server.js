@@ -49,6 +49,41 @@ function getInstance(){
 var contract = getInstance();
 
 /*************************************************************************/
+/** 地图定位交互部分
+ */
+/*************************************************************************/
+
+var express = require('express'); 
+//引入express模块, 记得cnpm install express --save
+var app = express();  //express对象
+
+var Position = {'num':0};
+
+app.get('/testInfo', function(req, res){ //版本检查接口
+    res.header('Access-Control-Allow-Origin', '*');
+  res.send(JSON.stringify(Position));
+});
+
+app.listen(3000, function(){  //服务端口监听
+  console.log('server now listening at port 3000');
+});
+
+/*
+var Position = {};
+
+var verStr = {test:Position, versionCode : 200};  //版本检查返回的数据，假数据，自行修改
+
+app.get('/testInfo', function(req, res){ //版本检查接口
+    res.header('Access-Control-Allow-Origin', '*');
+  res.send(JSON.stringify(verStr));
+});
+
+app.listen(3000, function(){  //服务端口监听
+  console.log('server now listening at port 3000');
+});*/
+
+
+/*************************************************************************/
 /** web服务器
  * 
  */
@@ -1069,6 +1104,31 @@ async function web3Operation(commandString_){
                 }}
             }
         }
+    }else if(command.type=="position"){
+        if(await authDevice(command.account,command.password)==false) return {'json':{'valid':false}};
+        /**
+         * 
+         * command.UTCTime
+         * command.latitude
+         * command.N_S
+         * command.longitude
+         * command.E_W
+         * 
+         * 
+         */
+        Position[command.account]={};
+        Position[command.account]["UTCTime"] = command.UTCTime;
+        Position[command.account]["latitude"] = command.latitude;
+        Position[command.account]["N_S"] = command.N_S;
+        Position[command.account]["longitude"] = command.longitude;
+        Position[command.account]["E_W"] = command.E_W;
+        app.get('/testInfo', function(req, res){ //版本检查接口
+        res.header('Access-Control-Allow-Origin', '*');
+          res.send(JSON.stringify(Position));
+        });
+        return {'json':{
+            'valid':true
+        }}
     }
     return false;
 }
@@ -1257,3 +1317,5 @@ function randomNum(minNum,maxNum){
             break; 
     } 
 }
+
+
