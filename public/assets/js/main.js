@@ -1044,10 +1044,28 @@ $("#btn").click(function(){
         url: 'http://localhost:3000/testInfo',
         type: 'GET',
         success: function (data) {
-            console.log(data);
+            data = JSON.parse(data);
+
+            var map = new BMapGL.Map('gmaps-markers');
+            map.centerAndZoom(new BMapGL.Point(117, 39), 10);
+            map.enableScrollWheelZoom(true);
+            //map_device = new Array();
+            for (var val in data) {
+                console.log(data[val]);
+                console.log(data[val].latitude/100);
+                console.log(data[val].longitude/100);
+                map.addOverlay(new BMapGL.Marker(new BMapGL.Point(data[val].longitude/100,data[val].latitude/100)));
+            }
         },
         error: function (xhr, status, error) {
             console.log('Error: ' + error.message);
         },
     });
 });
+
+var map = new BMapGL.Map('gmaps-markers');
+map.centerAndZoom(new BMapGL.Point(117, 39), 10);
+map.enableScrollWheelZoom(true);
+
+
+            

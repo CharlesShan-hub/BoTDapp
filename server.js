@@ -57,7 +57,7 @@ var express = require('express');
 //引入express模块, 记得cnpm install express --save
 var app = express();  //express对象
 
-var Position = {'num':0};
+var Position = {};
 
 app.get('/testInfo', function(req, res){ //版本检查接口
     res.header('Access-Control-Allow-Origin', '*');
@@ -1116,7 +1116,9 @@ async function web3Operation(commandString_){
          * 
          * 
          */
-        Position[command.account]={};
+        if(command.account in Position == false){
+            Position[command.account]={};
+        }
         Position[command.account]["UTCTime"] = command.UTCTime;
         Position[command.account]["latitude"] = command.latitude;
         Position[command.account]["N_S"] = command.N_S;
