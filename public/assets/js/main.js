@@ -25,6 +25,7 @@
  * 
  * 登陆                  doLogin()
  * 修改密码               doSetPassword()
+ * 修改邮箱               doSetEmail()
  * 
  * 设备-------------------------------------------------------------------
  * 
@@ -76,6 +77,21 @@ async function doSetPassword(){
         document.getElementById("ResetPasswordNew2").value="";
     }else{
         sweetAlert(2,"ReSet Password Failed!");
+    }
+}
+
+/**
+ * 修改邮箱
+ */
+async function doSetEmail(){
+    // 获取密码
+    var newEmail = document.getElementById("ResetEmailShow").value;
+    
+    if(await setEmail(newEmail)){
+        sweetAlert(1,"Set Email");
+    }else{
+        sweetAlert(2,"ReSet Email Failed!");
+        uiInitProfile();
     }
 }
 
@@ -886,6 +902,39 @@ function uiToProfile(){
     document.getElementById("UiProfile").style.display="";
     document.getElementById("UiSetting").style.display="none";
     document.getElementById("DashboardCreat").style.display="none";
+    uiInitProfile();
+}
+
+/**
+ * 初始化账户界面
+ */
+async function uiInitProfile(){
+    var info = await getEmail();
+    document.getElementById("ResetEmailShow").value = info;
+    var emailServe = await getEmailServe();
+    document.getElementById("ResetEmailShow").selectedIndex = emailServe;
+}
+
+/**
+ * 邮件服务选择
+ */
+async function doChangeEmailServe(){
+    var emailServe = await getEmailServe();
+    if(document.getElementById("SetEmailServe").selectedIndex==1){
+        if(emailServe==true) return;
+        if(await setEmailServe(true)){
+            sweetAlert(1,"Open Email Serve");
+        }else{
+            sweetAlert(2,"Open Email Serve Failed!");
+        }
+    }else{
+        if(emailServe==false) return;
+        if(await setEmailServe(false)){
+            sweetAlert(1,"Cancel Email Serve");
+        }else{
+            sweetAlert(2,"Cancel Email Serve Failed!");
+        }
+    }
 }
 
 // 界面API - Setting ----------------------------------------------------------------
@@ -902,6 +951,7 @@ function uiToSettings(){
     uiInitSetting();
 }
 
+
 /**
  * 初始化设置界面
  */
@@ -909,6 +959,7 @@ function uiInitSetting(){
     uiInitSettingGeneral();
     uiInitSettingEventType();
 }
+
 
 /**
  * 初始化通用设置界面
@@ -926,6 +977,7 @@ function uiInitSettingGeneral(){
     }
 }
 
+
 /**
  * 暗黑模式选择
  */
@@ -936,6 +988,7 @@ function uiChangeColorMode(){
         document.getElementById("dark-mode-switch").click();
     }
 }
+
 
 /**
  * 左手模式选择
@@ -951,6 +1004,7 @@ function uiChangeRTLMode(){
         }
     }
 }
+
 
 /**
  * 初始化事件类型设置界面
@@ -1038,7 +1092,7 @@ function uiAddSettingEventTypeForm(class_){
     }
 }
 
-
+// 手动刷新位置
 $("#btn").click(function(){
     $.ajax({
         url: 'http://localhost:3000/testInfo',
@@ -1062,6 +1116,31 @@ $("#btn").click(function(){
         },
     });
 });
+
+// 这个是定时器, 程序会每个15秒自动刷新位置
+setInterval(function () {
+    $.ajax({
+        url: 'http://localhost:3000/testInfo',
+        type: 'GET',
+        success: function (data) {
+            data = JSON.parse(data);
+
+            var map = new BMapGL.Map('gmaps-markers');
+            map.centerAndZoom(new BMapGL.Point(117, 39), 10);
+            map.enableScrollWheelZoom(true);
+            //map_device = new Array();
+            for (var val in data) {
+                console.log(data[val]);
+                console.log(data[val].latitude/100);
+                console.log(data[val].longitude/100);
+                map.addOverlay(new BMapGL.Marker(new BMapGL.Point(data[val].longitude/100,data[val].latitude/100)));
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log('Error: ' + error.message);
+        },
+    });       
+}, 15000); 
 
 var map = new BMapGL.Map('gmaps-markers');
 map.centerAndZoom(new BMapGL.Point(117, 39), 10);

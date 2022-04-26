@@ -3,8 +3,12 @@ pragma solidity ^0.8.0;
 contract BoT{
     /******************************************************************/
     /** Auth
-     * auth        登陆认证
-     * setPassword 重制密码
+     * auth          登陆认证
+     * setPassword   重制密码
+     * getEmail      获取邮箱
+     * setEmail      设置邮箱
+     * setEmailServe 设置邮箱服务
+     * getEmailServe 查看邮箱服务
      */
     /******************************************************************/
     string password = "";
@@ -20,6 +24,34 @@ contract BoT{
         require(auth(oldPassword));
         password=newPassword;
         emit SetPassword(identity);
+    }
+
+    string email = "";
+
+    // 获取邮箱
+    function getEmail()public view returns(string memory){
+        return email;
+    }
+
+    // 设置邮箱
+    event SetEmail(uint identity,string email);
+    function setEmail(string memory _email,uint identity)public{
+        email=_email;
+        emit SetEmail(identity,email);
+    }
+
+    bool emailServe = false;
+
+    // 获取邮箱
+    function getEmailServe()public view returns(bool){
+        return emailServe;
+    }
+
+    // 设置邮箱
+    event SetEmailServe(uint identity);
+    function setEmailServe(bool state,uint identity)public{
+        emailServe=state;
+        emit SetEmailServe(identity);
     }
 
     /******************************************************************/
