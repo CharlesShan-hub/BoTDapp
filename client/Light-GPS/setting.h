@@ -1,5 +1,5 @@
 // ServerIP
-const char* BoT_host = "192.168.110.118";
+const char* BoT_host = "192.168.110.117";
 // 服务器Port
 const int BoT_httpPort = 80; 
 // wifi-AP
