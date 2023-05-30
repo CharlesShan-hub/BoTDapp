@@ -34,7 +34,7 @@ export class formatters {
 
     static inputBlockNumberFormatter(blockNumber: string | number): string | number;
 
-    static outputBlockFormatter(block: any): any; // TODO: Create Block interface
+    static outputBlockFormatter(block: any, hexFormat?: boolean): any; // TODO: Create Block interface
 
     static txInputFormatter(txObject: any): any;
 
@@ -117,7 +117,7 @@ export class WebsocketProviderBase {
 
     reset(): void;
 
-    disconnect(code: number, reason: string): void;
+    disconnect(code?: number, reason?: string): void;
 
     connect(): void;
 
@@ -216,15 +216,19 @@ export interface RequestItem {
 export interface JsonRpcPayload {
     jsonrpc: string;
     method: string;
-    params: any[];
+    params?: any[];
     id?: string | number;
 }
 
 export interface JsonRpcResponse {
     jsonrpc: string;
-    id: number;
+    id: string | number;
     result?: any;
-    error?: string;
+    error?: {
+      readonly code?: number;
+      readonly data?: unknown;
+      readonly message: string;
+    };
 }
 
 export interface RevertInstructionError extends Error {

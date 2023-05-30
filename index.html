@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>DIoT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link href="assets/libs/chartist/chartist.min.css" rel="stylesheet">
+    <!-- Plugin css -->
+    <link href="assets/libs/@fullcalendar/core/main.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/libs/@fullcalendar/daygrid/main.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/libs/@fullcalendar/bootstrap/main.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/libs/@fullcalendar/timegrid/main.min.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap Css -->
+    <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="assets/css/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body data-sidebar="dark" onload='uiInit()'>
+    <div class="account-pages my-5 pt-5" id="UiBeforeLogin">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="card overflow-hidden">
+                        <div class="bg-primary">
+                            <div class="text-primary text-center p-4">
+                                <h5 class="text-white font-size-20">Locked</h5>
+                                <p class="text-white-50">Welcome, enter your password to unlock the screen!</p>
+                                <a href="#" class="logo logo-admin">
+                                    <img src="assets/images/logo-sm.png" height="24" alt="logo">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="p-3">
+                                <form class="form-horizontal mt-4">
+                                    <div class="pt-3 text-center">
+                                        <img src="assets/images/users/user-6.jpg" class="rounded-circle img-thumbnail avatar-lg" alt="thumbnail">
+                                        <h6 class="font-size-16 mt-3">User</h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userpassword">Password</label>
+                                        <input type="password" class="form-control" id="UserPassword" placeholder="Enter password">
+                                    </div>
+                                </form>
+                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit" onclick="doLogin()">Unlock</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="UiAfterLogin">
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+            <header id="page-topbar" style="display: none;">
+                <div class="navbar-header">
+                    <div class="d-flex">
+                        <!-- LOGO -->
+                        <div class="navbar-brand-box">
+                            <a href="#" class="logo logo-dark">
+                                <span class="logo-sm">
+                                    <img src="assets/images/logo.svg" alt="" height="22">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="assets/images/logo-dark.png" alt="" height="17">
+                                </span>
+                            </a>
+                            <a href="#" class="logo logo-light">
+                                <span class="logo-sm">
+                                    <img src="assets/images/logo-sm.png" alt="" height="22">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="assets/images/logo-light.png" alt="" height="55">
+                                </span>
+                            </a>
+                        </div>
+                        <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect" id="vertical-menu-btn">
+                            <i class="mdi mdi-menu"></i>
+                        </button>
+                        <div id="DashboardCreat">
+                            <div class="d-none d-sm-block">
+                                <div class="dropdown pt-3 d-inline-block">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Create <i class="mdi mdi-chevron-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <!--****a-->
+                                        <a class="dropdown-item">Device</a>
+                                        <a class="dropdown-item">Event Class</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#AddDeviceTest">Test Device</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#AddEventTypeTest">Test Event Type</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#AddEventTest">Test Event</a>
+                                        <a class="dropdown-item" onclick="uiRefresh()">UI Refresh</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--****a1-->
+                            <div class="col-sm-6 col-md-3 mt-4">
+                                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddDeviceTest">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title mt-0">Add New Test Equipment</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Device Name</label>
+                                                            <input class="form-control" placeholder="Please input the device name" id="AddDeviceTestI" required value="" />
+                                                            <div class="invalid-feedback">Please input the device name</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Device Introduce</label>
+                                                            <input class="form-control" placeholder="Please input the device Concise Introduce" id="AddDeviceTestI2" required value="" />
+                                                            <div class="invalid-feedback">Please input the device introduction</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col-6">
+                                                        <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
+                                                    </div>
+                                                    <div class="col-6 text-right">
+                                                        <button type="button" class="btn btn-light mr-1" id="AddDeviceTestBC" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-success" id="AddDeviceTestB" onclick="doAddDeviceTest()">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--****a2-->
+                            <div class="col-sm-6 col-md-3 mt-4">
+                                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddEventTypeTest">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title mt-0">Add New Test Event Type</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Event Type Name</label>
+                                                            <input class="form-control" placeholder="Insert Event Type Name" id="AddEventTypeTestI" required value="" />
+                                                            <div class="invalid-feedback">Please provide a valid event type name</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Processing Method</label>
+                                                            <select class="form-control custom-select" name="category" id="AddEventTypeTestS" required>
+                                                                <option>Plain Mode</option>
+                                                                <option selected>Normal Mode</option>
+                                                                <option>Warning Mode</option>
+                                                                <option>Reject Mode</option>
+                                                            </select>
+                                                            <div class="invalid-feedback">Please select a valid event category</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col-6">
+                                                        <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
+                                                    </div>
+                                                    <div class="col-6 text-right">
+                                                        <button type="button" class="btn btn-light mr-1" id="AddEventTypeTestBC" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-success" id="AddEventTypeTestB" onclick="doAddEventsClassTest()">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                            </div>
+                            <!--****a3-->
+                            <div class="col-sm-6 col-md-3 mt-4">
+                                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddEventTest">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title mt-0">Add New Test Event</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Device ID</label>
+                                                            <input class="form-control" placeholder="Input the device id" id="AddEventTestI3" required value="" />
+                                                            <div class="invalid-feedback">Input Device ID</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Event Type</label>
+                                                            <select class="form-control custom-select" name="category" id="AddEventTestS" required>
+                                                                <!--****c-->
+                                                            </select>
+                                                            <div class="invalid-feedback">Please select a valid event category</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col-6">
+                                                        <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
+                                                    </div>
+                                                    <div class="col-6 text-right">
+                                                        <button type="button" class="btn btn-light mr-1" id="AddEventTestBC" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-success" id="AddEventTestB" onclick="doAddEventTest()">Add</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+                            </div>
+                            <!--****todolist-->
+                            <div class="col-sm-6 col-md-3 mt-4">
+                                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="DoAddEventApprove">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title mt-0">Request Operater</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Are you going to Aprpove for the Request?</label>
+                                                            <p></p>
+                                                            <div class="invalid-feedback">Please input the device name</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col-6">
+                                                        <button type="button" class="btn btn-danger" id="ToDoListB2" onclick="doAddEventApprove(false)">Reject</button>
+                                                    </div>
+                                                    <div class="col-6 text-right">
+                                                        <button type="button" class="btn btn-light mr-1" id="ToDoListBC" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-success" id="ToDoListB1" onclick="doAddEventApprove(true)">Approve</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <!-- App Search-->
+                        <form class="app-search d-none d-lg-block">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="fa fa-search"></span>
+                            </div>
+                        </form>
+                        <div class="dropdown d-inline-block d-lg-none ml-2">
+                            <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-search-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="mdi mdi-magnify"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0" aria-labelledby="page-header-search-dropdown">
+                                <form class="p-3">
+                                    <div class="form-group m-0">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="dropdown d-none d-lg-inline-block">
+                            <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
+                                <i class="mdi mdi-fullscreen"></i>
+                            </button>
+                        </div>
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="mdi mdi-bell-outline"></i>
+                                <span class="badge badge-danger badge-pill" id="notificationNumber"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0" aria-labelledby="page-header-notifications-dropdown">
+                                <div class="p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h5 class="m-0 font-size-16"> Notifications</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-simplebar id="NotificationDiv" style="max-height: 230px">
+                                </div>
+                                <div class="p-2 border-top">
+                                    <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="javascript:void(0)">
+                                        View all
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle header-profile-user" src="assets/images/users/user-4.jpg" alt="Header Avatar">
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <!-- item-->
+                                <a class="dropdown-item" href="#" onclick="uiToProfile()"><i class="mdi mdi-account-circle font-size-17 align-middle mr-1"></i> Profile</a>
+                                <a class="dropdown-item d-block" href="#" onclick="uiToSettings()">
+                                    <!--<span class="badge badge-success float-right">11</span>--><i class="mdi mdi-settings font-size-17 align-middle mr-1"></i> Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#" onclick="uiLogout()"><i class="bx bx-power-off font-size-17 align-middle mr-1 text-danger"></i> Logout</a>
+                            </div>
+                        </div>
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
+                                <i class="mdi mdi-settings-outline"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- ========== Left Sidebar Start ========== -->
+            <div class="vertical-menu" id="vertical-menu" style="display: none;">
+                <div data-simplebar class="h-100">
+                    <!--- Sidemenu -->
+                    <div id="sidebar-menu">
+                        <!-- Left Menu Start -->
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            <li class="menu-title">Main</li>
+                            <li>
+                                <a href="#" class="waves-effect" onclick="uiToDashboard()">
+                                    <i class="ti-home"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="waves-effect" onclick="uiToStatistical()">
+                                    <i class="ti-pie-chart"></i>
+                                    <span>Statistical</span>
+                                </a>
+                            </li>
+                            <li class="menu-title">Setting</li>
+                            <li>
+                                <a href="#" class="waves-effect" onclick="uiToProfile()">
+                                    <i class="ti-archive"></i>
+                                    <span>Profile</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="waves-effect" onclick="uiToSettings()">
+                                    <i class="ti-settings"></i>
+                                    <span>Setting</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Sidebar -->
+                </div>
+            </div>
+            <!-- Left Sidebar End -->
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content" id="UiDashboard">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="row align-items-center">
+                            <div class="col-sm-6">
+                                <div class="page-title-box">
+                                    <h4 class="font-size-18">Dashboard</h4>
+                                    <ol class="breadcrumb mb-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Main</a></li>
+                                        <li class="breadcrumb-item active">Dashboard</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <div class="row" id="DashboardGallery">
+                        </div>
+                        <!-- end row -->
+                        <!--****Da-->
+                        <div class="col-sm-6 col-md-3 mt-4">
+                            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="DashboardGalleryWindow">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title mt-0">Device Operater</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="DashboardGalleryWindowBC">×</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Set Device Name</label>
+                                                        <input class="form-control" placeholder="Insert Device Name" id="DashboardGalleryWindowI1" required value="" />
+                                                        <div class="invalid-feedback">Please provide a valid event type name</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Set Device Detail</label>
+                                                        <input class="form-control" placeholder="Insert Device Description" id="DashboardGalleryWindowI2" required value="" />
+                                                        <div class="invalid-feedback">Please provide a valid event type name</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-6">
+                                                    <button type="button" class="btn btn-danger" id="DashboardGalleryWindowB2" onclick="doDeleteDevice()">Delete</button>
+                                                </div>
+                                                <div class="col-6 text-right">
+                                                    <button type="button" class="btn btn-light mr-1" id="AddEventTestBC" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-success" id="DashboardGalleryWindowB" onclick="doEditDevice()">Save</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                        </div>
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Charles Shan.</span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- end main content-->
+            <div class="main-content" id="UiStatistical">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="row align-items-center">
+                            <div class="col-sm-6">
+                                <div class="page-title-box">
+                                    <h4 class="font-size-18">Statistical</h4>
+                                    <ol class="breadcrumb mb-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Main</a></li>
+                                        <li class="breadcrumb-item active">Statistical</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4">Device Total Request Pie Chart</h4>
+                                            <div class="row justify-content-center">
+                                                <div class="col-sm-6">
+                                                    <div class="text-center">
+                                                        <h5 id="SSimplePieH1" class="mb-0 font-size-20"></h5>
+                                                        <p class="text-muted">Devices</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="text-center">
+                                                        <h5 id="SSimplePieH2" class="mb-0 font-size-20"></h5>
+                                                        <p class="text-muted">Record Events</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <canvas id="SSimplePie" class="ct-chart ct-golden-section simple-pie-chart-chartist">
+                                            </canvas>
+                                            <p id="SSimplePieP"></p>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4">Event Type Total Request Pie Chart</h4>
+                                            <div class="row justify-content-center">
+                                                <div class="col-sm-6">
+                                                    <div class="text-center">
+                                                        <h5 id="SSimplePie2H1" class="mb-0 font-size-20"></h5>
+                                                        <p class="text-muted">Event Types</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="text-center">
+                                                        <h5 id="SSimplePie2H2" class="mb-0 font-size-20"></h5>
+                                                        <p class="text-muted">Total Events</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <canvas id="SSimplePie2" class="ct-chart ct-golden-section simple-pie-chart-chartist">
+                                            </canvas>
+                                            <p id="SSimplePie2P"></p>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Device Position Map</h4>
+                                            <p class="card-title-desc">Device Position are showen ini the map. You need to click `Refresh` to load new Position</p>
+                                            <div id="gmaps-markers" class="gmaps"></div>
+                                            <button class="btn btn-primary w-md waves-effect waves-light " type="submit" id="btn">Refresh</button>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+                            </div> <!-- end row -->
+                        </div> <!-- container-fluid -->
+                    </div>
+                    <!-- End Page-content -->
+                    <footer class="footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Charles Shan.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            <!-- end main content-->
+            <div class="main-content" id="UiProfile" style="display: none;">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="row align-items-center">
+                            <div class="col-sm-6">
+                                <div class="page-title-box">
+                                    <h4 class="font-size-18">Profile</h4>
+                                    <ol class="breadcrumb mb-0">
+                                        <li class="breadcrumb-item">
+                                            <a href="javascript: void(0);">Setting</a>
+                                        </li>
+                                        <li class="breadcrumb-item active">Profile</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Reset Password</h4>
+                                        <p class="card-title-desc">To reset password, you need to input your <code class="highlighter-rouge">Old Password</code> and twice times of <code class="highlighter-rouge">New Pasword</code>.</p>
+                                        <div class="form-group row">
+                                            <label for="example-password-input" class="col-sm-2 col-form-label">Old</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="password" value="" id="ResetPasswordOld">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="example-password-input" class="col-sm-2 col-form-label">New</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="password" value="" id="ResetPasswordNew1">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="example-password-input" class="col-sm-2 col-form-label">Again</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="password" value="" id="ResetPasswordNew2">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 text-right">
+                                            <button class="btn btn-primary w-md waves-effect waves-light" type="submit" id="ResetPassword" onclick="doSetPassword()">Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Email</h4>
+                                        <p class="card-title-desc">To reset email, you just need to input your <code class="highlighter-rouge">New Email</code>. You need to open <code class="highlighter-rouge">Email Serve</code> to send email.</p>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Email Serve</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" id="SetEmailServe" , onchange="doChangeEmailServe()">
+                                                    <option>Off</option>
+                                                    <option>On</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="example-password-input" class="col-sm-2 col-form-label">Email</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" value="" id="ResetEmailShow">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 text-right">
+                                            <button class="btn btn-primary w-md waves-effect waves-light" type="submit" id="ResetEmail" onclick="doSetEmail()">Reset</button>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row -->
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Charles Shan.</span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- end main content-->
+            <div class="main-content" id="UiSetting" style="display: none;">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="row align-items-center">
+                            <div class="col-sm-6">
+                                <div class="page-title-box">
+                                    <h4 class="font-size-18">Setting</h4>
+                                    <ol class="breadcrumb mb-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Setting</a></li>
+                                        <li class="breadcrumb-item active">Setting</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">General Setting</h4>
+                                        <p class="card-title-desc">Language, Size and so on...</p>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Color Mode</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" id="SetColorMode" , onchange="uiChangeColorMode()">
+                                                    <option>Light</option>
+                                                    <option>Dark</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">RTL Mode</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" id="SetRTLMode" , onchange="uiChangeRTLMode()">
+                                                    <option>Off</option>
+                                                    <option>On</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Event Setting</h4>
+                                        <p class="card-title-desc">Set the handling of each request<br>
+                                            <code class="highlighter-rouge">Plain Mode</code>: Automatically agree to the request without logging.<br>
+                                            <code class="highlighter-rouge">Normal Mode</code>: Automatic consent requests are logged simultaneously.<br>
+                                            <code class="highlighter-rouge">Warning Mode</code>: Wait for the system to agree and record.<br>
+                                            <code class="highlighter-rouge">Reject Mode</code>: Logs and automatically denies access.<br>
+                                        </p>
+                                        <div id="UiSettingEvent"></div>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- container-fluid -->
+                    </div>
+                    <!-- End Page-content -->
+                    <footer class="footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Charles Shan.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+                <!-- end main content-->
+            </div>
+            <!-- END layout-wrapper -->
+            <!-- Right Sidebar -->
+            <div class="right-bar">
+                <div data-simplebar class="h-100">
+                    <div class="rightbar-title px-3 py-4">
+                        <a href="javascript:void(0);" class="right-bar-toggle float-right">
+                            <i class="mdi mdi-close noti-icon"></i>
+                        </a>
+                        <h5 class="m-0">Settings</h5>
+                    </div>
+                    <!-- Settings -->
+                    <hr class="mt-0" />
+                    <h6 class="text-center">Choose Layouts</h6>
+                    <div class="p-4">
+                        <div class="mb-2">
+                            <img src="assets/images/layouts/layout-1.jpg" class="img-fluid img-thumbnail" alt="">
+                        </div>
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input theme-choice" id="light-mode-switch" checked />
+                            <label class="custom-control-label" for="light-mode-switch">Light Mode</label>
+                        </div>
+                        <div class="mb-2">
+                            <img src="assets/images/layouts/layout-2.jpg" class="img-fluid img-thumbnail" alt="">
+                        </div>
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input theme-choice" id="dark-mode-switch" data-bsStyle="assets/css/bootstrap-dark.min.css" data-appStyle="assets/css/app-dark.min.css" />
+                            <label class="custom-control-label" for="dark-mode-switch">Dark Mode</label>
+                        </div>
+                        <div class="mb-2">
+                            <img src="assets/images/layouts/layout-3.jpg" class="img-fluid img-thumbnail" alt="">
+                        </div>
+                        <div class="custom-control custom-switch mb-5">
+                            <input type="checkbox" class="custom-control-input theme-choice" id="rtl-mode-switch" data-appStyle="assets/css/app-rtl.min.css" />
+                            <label class="custom-control-label" for="rtl-mode-switch">RTL Mode</label>
+                        </div>
+                    </div>
+                </div> <!-- end slimscroll-menu-->
+            </div>
+            <!-- /Right-bar -->
+            <!-- Right bar overlay-->
+            <div class="rightbar-overlay"></div>
+        </div>
+        <!-- JAVASCRIPT -->
+        <script src="assets/libs/jquery/jquery.min.js"></script>
+        <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/libs/metismenu/metisMenu.min.js"></script>
+        <script src="assets/libs/simplebar/simplebar.min.js"></script>
+        <script src="assets/libs/node-waves/waves.min.js"></script>
+        <!-- Plugin Js-->
+        <script src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=sEmoFD6wGwres3qo3zNNOUbrUEFZRWql"></script>
+        <script src="assets/js/app.js"></script>
+        <script src="assets/js/web3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="assets/js/chart.js"></script>
+        <script src="assets/js/chart.min.js"></script>
+        <script src="assets/js/sweetalert2.min.js"></script>
+        <script src="assets/js/init.js"></script>
+        <script src="assets/js/main.js"></script>
+</body>
+
+</html>

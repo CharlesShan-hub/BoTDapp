@@ -23,7 +23,7 @@
  * 
  * 账户-------------------------------------------------------------------
  * 
- * 登陆                  doLogin()
+ * 登录                  doLogin()
  * 修改密码               doSetPassword()
  * 修改邮箱               doSetEmail()
  * 
@@ -38,6 +38,7 @@
  * 添加事件类型测试         doAddEventTypeTest()
  * 修改事件类型名称         doSetEventClassName(num)
  * 修改事件类型方案         doSetEventClassPlan(num)
+ * 修改事件类型摄像         doSetEventClassCamera(num)
  * 
  * 事件 ------------------------------------------------------------------
  * 
@@ -50,7 +51,7 @@
 // JS功能API - 账户 -----------------------------------------------------
 
 /** 
- * 登陆
+ * 登录
  */
 async function doLogin(){
     if(await auth(document.getElementById("UserPassword").value))
@@ -226,18 +227,30 @@ async function doSetEventClassPlan(num){
     }
 }
 
+/**
+ * 修改记录类型是否打开摄像头
+ */
+async function doSetEventClassCamera(num){
+    var newCamera = document.getElementById("ASRC"+num.toString()).selectedIndex+1;
+    
+    if(await setEventTypeCamera(num,newCamera)){
+        sweetAlert(1,"EventType Camera Config Setted");
+    }else{
+        sweetAlert(2,"EventType Camera Connfig Set Failed!");
+    }
+}
+
 // JS功能API - 事件 ----------------------------------------------------
 
 /**
  * 添加事件测试
  */
 async function doAddEventTest(){
-    //var account   = document.getElementById("AddEventTestI1").value;
-    //var password  = document.getElementById("AddEventTestI2").value;
     var deviceId  = document.getElementById("AddEventTestI3").value;
     var eventType = document.getElementById("AddEventTestS").selectedIndex+1;
-    //document.getElementById("AddEventTestI1").value="";
-    //document.getElementById("AddEventTestI2").value="";
+    if(isNaN(parseFloat(deviceId))) {sweetAlert(2,"DeviceId should be a number!"); return;}
+    if(eventType==1) {sweetAlert(2,"You can't simulate adding Device because decvice exists !"); return;}
+    else if(eventType==2) {sweetAlert(2,"Only physical device can set up adding Event Type!"); return;}
     document.getElementById("AddEventTestS").selectedIndex=1;
     document.getElementById("AddEventTestB").disabled="disabled";
 
@@ -253,7 +266,7 @@ async function doAddEventTest(){
             uiInitDashboardNote();
         }else if(result["wait"]==true){
             sweetAlert(1,"Event Request Send!");
-            uiInitDashboardNote();
+            //uiInitDashboardNote();不要这个!
         }else{
             sweetAlert(2,"Event Rejected!");
         }
@@ -267,10 +280,12 @@ async function doAddEventTest(){
  * 同意或拒绝申请
  */
 async function doAddEventApprove(approve){
-    if(CURRENT_TODOLIST_ID==0||CURRENT_TODOLIST_TYPE==0){
+    if(CURRENT_TODOLIST_ID==0||CURRENT_TODOLIST_TYPE==0||CURRENT_TODOLIST_TName==0){
         sweetAlert(2,"Failed to Get Current Info!");
         console.log(CURRENT_TODOLIST_ID);
         console.log(CURRENT_TODOLIST_TYPE);
+        console.log(CURRENT_TODOLIST_REAL);
+        console.log(CURRENT_TODOLIST_TName);
         return;
     }
 
@@ -283,6 +298,12 @@ async function doAddEventApprove(approve){
         result = await addEventApprove(CURRENT_TODOLIST_ID,approve);
     }else{
         console.log("Wrong Type!");
+    }
+
+    if(!CURRENT_TODOLIST_REAL){
+        console.log("A test device event! simulate wating....");
+        await addEventReply(CURRENT_TODOLIST_TName);
+        console.log("A test device event! simulate done!");
     }
     
     if(result!=false)
@@ -298,6 +319,8 @@ async function doAddEventApprove(approve){
     document.getElementById("ToDoListBC").click();
     CURRENT_TODOLIST_ID=0;
     CURRENT_TODOLIST_TYPE=0;
+    CURRENT_TODOLIST_TName=0;
+    CURRENT_TODOLIST_REAL=0;
     uiInitDashboardNote();
 }
 
@@ -309,9 +332,9 @@ async function doAddEventApprove(approve){
  * 初始化界面                       uiInit()
  * 界面刷新                        uiRefresh()
  * 
- * 登陆登出 ----------------------------------------------------------------
+ * 登录登出 ----------------------------------------------------------------
  * 
- * 登陆                            uiLogin()
+ * 登录                            uiLogin()
  * 登出                            uiLogout()
  * 
  * Dashboard --------------------------------------------------------------
@@ -324,7 +347,7 @@ async function doAddEventApprove(approve){
  * 设备操作弹窗                     uiWinDashboardGallery(id)
  * 初始化数据看板界面消息提示显示区    uiInitDashboardNote()
  * 清除数据看板界面消息提示显示区      uiClearDashboardNote()
- * 添加消息提示显示区                uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail)
+ * 添加消息提示显示区                uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,real,typeDetail)
  * 申请通过弹窗                     uiNotificationRecord(id)
  * 
  * Statistical ------------------------------------------------------------
@@ -369,6 +392,7 @@ async function uiInit(){
     listenAddEventReply();
     uiInitSetting();
     uiInitDashboard();
+    uiInitCamera();
 }
 
 /**
@@ -380,10 +404,10 @@ function uiRefresh(){
     uiInitStatistical();
 }
 
-// 界面API - 登陆登出 -----------------------------------------------------
+// 界面API - 登录登出 -----------------------------------------------------
 
 /**
- * 登陆界面切换
+ * 登录界面切换
  */
 function uiLogin(){
     document.getElementById("UiAfterLogin").style.display="";
@@ -518,7 +542,7 @@ async function uiInitDashboardNote(){
             addDeviceInfo['account'], // account
             -1,               // 没有用
             addDeviceInfo['name'],
-            'Add Device',"",'addDevice');
+            'Add Device',"",true,'addDevice');
     }
 
     // 填充新申请类型添加信息
@@ -540,7 +564,7 @@ async function uiInitDashboardNote(){
             addEventTypeInfo[0], // index
             -1,               // 没有用
             deviceName[0],
-            'Add Event Type',"",'addEventType');
+            'Add Event Type',"",true,'addEventType');
     }
 
     // 填充设备行为申请信息
@@ -566,7 +590,7 @@ async function uiInitDashboardNote(){
             toDoListInfo[3],
             toDoListInfo[0],
             deviceName[1],
-            eventTypeInfo[2],"","addEvent");
+            eventTypeInfo[2],"",toDoListInfo[6],"addEvent");
     }
 }
 
@@ -581,13 +605,16 @@ function uiClearDashboardNote(){
 /** 
  * 添加消息提示显示区
  */
-function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail,toDoListType='addEvent'){
+function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail,real,toDoListType='addEvent'){
     if(toDoListType!='addEvent' && toDoListType!='addEventType' && toDoListType!='addDevice' ){
         console.log('wrong `toDoListType`!');
     }
+    var title;
+    if(real) title="";
+    else title="*";
     var temp = '\
     <a href="" class="text-reset notification-item" data-toggle="modal" \
-        data-target="#DoAddEventApprove" onclick="uiNotificationRecord(\''+toDoListId.toString()+'\',\''+toDoListType+'\')">\
+        data-target="#DoAddEventApprove" onclick="uiNotificationRecord(\''+toDoListId.toString()+'\',\''+toDoListType+'\',\''+typeName+'\',\''+real.toString()+'\')">\
         <div class="media">\
             <div class="avatar-xs mr-3">\
                 <span class="avatar-title bg-success rounded-circle font-size-16">\
@@ -600,6 +627,7 @@ function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail,t
                     <p class="mb-1">'+deviceName+'</p>\
                 </div>\
             </div>\
+            <div id=\'real_flag\' title=\''+title+'\'></div>\
         </div>\
     </a>';
     document.getElementById("NotificationDiv").innerHTML+=temp;
@@ -608,13 +636,17 @@ function uiAddDashboardNote(toDoListId,deviceId,deviceName,typeName,typeDetail,t
 // 目前选择的申请
 var CURRENT_TODOLIST_ID=0;
 var CURRENT_TODOLIST_TYPE=0; // 0, 'AddDevice', 'AddEventType', 'AddEvent'
+var CURRENT_TODOLIST_TName=0;
+var CURRENT_TODOLIST_REAL=0;
 
 /**
  * 申请通过弹窗
  */
-async function uiNotificationRecord(id,type){
+async function uiNotificationRecord(id,type,typeName,real){
     CURRENT_TODOLIST_ID = id;
     CURRENT_TODOLIST_TYPE = type;
+    CURRENT_TODOLIST_TName = typeName;
+    CURRENT_TODOLIST_REAL = (real=='true');
 }
 
 /**
@@ -628,6 +660,7 @@ async function listenAddDevice() {
                 result(false);
             }else{
                 console.log(res["returnValues"]);
+                cameraServerRun(1);
                 if(res["returnValues"]["approve"] == true){
                     console.log("New Device Add!");
                     sweetAlert(1,"Add New Device!");
@@ -675,6 +708,7 @@ async function listenAddEventsClass() {
                 result(false);
             }else{
                 console.log(res["returnValues"]);
+                cameraServerRun(2);
                 if(res["returnValues"]["approve"] == true){
                     console.log("New Events Class Add!");
                     //sweetAlert(1,"Add New Events Class!");
@@ -724,9 +758,9 @@ async function listenAddEvent() {
                 result(false);
             }else{
                 console.log(res["returnValues"]);
-                console.log("woc!!!!!!");
+                cameraServerRun(res["returnValues"]["eventId"]);
                 if(res["returnValues"]["approve"] == false && res["returnValues"]["wait"] == true){
-                    console.log("New Event Request Get!");
+                    console.log("It's a needing approved New Event Request!");
                     uiInitDashboardNote();
                     result(true);
                 }
@@ -774,6 +808,7 @@ async function uiInitStatistical(){
 
     uiInitStatisticalDevicePie();
     uiInitStatisticalEventTypePie();
+    uiInitStatisticalDatabase();
 }
 
 /**
@@ -781,12 +816,14 @@ async function uiInitStatistical(){
  */
 async function uiInitStatisticalDevicePie(){
     document.getElementById("SSimplePie").innerHTML="";
+    document.getElementById("SSimplePie").style.display="";
 
     var deviceNum = await getDeviceNum();
     document.getElementById("SSimplePieH1").innerHTML=deviceNum;
     if(deviceNum==0){
         document.getElementById("SSimplePieP").innerHTML="There is no devices!";
         document.getElementById("SSimplePieH2").innerHTML=0;
+        document.getElementById("SSimplePie").style.display="none";
         return;
     }
     document.getElementById("SSimplePieP").innerHTML="";
@@ -796,16 +833,22 @@ async function uiInitStatisticalDevicePie(){
 
     var deviceLength = await getDeviceNum();
     var res;
+    var isEmpty=true;
     var deviceName = new Array();
     for(var num = 1;num<deviceLength+1;num++){
         res = await getEventLength(num);
         if(res==false) continue;
+        if(res!=0) isEmpty = false;
         eventNum.push(parseInt(res))
         eventsNum+=parseInt(res);
         res = await getDeviceInfoByIndex(num);
         deviceName.push(res["name"]);
     }
     document.getElementById("SSimplePieH2").innerHTML=eventsNum;
+    if(isEmpty){
+        document.getElementById("SSimplePie").style.display="none";
+        document.getElementById("SSimplePieP").innerHTML="There is no events!";
+    }
 
     var colorArray = getColor(deviceLength);
 
@@ -830,10 +873,76 @@ async function uiInitStatisticalDevicePie(){
 }
 
 /**
+ * 填充表格
+ */
+async function uiInitStatisticalDatabase(){
+    document.getElementById('DataBaseBody').innerHTML="";
+
+    var deviceNum = await getDeviceNum();
+    //console.log('*',deviceNum)
+    var eventTypeLength = await getEventsClassLength();
+    //console.log('*',eventTypeLength);
+
+    var eventInfo;
+    var deviceInfo;
+    var deviceName;
+    var eventName;
+    var eventClass;
+    var eventTime;
+    var eventState;
+
+    if ($('#datatable-buttons').hasClass('dataTable')) {
+        var oldTable = $('#datatable-buttons').dataTable();
+        oldTable.fnClearTable(); //清空一下table
+        oldTable.fnDestroy(); //还原初始化了的dataTable
+        //$('#datatable-buttons').empty();
+        console.log("重新装填表格")
+    }
+
+    for(var i=1;i<=deviceNum;i++){
+        for(var j=1;j<=parseInt(await getEventLength(i));j++){
+            deviceInfo = await getDeviceInfoByIndex(i);
+            eventInfo = await getEvent(i,j);
+            deviceName = deviceInfo['name'];
+            eventName = await getEventsClassInfo(eventInfo['class']);
+            eventClass = eventName['class'];
+            if(eventClass==1)
+                eventClass="Auto-Approve";
+            else if(eventClass==2)
+                eventClass="Auto-Approve";
+            else if(eventClass==3)
+                eventClass="Manual";
+            else
+                eventClass="Auto-Reject";
+            eventName = eventName['name'];
+            eventTime = eventInfo['time'];
+            if(!eventInfo['state1']&&!eventInfo['state2'])
+                eventState = 'Approved';
+            else if(!eventInfo['state1']&&eventInfo['state2'])
+                eventState = 'Rejected';
+            else if(eventInfo['state1']&&eventInfo['state2'])
+                eventState = 'Approved';
+            else
+                eventState = 'Rejected';
+            var item = "<tr>\
+                <td>"+getTime(eventTime)+"</td>\
+                <td>"+deviceName+"</td>\
+                <td>"+eventName+"</td>\
+                <td>"+eventClass+"</td>\
+                <td>"+eventState+"</td>\
+                </tr>"
+            document.getElementById('DataBaseBody').innerHTML += item;
+        }
+    }
+
+    $(document).ready(function(){$("#datatable-buttons").DataTable({lengthChange:!1,buttons:["copy","excel","pdf","colvis"]}).buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)")});
+}
+/**
  * 绘制类别饼状图
  */
 async function uiInitStatisticalEventTypePie(){
     document.getElementById("SSimplePie2").innerHTML="";
+    document.getElementById("SSimplePie2").style.display="";
 
     var deviceNum = await getDeviceNum();
     var eventTypeLength = await getEventsClassLength();
@@ -842,6 +951,7 @@ async function uiInitStatisticalEventTypePie(){
     if(deviceNum==0){
         document.getElementById("SSimplePie2P").innerHTML="There is no devices!";
         document.getElementById("SSimplePie2H2").innerHTML=0;
+        document.getElementById("SSimplePie2").style.display="none";
         return;
     }
     document.getElementById("SSimplePie2P").innerHTML="";
@@ -860,6 +970,9 @@ async function uiInitStatisticalEventTypePie(){
         eventName.push(res[2]);
     }
     document.getElementById("SSimplePie2H2").innerHTML=eventsNum;
+    if(eventsNum==0){
+        document.getElementById("SSimplePie2").style.display="none";
+    }
 
     var colorArray = getColor(eventTypeLength);
     
@@ -912,7 +1025,11 @@ async function uiInitProfile(){
     var info = await getEmail();
     document.getElementById("ResetEmailShow").value = info;
     var emailServe = await getEmailServe();
-    document.getElementById("ResetEmailShow").selectedIndex = emailServe;
+    if(emailServe){
+        document.getElementById("SetEmailServe").selectedIndex = "1";
+    }else{
+        document.getElementById("SetEmailServe").selectedIndex = "0";
+    }
 }
 
 /**
@@ -933,6 +1050,30 @@ async function doChangeEmailServe(){
             sweetAlert(1,"Cancel Email Serve");
         }else{
             sweetAlert(2,"Cancel Email Serve Failed!");
+        }
+    }
+}
+
+/**
+ * 摄像头服务选择
+ */
+async function doChangeCameraServe(){
+    var cameraServe = await getCameraServe();
+    if(document.getElementById("SetCameraServe").selectedIndex==1){
+        if(cameraServe==true) return;
+        if(await setCameraServe(true)){
+            startVideo();
+            sweetAlert(1,"Open Camera Serve");
+        }else{
+            sweetAlert(2,"Open Camera Serve Failed!");
+        }
+    }else{
+        if(cameraServe==false) return;
+        if(await setCameraServe(false)){
+            closeVideo();
+            sweetAlert(1,"Cancel Camera Serve");
+        }else{
+            sweetAlert(2,"Cancel Camera Serve Failed!");
         }
     }
 }
@@ -1016,7 +1157,7 @@ async function uiInitSettingEventType(){
     for(var num = 1;num<len+1;num++){
         info = await getEventsClassInfo(num);
         if(info!=false){
-            uiAddSettingEventType(info[0],info[1],info[2]);
+            uiAddSettingEventType(info[0],info[1],info[2],info[3]);
         }
     }
 }
@@ -1032,8 +1173,9 @@ function uiClearSettingEventType(){
 /**
  * 事件种类设置
  */
-function uiAddSettingEventType(id_,class_,name_){
+function uiAddSettingEventType(id_,class_,name_,camera_){
     /**
+     * ASRC: Add Setting Record Camera, 用于记录修改后的是否开启摄像头记录
      * ASRS: Add Setting Record Selection, 用于记录修改后的应对方案
      * ASRI: Add Setting Record Input, 用于记录修改后的名称
      */
@@ -1042,6 +1184,12 @@ function uiAddSettingEventType(id_,class_,name_){
         <h4 class="card-title">\
             <i class="fas fa-address-card"></i><br><br>'+id_.toString()+': '+name_+'\
         </h4>\
+        <div class="form-group row">\
+            <label class="col-sm-2 col-form-label">Camera</label>\
+            <div class="col-sm-10">\
+                <select class="form-control" id="ASRC'+id_.toString()+'" onchange="doSetEventClassCamera('+id_.toString()+')">'+uiAddSettingEventCameraForm(camera_)+'</select>\
+            </div>\
+        </div>\
         <div class="form-group row">\
             <label class="col-sm-2 col-form-label">Mode</label>\
             <div class="col-sm-10">\
@@ -1063,6 +1211,19 @@ function uiAddSettingEventType(id_,class_,name_){
 
     var temp2='<option value='+id_.toString()+'>'+name_+'</option>';
     document.getElementById("AddEventTestS").innerHTML+=temp2;
+}
+
+/**
+ * 事件种类摄像头意愿(下拉框)
+ */
+function uiAddSettingEventCameraForm(camera_){
+    if(camera_){
+        return '<option selected="selected">On</option>\
+        <option>Off</option>';
+    }else{
+        return '<option>On</option>\
+        <option selected="selected">Off</option>';
+    }
 }
 
 /**
@@ -1092,59 +1253,299 @@ function uiAddSettingEventTypeForm(class_){
     }
 }
 
-// 手动刷新位置
-$("#btn").click(function(){
-    $.ajax({
-        url: 'http://localhost:3000/testInfo',
-        type: 'GET',
-        success: function (data) {
-            data = JSON.parse(data);
-
-            var map = new BMapGL.Map('gmaps-markers');
-            map.centerAndZoom(new BMapGL.Point(117, 39), 10);
-            map.enableScrollWheelZoom(true);
-            //map_device = new Array();
-            for (var val in data) {
-                console.log(data[val]);
-                console.log(data[val].latitude/100);
-                console.log(data[val].longitude/100);
-                map.addOverlay(new BMapGL.Marker(new BMapGL.Point(data[val].longitude/100,data[val].latitude/100)));
-            }
-        },
-        error: function (xhr, status, error) {
-            console.log('Error: ' + error.message);
-        },
-    });
-});
-
-// 这个是定时器, 程序会每个15秒自动刷新位置
+/////////////////////////////////////////////////////////////
+// GPS 部分
+/////////////////////////////////////////////////////////////
+// 下面部分是定位相关的内容
+// 一些全局变量
+var gps_data={};
+var gps_last_data={};
+var gps_last_data_flag=true;
+var gps_device_list = {};
+// 自动查询位置信息(每2秒钟)
 setInterval(function () {
     $.ajax({
         url: 'http://localhost:3000/testInfo',
         type: 'GET',
         success: function (data) {
-            data = JSON.parse(data);
-
-            var map = new BMapGL.Map('gmaps-markers');
-            map.centerAndZoom(new BMapGL.Point(117, 39), 10);
-            map.enableScrollWheelZoom(true);
-            //map_device = new Array();
-            for (var val in data) {
-                console.log(data[val]);
-                console.log(data[val].latitude/100);
-                console.log(data[val].longitude/100);
-                map.addOverlay(new BMapGL.Marker(new BMapGL.Point(data[val].longitude/100,data[val].latitude/100)));
-            }
+            gps_data = JSON.parse(data);
         },
         error: function (xhr, status, error) {
             console.log('Error: ' + error.message);
         },
-    });       
-}, 15000); 
-
-var map = new BMapGL.Map('gmaps-markers');
-map.centerAndZoom(new BMapGL.Point(117, 39), 10);
+    });
+}, 2000);
+// 根据位置信息进行界面更新(每5秒钟)
+function gps_data_auto_update(){
+    setInterval(function(){
+        console.log("GPS Info:\n",Object.keys(gps_device_list).length,gps_device_list);
+        // 进行判断设备是否仍然在连接
+        if(gps_last_data_flag){
+            gps_last_data_flag=false;
+            gps_last_data = gps_data;
+        }
+        for (var val in gps_data) {
+            if(val in gps_device_list==false){
+                gps_device_list[val] = 8;
+                show_position();
+            }
+            if(gps_data[val].UTCTime!=gps_last_data[val].UTCTime){
+                if(gps_device_list[val]!=8)
+                    show_position();
+                gps_device_list[val] = 8;
+                map.removeOverlay(label);
+            }
+            //console.log(val,gps_last_data[val].UTCTime);
+        }
+        if(gps_data!={})
+        gps_last_data = gps_data;
+        // 进行计数（到0显示丢失）
+        for(var val in gps_device_list){
+            if(gps_device_list[val]==0) {
+                disappear_position();
+                gps_show_loss_mark(val);
+                label.setContent("信号丢失");
+                //delete gps_device_list[val];
+            }else {
+                gps_device_list[val]--;
+                gps_show_loss_mark_update(val,gps_device_list[val]);
+            }
+        }
+    },4000);
+}
+gps_data_auto_update();
+// 默认标点
+var map = new BMap.Map("gmaps-markers");
 map.enableScrollWheelZoom(true);
+var point = new BMap.Point(115.838943,28.750448);
+map.centerAndZoom(point, 11);
+
+var gps_label_text = "信号丢失";
+var label = new BMap.Label(gps_label_text, {       // 创建文本标注
+    position: point,                          // 设置标注的地理位置
+    //offset: new BMap.Size(10, 20)           // 设置标注的偏移量
+})  
+label.setStyle({                              // 设置label的样式
+    color: '#000',
+    fontSize: '30px',
+    border: '2px solid #1E90FF'
+})
+//marker.disableDragging();           // 不可拖拽 var map = new BMap.Map("l-map");  
+var marker = new BMap.Marker(point);// 创建标注
+// 显示标点
+function show_position(){
+    map.removeOverlay(marker);
+    map.removeOverlay(label);
+    map.addOverlay(marker);             // 将标注添加到地图中 
+    //map.addOverlay(map_label); 
+}
+// 清除标点
+function disappear_position(){
+    map.removeOverlay(marker);
+}
+// 图像显示
+function gps_show_loss_mark(account){
+    gps_label_text = "信号丢失";
+    map.addOverlay(label);
+}
+// 数据更新
+function gps_show_loss_mark_update(account,n){
+    if(n==7) return;
+    map.removeOverlay(label);
+    label.setContent(n.toString());
+    map.addOverlay(label);
+}
+
+/////////////////////////////////////////////////////////////
+// 摄像头 部分
+/////////////////////////////////////////////////////////////
+/**
+ * 初始化摄像头
+ */
+async function uiInitCamera(){
+    // 开启摄像头
+    start.addEventListener('click', doOpenCamera);
+    // 关闭摄像头
+    close.addEventListener('click', doCloseCamera);
+    if(await getCameraServe())startVideo();
+    isUseVideo(); // 判断浏览器是否可以调用摄像头
+}
+let constraints = {
+audio: true,
+video: {
+  width: 400,
+  height: 300
+}
+};
+let video = document.getElementById("video");
+let start = document.getElementById('CameraOn');
+let close = document.getElementById('CameraOff');
+let MediaStreamTrack,image,
+    canvas = document.getElementById("canvas"),
+context = canvas.getContext("2d");
+var chunks = [];
 
 
-            
+// 判断浏览器是否可以调用摄像头
+function isUseVideo(){
+  // 旧版本浏览器可能根本不支持mediaDevices，我们首先设置一个空对象
+  if (navigator.mediaDevices === undefined) {
+    navigator.mediaDevices = {};
+  }
+  // 一些浏览器实现了部分mediaDevices，我们不能只分配一个对象
+  // 使用getUserMedia，因为它会覆盖现有的属性。
+  // 这里，如果缺少getUserMedia属性，就添加它。
+  if (navigator.mediaDevices.getUserMedia === undefined) {
+    navigator.mediaDevices.getUserMedia = function(constraints) {
+      // 首先获取现存的getUserMedia(如果存在)
+      var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+      // 有些浏览器不支持，会返回错误信息
+      // 保持接口一致
+      if (!getUserMedia) {
+        return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+      }
+      //否则，使用Promise将调用包装到旧的navigator.getUserMedia
+      return new Promise(function(resolve, reject) {
+        getUserMedia.call(navigator, constraints, resolve, reject);
+      });
+    }
+  }
+}
+
+
+/**
+ * 全局开启或关闭摄像头功能
+ */
+
+async function doOpenCamera() {
+  var cameraServe = await getCameraServe();
+  if(cameraServe==true){ startVideo(); return;}
+  if(await setCameraServe(true)) {startVideo();
+    document.getElementById("SetCameraServe").selectedIndex=1;
+  }
+  else sweetAlert(2,"Open Camera Serve Failed!");
+}
+  
+async function doCloseCamera(){
+  var cameraServe = await getCameraServe();
+  if(cameraServe==false){ closeVideo(); return;}
+  if(await setCameraServe(false)) {
+    closeVideo();
+    document.getElementById("SetCameraServe").selectedIndex=0;
+  }
+  else sweetAlert(2,"Cancel Camera Serve Failed!");
+}
+
+// 调用摄像头
+function startVideo(){
+  console.log("调用摄像头...");
+  /**
+   * 录像展示的位置
+   */
+  let promise = navigator.mediaDevices.getUserMedia(constraints);
+  promise.then((MediaStream) => {
+    /**
+     * MediaStream 
+     * id: "AfO1m9bSx1TCzvpjKlemjEVWwoVkkg3NbfMP"
+     * active: true
+     * onaddtrack: null
+     * onremovetrack: null
+     * onactive: null
+     * oninactive: null
+     */
+    console.log(MediaStream);
+    MediaStreamTrack = MediaStream;
+    if ("srcObject" in video) {
+      video.srcObject = MediaStream;
+    } else {
+      //避免在新的浏览器中使用它，因为它正在被弃用。
+      video.src = window.URL.createObjectURL(MediaStream);
+    }
+    video.onloadedmetadata = function(e) {
+      video.play();
+    };
+  }).catch((error) => {
+    console.info(error);
+  });
+}
+function closeVideo(){
+  // 两种方法都可以,这个0是指constraints的对象,下标从后面开始计数
+  console.log("停止调用摄像头...");
+  MediaStreamTrack && MediaStreamTrack.getVideoTracks()[0].stop();
+}
+
+// 截图
+function capture(text){
+    // canvas画图
+    context.drawImage(video, 0, 0, 400, 300);
+    watermark(text);
+    // 获取图片base64链接
+    image = canvas.toDataURL('image/png');
+
+    //将图片添加到页面中
+    //document.body.appendChild(img)
+    if (image) {
+      // 将图片转为file文件格式
+      /**
+       * File {name: "ssssss", lastModified: 1582789789554, lastModifiedDate: Thu Feb 27 2020 15:49:49 GMT+0800 (中国标准时间), webkitRelativePath: "", size: 34598, …}
+        name: "ssssss"
+        lastModified: 1582789789554
+        lastModifiedDate: Thu Feb 27 2020 15:49:49 GMT+0800 (中国标准时间) {}
+        webkitRelativePath: ""
+        size: 34598
+        type: "image/png"
+        __proto__: File
+       */
+      let res = dataURLtoFile(image, 'ssssss')
+      console.log(res)
+    }
+    //closeVideo()
+}
+function watermark(text){
+    context.font = "24px 宋体";
+    context.fillStyle = "#FFC17A";
+    context.textAlign = 'left';
+    context.fillText(text, 50, canvas.height - 50);
+}
+// base64转文件
+function dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {
+      type: mime
+    });
+}
+
+// 保存图片到本地
+function getImg(name){
+    // 定义一个img
+    var img = new Image();
+    //设置属性和src
+    img.id = "newImg";
+    img.src = image;
+    img.onload = function(){
+      let a = document.getElementById('down');
+      a.appendChild(img)
+      a.href=image;
+      a.download=name+"_"+getNowTime(); // 下载的图片的名称
+      a.click()
+    }
+}
+
+async function cameraServerRun(eventId){
+    var info = await getEventsClassInfo(eventId);
+    var need1 = info[3];
+    var need2 = await getCameraServe();
+    if(need1 && need2){
+        capture(info["name"]+"\n"+getNowTime2());
+        getImg(info["name"]);
+        console.log("已保存截图");
+        //startVideo();
+    }
+}

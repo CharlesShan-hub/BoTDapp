@@ -4,6 +4,7 @@
 void setup(void){
   pinMode(A0, INPUT);
   pinMode(D2, OUTPUT);
+  digitalWrite(D2, HIGH);
   // Init
   BoT_init();
   // Add Event Type

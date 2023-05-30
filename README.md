@@ -46,6 +46,12 @@
 
 4. 开启私链：`geth --datadir ./mychain/ --networkid 15 --dev --dev.period 0 --password password.txt --http --http.api personal,eth,net,web3 --http.corsdomain '*'  --ws --ws.api personal,eth,net,web3 --ws.origins '*' console --allow-insecure-unlock 2>output.log`
 
+5. ```
+   geth --datadir ./mychain/ --networkid 15 --dev --dev.period 0 --password password.txt --http --http.api personal,eth,net,web3 --http.corsdomain '*'  --ws --ws.port 8546 --ws.api eth,net,web3 console --allow-insecure-unlock 2>output.log
+   ```
+
+6. 
+
 ## Arduino-API
 
 1. 引入方式

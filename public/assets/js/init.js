@@ -20,11 +20,10 @@ var web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8546'))
 // 创建合约
 function getInstance(){
     /*BoT-FLAG-CON1*/
-var CONTRACT = "0xfe7Fdd712517650cdf03DE40C176bE7FB5540639";
+var CONTRACT = "0x822ab3910B96f3D2ea1414616dB46BfB3686728b";
     /*BoT-FLAG-CON2*/
     /*BoT-FLAG-ABI1*/
-var abi = '[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"refresh","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddDeviceTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"bool","name":"wait","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClass","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"index","type":"uint8"},{"indexed":false,"internalType":"bool","name":"approve","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassApprove","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"refresh","type":"bool"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassReply","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint8","name":"eventsClassId","type":"uint8"},{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"AddEventsClassTest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"ReduceDevice","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceInfo","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetDeviceName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"},{"indexed":false,"internalType":"string","name":"email","type":"string"}],"name":"SetEmail","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEmailServe","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypeName","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetEventTypePlan","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"identity","type":"uint256"}],"name":"SetPassword","type":"event"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"_addEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"i","type":"uint8"}],"name":"_reduceAddEventsClass","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"addDeviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addDeviceList","outputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"},{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"addDeviceListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"addDeviceState","outputs":[{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addDeviceTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"string","name":"eventClass","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"addEventState","outputs":[{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventTest","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"},{"internalType":"uint8","name":"_class","type":"uint8"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClass","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"},{"internalType":"bool","name":"_approve","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassApprove","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addEventsClassIndexToName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"addEventsClassLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"addEventsClassList","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"string","name":"name","type":"string"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"addEventsClassNameToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassReply","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"addEventsClassState","outputs":[{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventClass","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"addEventsClassTest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_password","type":"string"}],"name":"auth","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"}],"name":"authAddDevice","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"authAddEvent","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"authAddEventsClass","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_account","type":"address"},{"internalType":"string","name":"_password","type":"string"}],"name":"authDevice","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"authEventsClass","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_str1","type":"string"},{"internalType":"string","name":"_str2","type":"string"}],"name":"compareStr","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"pure","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"deviceAccountToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"deviceIndexToAccount","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"devices","outputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"password","type":"string"},{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"detail","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"devicesNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsById","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint256","name":"time","type":"uint256"},{"internalType":"bool","name":"state1","type":"bool"},{"internalType":"bool","name":"state2","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"eventsClass","outputs":[{"internalType":"uint8","name":"class","type":"uint8"},{"internalType":"uint8","name":"count","type":"uint8"},{"internalType":"string","name":"name","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"eventsClassNameToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"eventsClassNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"eventsNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getAddDevListInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddDevListInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddDevListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getAddEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"getAddEventsClassInfoByName","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getAddEventsClassLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"getDeviceInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"index","type":"uint8"}],"name":"getDeviceInfoByIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"address","name":"","type":"address"},{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDeviceNum","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getEmail","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getEmailServe","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"},{"internalType":"uint8","name":"eventId","type":"uint8"}],"name":"getEvent","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"deviceId","type":"uint8"}],"name":"getEventLength","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassCount","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"getEventsClassIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"id","type":"uint8"}],"name":"getEventsClassInfo","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name","type":"string"}],"name":"getEventsClassInfoByName","outputs":[{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getEventsClassLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint8","name":"i","type":"uint8"}],"name":"getToDoListInfo","outputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"uint8","name":"","type":"uint8"},{"internalType":"bool","name":"","type":"bool"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getToDoListLength","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"reduceDevice","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_detail","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceInfo","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"string","name":"_name","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setDeviceName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"_email","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEmail","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bool","name":"state","type":"bool"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEmailServe","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"string","name":"eventName","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"eventId","type":"uint8"},{"internalType":"uint8","name":"planId","type":"uint8"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setEventTypePlan","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"oldPassword","type":"string"},{"internalType":"string","name":"newPassword","type":"string"},{"internalType":"uint256","name":"identity","type":"uint256"}],"name":"setPassword","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint8","name":"","type":"uint8"}],"name":"toDoList","outputs":[{"internalType":"address","name":"device","type":"address"},{"internalType":"uint8","name":"eventType","type":"uint8"},{"internalType":"uint8","name":"refer","type":"uint8"},{"internalType":"bool","name":"read","type":"bool"},{"internalType":"bool","name":"approve","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"toDoListLen","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"","type":"string"}],"name":"toDoListNameToIndex","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"}]'
-    /*BoT-FLAG-ABI2*/
+var abi = '[ {  "inputs": [         {           "internalType": "address",          "name": "_account",             "type": "address"       },      {           "internalType": "uint8",            "name": "eventId",          "type": "uint8"         },      {           "internalType": "bool",             "name": "real",             "type": "bool"      },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "_addEvent",    "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "nonpayable",    "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "i",            "type": "uint8"         }   ],  "name": "_reduceAddEventsClass",    "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "_account",             "type": "address"       },      {           "internalType": "string",           "name": "_password",            "type": "string"        },      {           "internalType": "string",           "name": "_name",            "type": "string"        },      {           "internalType": "string",           "name": "_detail",          "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addDevice",    "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "_account",             "type": "address"       },      {           "internalType": "bool",             "name": "_approve",             "type": "bool"      },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addDeviceApprove",     "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "inputs": [],   "stateMutability": "nonpayable",    "type": "constructor" }, {  "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "bool",             "name": "approve",          "type": "bool"      },      {           "indexed": false,           "internalType": "bool",             "name": "wait",             "type": "bool"      },      {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddDevice",    "type": "event" }, {    "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "address",          "name": "account",          "type": "address"       },      {           "indexed": false,           "internalType": "bool",             "name": "approve",          "type": "bool"      },      {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddDeviceApprove",     "type": "event" }, {    "inputs": [         {           "internalType": "address",          "name": "account",          "type": "address"       },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addDeviceReply",   "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "bool",             "name": "refresh",          "type": "bool"      },      {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddDeviceReply",   "type": "event" }, {    "inputs": [         {           "internalType": "address",          "name": "_account",             "type": "address"       },      {           "internalType": "string",           "name": "_password",            "type": "string"        },      {           "internalType": "string",           "name": "_name",            "type": "string"        },      {           "internalType": "string",           "name": "_detail",          "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addDeviceTest",    "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddDeviceTest",    "type": "event" }, {    "inputs": [         {           "internalType": "address",          "name": "_account",             "type": "address"       },      {           "internalType": "string",           "name": "_password",            "type": "string"        },      {           "internalType": "string",           "name": "eventClass",           "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addEvent",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "bool",             "name": "approve",          "type": "bool"      },      {           "indexed": false,           "internalType": "bool",             "name": "wait",             "type": "bool"      },      {           "indexed": false,           "internalType": "uint256",          "name": "eventId",          "type": "uint256"       },      {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddEvent",     "type": "event" }, {    "inputs": [         {           "internalType": "uint8",            "name": "index",            "type": "uint8"         },      {           "internalType": "bool",             "name": "approve",          "type": "bool"      },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addEventApprove",  "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddEventApprove",  "type": "event" }, {    "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addEventReply",    "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddEventReply",    "type": "event" }, {    "inputs": [         {           "internalType": "address",          "name": "_account",             "type": "address"       },      {           "internalType": "string",           "name": "_password",            "type": "string"        },      {           "internalType": "uint8",            "name": "_class",           "type": "uint8"         },      {           "internalType": "string",           "name": "_name",            "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addEventsClass",   "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "index",            "type": "uint8"         },      {           "internalType": "bool",             "name": "_approve",             "type": "bool"      },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addEventsClassApprove",    "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "address",          "name": "_account",             "type": "address"       },      {           "indexed": false,           "internalType": "uint8",            "name": "eventId",          "type": "uint8"         }   ],  "name": "AddEventTest",     "type": "event" }, {    "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "bool",             "name": "approve",          "type": "bool"      },      {           "indexed": false,           "internalType": "bool",             "name": "wait",             "type": "bool"      },      {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddEventsClass",   "type": "event" }, {    "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint8",            "name": "index",            "type": "uint8"         },      {           "indexed": false,           "internalType": "bool",             "name": "approve",          "type": "bool"      },      {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddEventsClassApprove",    "type": "event" }, {    "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addEventsClassReply",  "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "bool",             "name": "refresh",          "type": "bool"      },      {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddEventsClassReply",  "type": "event" }, {    "inputs": [         {           "internalType": "uint8",            "name": "eventClass",           "type": "uint8"         },      {           "internalType": "string",           "name": "eventName",            "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addEventsClassTest",   "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint8",            "name": "eventsClassId",            "type": "uint8"         },      {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "AddEventsClassTest",   "type": "event" }, {    "inputs": [         {           "internalType": "address",          "name": "_account",             "type": "address"       },      {           "internalType": "uint8",            "name": "eventId",          "type": "uint8"         },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "addEventTest",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "nonpayable",    "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "account",          "type": "address"       },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "reduceDevice",     "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "ReduceDevice",     "type": "event" }, {    "inputs": [         {           "internalType": "bool",             "name": "state",            "type": "bool"      },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "setCameraServe",   "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "SetCameraServe",   "type": "event" }, {    "inputs": [         {           "internalType": "address",          "name": "account",          "type": "address"       },      {           "internalType": "string",           "name": "_name",            "type": "string"        },      {           "internalType": "string",           "name": "_detail",          "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "setDeviceInfo",    "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "SetDeviceInfo",    "type": "event" }, {    "inputs": [         {           "internalType": "address",          "name": "account",          "type": "address"       },      {           "internalType": "string",           "name": "_name",            "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "setDeviceName",    "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "SetDeviceName",    "type": "event" }, {    "inputs": [         {           "internalType": "string",           "name": "_email",           "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "setEmail",     "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       },      {           "indexed": false,           "internalType": "string",           "name": "email",            "type": "string"        }   ],  "name": "SetEmail",     "type": "event" }, {    "inputs": [         {           "internalType": "bool",             "name": "state",            "type": "bool"      },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "setEmailServe",    "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "SetEmailServe",    "type": "event" }, {    "inputs": [         {           "internalType": "uint8",            "name": "eventId",          "type": "uint8"         },      {           "internalType": "bool",             "name": "camera",           "type": "bool"      },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "setEventTypeCamera",   "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "SetEventTypeCamera",   "type": "event" }, {    "inputs": [         {           "internalType": "uint8",            "name": "eventId",          "type": "uint8"         },      {           "internalType": "string",           "name": "eventName",            "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "setEventTypeName",     "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "SetEventTypeName",     "type": "event" }, {    "inputs": [         {           "internalType": "uint8",            "name": "eventId",          "type": "uint8"         },      {           "internalType": "uint8",            "name": "planId",           "type": "uint8"         },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "setEventTypePlan",     "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "SetEventTypePlan",     "type": "event" }, {    "inputs": [         {           "internalType": "string",           "name": "oldPassword",          "type": "string"        },      {           "internalType": "string",           "name": "newPassword",          "type": "string"        },      {           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "setPassword",  "outputs": [],  "stateMutability": "nonpayable",    "type": "function" }, {     "anonymous": false,     "inputs": [         {           "indexed": false,           "internalType": "uint256",          "name": "identity",             "type": "uint256"       }   ],  "name": "SetPassword",  "type": "event" }, {    "inputs": [         {           "internalType": "address",          "name": "",             "type": "address"       }   ],  "name": "addDeviceAccountToIndex",  "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "name": "addDeviceIndexToAccount",  "outputs": [        {           "internalType": "address",          "name": "",             "type": "address"       }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "name": "addDeviceList",    "outputs": [        {           "internalType": "string",           "name": "name",             "type": "string"        },      {           "internalType": "string",           "name": "detail",           "type": "string"        },      {           "internalType": "address",          "name": "account",          "type": "address"       },      {           "internalType": "string",           "name": "password",             "type": "string"        },      {           "internalType": "bool",             "name": "read",             "type": "bool"      },      {           "internalType": "bool",             "name": "approve",          "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "addDeviceListLen",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "account",          "type": "address"       }   ],  "name": "addDeviceState",   "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      },      {           "internalType": "bool",             "name": "",             "type": "bool"      },      {           "internalType": "string",           "name": "",             "type": "string"        }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "name": "addEventsClassIndexToName",    "outputs": [        {           "internalType": "string",           "name": "",             "type": "string"        }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "addEventsClassLen",    "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "name": "addEventsClassList",   "outputs": [        {           "internalType": "address",          "name": "account",          "type": "address"       },      {           "internalType": "uint8",            "name": "class",            "type": "uint8"         },      {           "internalType": "string",           "name": "name",             "type": "string"        },      {           "internalType": "bool",             "name": "read",             "type": "bool"      },      {           "internalType": "bool",             "name": "approve",          "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "",             "type": "string"        }   ],  "name": "addEventsClassNameToIndex",    "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        }   ],  "name": "addEventsClassState",  "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        }   ],  "name": "addEventState",    "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "_password",            "type": "string"        }   ],  "name": "auth",     "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "_account",             "type": "address"       }   ],  "name": "authAddDevice",    "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        }   ],  "name": "authAddEvent",     "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        }   ],  "name": "authAddEventsClass",   "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "_account",             "type": "address"       },      {           "internalType": "string",           "name": "_password",            "type": "string"        }   ],  "name": "authDevice",   "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        }   ],  "name": "authEventsClass",  "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "_str1",            "type": "string"        },      {           "internalType": "string",           "name": "_str2",            "type": "string"        }   ],  "name": "compareStr",   "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "pure",  "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "",             "type": "address"       }   ],  "name": "deviceAccountToIndex",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "name": "deviceIndexToAccount",     "outputs": [        {           "internalType": "address",          "name": "",             "type": "address"       }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "name": "devices",  "outputs": [        {           "internalType": "address",          "name": "account",          "type": "address"       },      {           "internalType": "string",           "name": "password",             "type": "string"        },      {           "internalType": "string",           "name": "name",             "type": "string"        },      {           "internalType": "string",           "name": "detail",           "type": "string"        }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "devicesNum",   "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "",             "type": "address"       },      {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "name": "eventsById",   "outputs": [        {           "internalType": "uint8",            "name": "class",            "type": "uint8"         },      {           "internalType": "uint256",          "name": "time",             "type": "uint256"       },      {           "internalType": "bool",             "name": "state1",           "type": "bool"      },      {           "internalType": "bool",             "name": "state2",           "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "name": "eventsClass",  "outputs": [        {           "internalType": "uint8",            "name": "class",            "type": "uint8"         },      {           "internalType": "uint8",            "name": "count",            "type": "uint8"         },      {           "internalType": "string",           "name": "name",             "type": "string"        },      {           "internalType": "bool",             "name": "camera",           "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "",             "type": "string"        }   ],  "name": "eventsClassNameToIndex",   "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "eventsClassNum",   "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "",             "type": "address"       }   ],  "name": "eventsNum",    "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "account",          "type": "address"       }   ],  "name": "getAddDevListInfo",    "outputs": [        {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "address",          "name": "",             "type": "address"       },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "bool",             "name": "",             "type": "bool"      },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "index",            "type": "uint8"         }   ],  "name": "getAddDevListInfoByIndex",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "address",          "name": "",             "type": "address"       },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "bool",             "name": "",             "type": "bool"      },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "getAddDevListLen",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "index",            "type": "uint8"         }   ],  "name": "getAddEventsClassInfo",    "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "address",          "name": "",             "type": "address"       },      {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        }   ],  "name": "getAddEventsClassInfoByName",  "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "address",          "name": "",             "type": "address"       },      {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "getAddEventsClassLen",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "getCameraServe",   "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "address",          "name": "account",          "type": "address"       }   ],  "name": "getDeviceInfo",    "outputs": [        {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "string",           "name": "",             "type": "string"        }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "index",            "type": "uint8"         }   ],  "name": "getDeviceInfoByIndex",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "address",          "name": "",             "type": "address"       },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "string",           "name": "",             "type": "string"        }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "getDeviceNum",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "getEmail",     "outputs": [        {           "internalType": "string",           "name": "",             "type": "string"        }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "getEmailServe",    "outputs": [        {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "deviceId",             "type": "uint8"         },      {           "internalType": "uint8",            "name": "eventId",          "type": "uint8"         }   ],  "name": "getEvent",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "uint256",          "name": "",             "type": "uint256"       },      {           "internalType": "bool",             "name": "",             "type": "bool"      },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "deviceId",             "type": "uint8"         }   ],  "name": "getEventLength",   "outputs": [        {           "internalType": "uint256",          "name": "",             "type": "uint256"       }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "id",           "type": "uint8"         }   ],  "name": "getEventsClassCount",  "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        }   ],  "name": "getEventsClassIndex",  "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "id",           "type": "uint8"         }   ],  "name": "getEventsClassInfo",   "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "name",             "type": "string"        }   ],  "name": "getEventsClassInfoByName",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "string",           "name": "",             "type": "string"        },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "getEventsClassLength",     "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "i",            "type": "uint8"         }   ],  "name": "getToDoListInfo",  "outputs": [        {           "internalType": "address",          "name": "",             "type": "address"       },      {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "uint8",            "name": "",             "type": "uint8"         },      {           "internalType": "bool",             "name": "",             "type": "bool"      },      {           "internalType": "bool",             "name": "",             "type": "bool"      },      {           "internalType": "bool",             "name": "",             "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "getToDoListLength",    "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "name": "toDoList",     "outputs": [        {           "internalType": "bool",             "name": "real",             "type": "bool"      },      {           "internalType": "address",          "name": "device",           "type": "address"       },      {           "internalType": "uint8",            "name": "eventType",            "type": "uint8"         },      {           "internalType": "uint8",            "name": "refer",            "type": "uint8"         },      {           "internalType": "bool",             "name": "read",             "type": "bool"      },      {           "internalType": "bool",             "name": "approve",          "type": "bool"      }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [],   "name": "toDoListLen",  "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" }, {     "inputs": [         {           "internalType": "string",           "name": "",             "type": "string"        }   ],  "name": "toDoListNameToIndex",  "outputs": [        {           "internalType": "uint8",            "name": "",             "type": "uint8"         }   ],  "stateMutability": "view",  "type": "function" } ]';
     return new web3.eth.Contract(JSON.parse(abi),CONTRACT);
 }
 var contract = getInstance();
@@ -44,6 +43,8 @@ var contract = getInstance();
  * 设置邮箱                    setEmail(email)
  * 获取邮箱服务                 getEmailServe()
  * 设置邮箱服务                 setEmailServe(emailServe)
+ * 获取摄像头服务               getCameraServe
+ * 设置摄像头服务               setCameraServe(cameraServe)
  * 
  * 设备-------------------------------------------------------------------
  * 
@@ -65,7 +66,8 @@ var contract = getInstance();
  * 获取敏感事件类别信息          getEventsClassInfo()
  * 修改敏感事件应对方案          setEventTypePlan(eventId,newClass)
  * 修改敏感事件名称             setEventTypeName(eventId,newName)
- * 添加事件类型                 addEventType(eventClass,eventName)
+ * 修改敏感事件是否开启摄像头     setEventTypeCamera(eventId,newCamera)
+ * 添加事件类型                addEventType(eventClass,eventName)
  * 获取敏感事件类别计数          getEventsClassCount(eventId)
  * 
  * 待办清单 ---------------------------------------------------------------
@@ -82,6 +84,29 @@ var contract = getInstance();
  * 事件Id合法认证               authEvent(id)
  */
 /*************************************************************************/
+
+// 工具函数
+
+/**
+ * 设置监听器
+ */
+async function setListener(identity,eventName){
+    new Promise(function(result,error){
+        contract.once(eventName, {}, function(error, event){ 
+            if(event["returnValues"]["identity"]==identity)eval("FLAG"+eventName+" = "+identity);
+        });
+    });
+}
+
+/**
+ * 获取监听器信息
+ */
+function getListenerRes(identity,eventName){
+    while(eval("FLAG"+eventName+" != "+identity));
+    var temp;eval("temp = FLAG"+eventName);
+    eval("FLAG"+eventName+" = undefined");
+    return temp==identity;
+}
 
 // 合约接口API - 账户 -----------------------------------------------------
 
@@ -104,6 +129,7 @@ function getAccount0(){
  * 解锁account0
  */
 async function unlockAccount0(){
+    /*
     var account = await getAccount0();
     return new Promise(function(result){
         if(account==false){
@@ -115,16 +141,18 @@ async function unlockAccount0(){
             console.log("unlockAccount failed",reason);
             result(false);
         });
-    });
+    });*/
 }
 
 /**
  * 添加账户
  */
 function addAccount(){
+    const genRanHex = size => [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+    var _account = "0x"+genRanHex(40);
     var _password = randomNum(10000000,99999999).toString();
-    var _account;
-
+    return {"account":_account,"password":_password};
+    /*
     return new Promise(function(result){
         web3.eth.personal.newAccount(_password).then(function(value) {
             _account = value;
@@ -134,35 +162,7 @@ function addAccount(){
             console.log(reason);
             result(false);
         });
-    });
-}
-
-/**
- *  转账
- */
-function transfer(_from,_password,_to,_value){
-    web3.eth.personal.unlockAccount(_from,_password).then(function(value){
-        // 解锁账户 - 成功
-        console.log("unlockAccount",_from);
-        // 转钱
-        web3.eth.sendTransaction({
-            from: _from,
-            to: _to,
-            value: web3.utils.toWei(_value.toString(), 'ether')
-        }).then(function(value){
-            // 为设备生成一个账户 - 成功
-            console.log("transfer",_from,"to",_to,_value);
-            return true;
-        }, function(reason) {
-            // 为设备生成一个账户 - 失败
-            console.log("transfer failed",reason);
-            return false;
-        })
-    }, function(reason) {
-        // 解锁账户 - 失败
-        console.log("unlockAccount failed",reason);
-        return false;
-    });
+    });*/
 }
 
 /**
@@ -205,25 +205,12 @@ async function _setPassword(oldPassword,newPassword,identity){
         });
     });
 }
-async function setPassword(oldPassword,newPassword,identity){
+FLAGSetPassword=undefined;
+async function setPassword(oldPassword,newPassword){
     var identity = randomNum(100000,999999);
-    if(await _setPassword(oldPassword,newPassword,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('SetPassword',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
+    setListener(identity,'SetPassword');
+    if(await _setPassword(oldPassword,newPassword,identity)==false) return false;
+    return getListenerRes(identity,'SetPassword');
 }
 
 /**
@@ -268,25 +255,12 @@ async function _setEmail(email,identity){
         });
     });
 }
-async function setEmail(email,identity){
+FLAGSetEmail=undefined;
+async function setEmail(email){
     var identity = randomNum(100000,999999);
-    if(await _setEmail(email,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('SetEmail',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
+    setListener(identity,'SetEmail');
+    if(await _setEmail(email,identity)==false) return false;
+    return getListenerRes(identity,'SetEmail');
 }
 
 
@@ -333,25 +307,63 @@ async function _setEmailServe(email,identity){
         });
     });
 }
-async function setEmailServe(email,identity){
+FLAGSetEmailServe=undefined;
+async function setEmailServe(email){
     var identity = randomNum(100000,999999);
-    if(await _setEmailServe(email,identity)==false){
-        return false;
-    }
+    setListener(identity,'SetEmailServe');
+    if(await _setEmailServe(email,identity)==false) return false;
+    return getListenerRes(identity,'SetEmailServe');
+}
+
+/**
+ * 获取摄像头服务
+ */
+async function getCameraServe(){
     return new Promise(function(result){
-        contract.getPastEvents('SetEmailServe',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
+        try{
+            contract.methods.getCameraServe().call(function(error, res){
+                if(error){
+                    console.log("Error: Fail to get cameraServe(C)");
+                    result(false);
+                }else{
+                    console.log("Get Camera Serve: ",res);
+                    result(res);
                 }
-            }
+            });
+        }catch{
+            console.log("Error: Fail to get cameraServe!");
+            result(false);
+        }
+    });
+}
+
+
+/**
+ * 修改摄像头服务
+ */
+async function _setCameraServe(camera,identity){
+    var account = await getAccount0();
+    return new Promise(function(result){
+        if(account==false){
+            console.log("getAccount0 failed ",identity);
+            result(false);
+        }
+        contract.methods.setCameraServe(camera,identity).send({from:account})
+        .then(function(res){
+            console.log("Change Camera Serve Send ",identity);
+            result(true);
+        }, function(reason) {
+            console.log("Change Camera Serve failed!",reason);
+            result(false);
         });
     });
+}
+FLAGSetCameraServe=undefined;
+async function setCameraServe(camera){
+    var identity = randomNum(100000,999999);
+    setListener(identity,'SetCameraServe');
+    if(await _setCameraServe(camera,identity)==false) return false;
+    return getListenerRes(identity,'SetCameraServe');
 }
 
 
@@ -427,25 +439,12 @@ async function _setDeviceName(_account,name,identity){
         });
     });
 }
+FLAGSetDeviceName = undefined;
 async function setDeviceName(_account,name){
     var identity = randomNum(100000,999999);
-    if(await _setDeviceName(_account,name,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('SetDeviceName',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
+    setListener(identity,'SetDeviceName');
+    if(await _setDeviceName(_account,name,identity)==false) return false;
+    return getListenerRes(identity,'SetDeviceName');
 }
 
 /**
@@ -468,25 +467,12 @@ async function _setDeviceInfo(_account,name,detail,identity){
         });
     });
 }
+FLAGSetDeviceInfo = false;
 async function setDeviceInfo(_account,name,detail){
-    var identity = randomNum(100000,999999);
-    if(await _setDeviceInfo(_account,name,detail,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('SetDeviceInfo',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
+    var identity = randomNum(100000,999999);                                    // 设置随机数
+    setListener(identity,'SetDeviceInfo');                                      // 设置监听器(监听以太坊)
+    if(await _setDeviceInfo(_account,name,detail,identity)==false) return false;// 向以太坊申请修改信息
+    return getListenerRes(identity,'SetDeviceInfo');                            // 监听器收到以太坊结果
 }
 
 /**
@@ -509,25 +495,12 @@ async function _reduceDevice(_account,identity){
         });
     });
 }
+FLAGReduceDevice=undefined;
 async function reduceDevice(_account){
     var identity = randomNum(100000,999999);
-    if(await _reduceDevice(_account,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('ReduceDevice',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
+    setListener(identity,'ReduceDevice');
+    if(await _reduceDevice(_account,identity)==false) return false;
+    return getListenerRes(identity,'ReduceDevice');
 }
 
 /**
@@ -629,25 +602,12 @@ async function _addDeviceTest(_account,password,name,detail,identity){
         });
     });
 }
+FLAGAddDeviceTest=undefined;
 async function addDeviceTest(_account,password,name,detail){
     var identity = randomNum(100000,999999);
-    if(await _addDeviceTest(_account,password,name,detail,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('AddDeviceTest',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
+    setListener(identity,'AddDeviceTest');
+    if(await _addDeviceTest(_account,password,name,detail,identity)==false) return false;
+    return getListenerRes(identity,'AddDeviceTest');
 }
 
 /**
@@ -670,25 +630,12 @@ async function _addDeviceApprove(_account,approve,identity){
         });
     });
 }
+FLAGAddDeviceApprove=undefined;
 async function addDeviceApprove(account,approve){
     var identity = randomNum(100000,999999);
-    if(await _addDeviceApprove(account,approve,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('AddDeviceApprove',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
+    setListener(identity,'AddDeviceApprove');
+    if(await _addDeviceApprove(account,approve,identity)==false) return false;
+    return getListenerRes(identity,'AddDeviceApprove');
 }
 
 // 合约接口API - 敏感事件类别 ---------------------------------------------------
@@ -722,8 +669,8 @@ async function getEventsClassInfo(eventTypeId){
             }else{
                 console.log("Event Type Info: ",res);
                 result({
-                    '0':res[0],'1':res[1],'2':res[2],
-                    'id':res[0],'class':res[1],'name':res[2]
+                    '0':res[0],'1':res[1],'2':res[2],'3':res[3],
+                    'id':res[0],'class':res[1],'name':res[2],'camera':res[3]
                 });
             }
         });
@@ -767,25 +714,12 @@ async function _setEventTypePlan(eventId,newClass,identity){
         });
     });
 }
+FLAGSetEventTypePlan=undefined;
 async function setEventTypePlan(eventId,newClass){
     var identity = randomNum(100000,999999);
-    if(await _setEventTypePlan(eventId,newClass,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('SetEventTypePlan',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
+    setListener(identity,'SetEventTypePlan');
+    if(await _setEventTypePlan(eventId,newClass,identity)==false) return false;
+    return getListenerRes(identity,'SetEventTypePlan');
 }
 
 /**
@@ -808,25 +742,40 @@ async function _setEventTypeName(eventId,newName,identity){
         });
     });
 }
+FLAGSetEventTypeName=undefined;
 async function setEventTypeName(eventId,newName){
     var identity = randomNum(100000,999999);
-    if(await _setEventTypeName(eventId,newName,identity)==false){
-        return false;
-    }
+    setListener(identity,'SetEventTypeName');
+    if(await _setEventTypeName(eventId,newName,identity)==false) return false;
+    return getListenerRes(identity,'SetEventTypeName');
+}
+
+/**
+ * 修改敏感事件是否开启摄像头
+ */
+async function _setEventTypeCamera(eventId,newCamera,identity){
+    var account = await getAccount0();
     return new Promise(function(result){
-        contract.getPastEvents('SetEventTypeName',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
+        if(account==false){
+            console.log("getAccount0 failed ",identity);
+            result(false);
+        }
+        contract.methods.setEventTypeCamera(eventId,newCamera,identity).send({from:account})
+        .then(function(res){
+            console.log("EventType Camera Config Change Request Send",res);
+            result(true)
+        }, function(error) {
+            console.log("EventType Camera Config Change Failed!",error);
+            result(false);
         });
     });
+}
+FLAGSetEventTypeCamera=undefined;
+async function setEventTypeCamera(eventId,newCamera){
+    var identity = randomNum(100000,999999);
+    setListener(identity,'SetEventTypeCamera');
+    if(await _setEventTypeCamera(eventId,newCamera,identity)==false) return false;
+    return getListenerRes(identity,'SetEventTypeCamera');
 }
 
 /**
@@ -903,25 +852,12 @@ async function _addEventsClassTest(eventClass,eventName,identity){
         });
     });
 }
+FLAGAddEventsClassTest=undefined;
 async function addEventsClassTest(eventClass,eventName){
     var identity = randomNum(100000,999999);
-    if(await _addEventsClassTest(eventClass,eventName,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('AddEventsClassTest',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(parseInt(res[i]["returnValues"]["eventsClassId"]));
-                    }
-                }
-            }
-        });
-    });
+    setListener(identity,'AddEventsClassTest');
+    if(await _addEventsClassTest(eventClass,eventName,identity)==false) return false;
+    return getListenerRes(identity,'AddEventsClassTest');
 }
 
 /**
@@ -944,25 +880,12 @@ async function _addEventsClassApprove(index,approve,identity){
         });
     });
 }
+FLAGAddEventsClassApprove=undefined;
 async function addEventsClassApprove(index,approve){
     var identity = randomNum(100000,999999);
-    if(await _addEventsClassApprove(index,approve,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('AddEventsClassApprove',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else{
-                for(var i=0;i<res.length;i++){
-                    if(res[i]["returnValues"]["identity"]==identity){
-                        result(true);
-                    }
-                }
-            }
-        });
-    });
+    setListener(identity,'AddEventsClassApprove');
+    if(await _addEventsClassApprove(index,approve,identity)==false) return false;
+    return getListenerRes(identity,'AddEventsClassApprove');
 }
 
 // 合约接口API - 敏感事件 ----------------------------------------------------
@@ -1035,8 +958,8 @@ function getToDoListInfo(id){
             }else{
                 console.log("To Do List Info: ",res);
                 result({
-                    '0':res[0],'1':res[1],'2':res[2],'3':res[3],'4':res[4],'5':res[5],
-                    'account':res[0],'eventType':res[1],'refer':res[2],'id':res[3],'read':res[4],'approve':res[5],
+                    '0':res[0],'1':res[1],'2':res[2],'3':res[3],'4':res[4],'5':res[5],'6':res[6],
+                    'account':res[0],'eventType':res[1],'refer':res[2],'id':res[3],'read':res[4],'approve':res[5],'real':res[6]
                 });
             }
         });
@@ -1063,24 +986,29 @@ async function _addEventTest(_account,eventId,identity){
         });
     });
 }
+//FLAGAddEvent=undefined;
 async function addEventTest(_account,eventId){
+    let FLAGAddEvent="";
     var identity = randomNum(100000,999999);
-    if(await _addEventTest(_account,eventId,identity)==false){
-        return false;
-    }
-    return new Promise(function(result){
-        contract.getPastEvents('AddEvent',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else
-                for(var i=0;i<res.length;i++)
-                    if(res[i]["returnValues"]["identity"]==identity)
-                        result({"approve":res[i]["returnValues"]["approve"],
-                            "wait":res[i]["returnValues"]["wait"]});
+    setListener(identity,'AddEvent');
+    //if(await _addEventTest(_account,eventId,identity)==false) return false;
+    _addEventTest(_account,eventId,identity);
+    return new Promise(function(result,error){
+        contract.once("AddEvent", {}, function(error, event){ 
+            FLAGAddEvent = event["returnValues"];
+            result({'approve':FLAGAddEvent["approve"],'wait':FLAGAddEvent["wait"]});
+            //console.log("aaaaaa1.5,",FLAGAddEvent);
+            //FLAGAddEvent=event["returnValues"];
+            //console.log("aaaaaa1.5,",FLAGAddEvent["identity"]);
         });
     });
+
+    //console.log("aaaaaaaaaaaaa1",identity,FLAGAddEvent["identity"]);
+    //while(FLAGAddEvent["identity"]!=identity){console.log(FLAGAddEvent["identity"])}
+    //console.log("aaaaaaaaaaaaa2");
+	//return {'approve':FLAGAddEvent["approve"],'wait':FLAGAddEvent["wait"]};
 }
+
 
 /**
  * 清单信息同意/拒绝
@@ -1102,22 +1030,39 @@ async function _addEventApprove(index,approve,identity){
         });
     });
 }
+FLAGAddEventApprove=undefined;
 async function addEventApprove(index,approve){
     var identity = randomNum(100000,999999);
-    if(await _addEventApprove(index,approve,identity)==false){
-        return false;
-    }
+    setListener(identity,'AddEventApprove');
+    if(await _addEventApprove(index,approve,identity)==false) return false;
+    return getListenerRes(identity,'AddEventApprove');
+}
+
+/**
+ * 添加事件批准回复(针对于模拟申请批准或拒绝后，清空待办清单)
+ */
+async function _addEventReply(name,identity) {
+    var account_ = await getAccount0();
     return new Promise(function(result){
-        contract.getPastEvents('AddEventApprove',function(err, res){
-            if(err){
-                console.log("watcher err",err);
-                result(false);
-            }else
-                for(var i=0;i<res.length;i++)
-                    if(res[i]["returnValues"]["identity"]==identity)
-                        result(true);
+        if(account_==false){
+            result(false);
+        }
+        contract.methods.addEventReply(name,identity).send({from:account_})
+        .then(function(res){
+            console.log("Add Event Reply Request Send ",identity);
+            result(true);
+        }, function(reason) {
+            console.log("Add Event Reply failed!",reason);
+            result(false);
         });
     });
+}
+FLAGAddEventReply=undefined;
+async function addEventReply(name){
+    var identity = randomNum(100000,999999);
+    setListener(identity,'AddEventReply');
+    if(await _addEventReply(name,identity)==false) return false;
+    return getListenerRes(identity,'AddEventReply');
 }
 
 /*************************************************************************/
@@ -1185,4 +1130,46 @@ function sweetAlert(type,word){
     }
 }
 
+/** 
+ * 时间戳转时间字符串
+ */
+function getTime(timestamp){
+    let date = new Date(parseInt(timestamp) * 1000);
+    let Year = date.getFullYear();
+    let Moth = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+    let Day = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
+    let Hour = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours());
+    let Minute = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    let Sechond = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+    let  GMT =  Year + '-' + Moth + '-' + Day + '   '+ Hour +':'+ Minute  + ':' + Sechond;
+    return GMT;
+}
+
+/**
+ * 获取当前时间
+ */
+function getNowTime(){
+    var timestamp = Date.parse(new Date());
+    let date = new Date(parseInt(timestamp));
+    let Year = date.getFullYear();
+    let Moth = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+    let Day = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
+    let Hour = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours());
+    let Minute = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    let Sechond = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+    let  GMT =  Year + '-' + Moth + '-' + Day + '_'+ Hour +'-'+ Minute  + '-' + Sechond;
+    return GMT;
+}
+function getNowTime2(){
+    var timestamp = Date.parse(new Date());
+    let date = new Date(parseInt(timestamp));
+    let Year = date.getFullYear();
+    let Moth = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+    let Day = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
+    let Hour = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours());
+    let Minute = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    let Sechond = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+    let  GMT =  Year + '-' + Moth + '-' + Day + '\n'+ Hour +':'+ Minute  + ':' + Sechond;
+    return GMT;
+}
 

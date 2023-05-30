@@ -3,12 +3,15 @@ pragma solidity ^0.8.0;
 contract BoT{
     /******************************************************************/
     /** Auth
-     * auth          登陆认证
-     * setPassword   重制密码
-     * getEmail      获取邮箱
-     * setEmail      设置邮箱
-     * setEmailServe 设置邮箱服务
-     * getEmailServe 查看邮箱服务
+     * 
+     * auth           登陆认证
+     * setPassword    重制密码
+     * getEmail       获取邮箱
+     * setEmail       设置邮箱
+     * setEmailServe  设置邮箱服务
+     * getEmailServe  查看邮箱服务
+     * setCameraServe 设置摄像头服务
+     * getEmailServe  获取摄像头服务
      */
     /******************************************************************/
     string password = "";
@@ -54,27 +57,48 @@ contract BoT{
         emit SetEmailServe(identity);
     }
 
+    bool cameraServe = false;
+
+    // 获取摄像头服务
+    function getCameraServe()public view returns(bool){
+        return cameraServe;
+    }
+
+    // 设置摄像头服务
+    event SetCameraServe(uint identity);
+    function setCameraServe(bool state,uint identity)public{
+        cameraServe=state;
+        emit SetCameraServe(identity);
+    }
+
     /******************************************************************/
     /** Device
+     * 
      * 设备数据结构
+     * 
+     *   devices                设备信息数组(index -> info)
+     *   deviceAccountToIndex   设备映射   (account -> index)
+     *   deviceIndexToAccount   设备映射   (index -> account)
+     *   devicesNum             设备总数
      * 
      * 隐藏函数
      * 
-     * _deviceAccountToIndex
-     * _addDevice
-     * _reduceDevice
+     *   _deviceAccountToIndex  设备地址到下标(含判空)
+     *   _addDevice             添加设备(仅操作设备数据结构)
+     *   _reduceDevice          删除设备(仅操作设备数据结构)
      * 
      * Getter, Setter
-     *   getDeviceNum     获取设备数量
-     *   getDeviceInfo    获取设备信息
+     * 
+     *   getDeviceNum           获取设备数量
+     *   getDeviceInfo          获取设备信息
      *   getDeviceInfoByIndex
-     *   setDeviceName    设置设备名称
-     *   setDeviceInfo    设置设备信息
+     *   setDeviceName          设置设备名称
+     *   setDeviceInfo          设置设备信息
      *
-     * 删除设备
-     *   reduceDevice     删除设备
-     * 设备认证
-     *   authDevice       设备认证
+     * 设备操作
+     * 
+     *   authDevice             设备认证
+     *   reduceDevice           删除设备
      */
     /******************************************************************/
 
@@ -91,14 +115,14 @@ contract BoT{
     mapping(address => uint8) public deviceAccountToIndex;
     mapping(uint8 => address) public deviceIndexToAccount;
 
-    // 设备账户到下标转换函数
+    // 设备地址到下标(含判空)
     function _deviceAccountToIndex(address account) private view returns(uint8){
         uint8 index = deviceAccountToIndex[account];
         require(devices[index].account!=0x0000000000000000000000000000000000000000);
         return index;
     }
 
-    // 添加设备(仅操作设备列表)
+    // 添加设备(仅操作设备数据结构)
     function _addDevice(uint8 i, address _account, string memory _password, string memory _name, string memory _detail) private{
         devices[i].name    =_name;
         devices[i].detail  =_detail;
@@ -108,7 +132,7 @@ contract BoT{
         deviceAccountToIndex[_account] = i;
     }
 
-    // 删除设备(仅操作设备列表)
+    // 删除设备(仅操作设备数据结构)
     function _reduceDevice(uint8 i) private{
         deviceAccountToIndex[devices[i].account] = 0;
         
@@ -193,21 +217,28 @@ contract BoT{
     /** Add Device
      * 添加设备数据结构
      * 
+     * addDeviceList              添加设备信息数组(index -> info)
+     * addDeviceAccountToIndex    添加设备映射   (account -> index)
+     * addDeviceIndexToAccount    添加设备映射   (index -> account)
+     * 
      * 隐藏函数
      * 
-     * _addDeviceAccountToIndex
-     * _addAddDevice
-     * _reduceAddDevice
+     * _addDeviceAccountToIndex   添加设备地址到下标(含判空)
+     * _addAddDevice              添加“添加设备数据结构”
+     * _reduceAddDevice           删除“添加设备数据结构”
      * 
      * Getter, Setter
+     * 
      *   getAddDevListLen         获取设备申请表长
      *   getAddDevListInfo        获取设备申请信息
      *   getAddDevListInfoByIndex 获取设备申请信息
      * 
      * 添加测试设备
+     * 
      *   addDeviceTest            添加测试设备
      * 
      * 添加设备申请
+     * 
      *   addDevice                添加设备申请提交
      *   addDeviceState           添加设备状态获取
      *   addDeviceApprove         添加设备申请审批
@@ -399,6 +430,7 @@ contract BoT{
      *   getEventsClassCount     获取敏感事件类别计数
      *   setEventTypePlan        修改敏感事件类别应对方案
      *   setEventTypeName        修改敏感事件类别应对名称
+     *   setEventTypeCamera      修改敏感事件是否要截图
      * 
      * 认证
      * 
@@ -413,6 +445,7 @@ contract BoT{
         uint8 count;     // 事件发生次数
         mapping(address => uint8) deviceCount; // 根据设备种类事件发生的次数
         string name;     // 事件名称
+        bool camera;     // 是否需要照相
     }
     // 注意设备index从1开始, 0代表不存在
     mapping(uint8 => EventsClass) public eventsClass;
@@ -431,16 +464,16 @@ contract BoT{
     }
 
     // 获取敏感事件信息
-    function getEventsClassInfo(uint8 id)public view returns(uint8,uint8,string memory){
+    function getEventsClassInfo(uint8 id)public view returns(uint8,uint8,string memory,bool){
         require(eventsClass[id].class!=0);
-        return (id,eventsClass[id].class,eventsClass[id].name);
+        return (id,eventsClass[id].class,eventsClass[id].name,eventsClass[id].camera);
     }
 
     // 获取敏感事件信息
-    function getEventsClassInfoByName(string memory name)public view returns(uint8,uint8,string memory){
+    function getEventsClassInfoByName(string memory name)public view returns(uint8,uint8,string memory,bool){
         uint8 id = eventsClassNameToIndex[name];
         require(eventsClass[id].class!=0);
-        return (id,eventsClass[id].class,eventsClass[id].name);
+        return (id,eventsClass[id].class,eventsClass[id].name,eventsClass[id].camera);
     }
 
     // 获取敏感事件计数
@@ -464,6 +497,14 @@ contract BoT{
         require(eventsClass[eventId].class!=0);
         eventsClass[eventId].name = eventName;
         emit SetEventTypeName(identity);
+    }
+
+    // 修改敏感事件是否要截图
+    event SetEventTypeCamera(uint identity);
+    function setEventTypeCamera(uint8 eventId, bool camera,uint identity)public{
+        require(eventsClass[eventId].class!=0);
+        eventsClass[eventId].camera = camera;
+        emit SetEventTypeCamera(identity);
     }
 
     // 事件类型认证
@@ -520,10 +561,12 @@ contract BoT{
     }
 
     function _addEventsClass(uint8 eventClass,string memory eventName)private{
+        //eventsClass[2].count++;
         eventsClassNum++;
         eventsClass[eventsClassNum].class = eventClass;
         eventsClass[eventsClassNum].count = 0;
         eventsClass[eventsClassNum].name = eventName;
+        eventsClass[eventsClassNum].camera = false;
         eventsClassNameToIndex[eventName] = eventsClassNum;
     }
 
@@ -574,12 +617,8 @@ contract BoT{
     // 添加测试敏感事件类型
     event AddEventsClassTest(uint8 eventsClassId,uint identity);
     function addEventsClassTest(uint8 eventClass,string memory eventName,uint identity)public{
-        require(eventClass>0 && eventClass<5);
-        require(authEventsClass(eventName));
-        if(eventsClassNameToIndex[eventName]!=0){
-             emit AddEventsClassTest(eventsClassNameToIndex[eventName],identity);
-             return;
-        }
+        //require(eventClass>0 && eventClass<5);
+        //require(authEventsClass(eventName));
         _addEventsClass(eventClass,eventName);
         emit AddEventsClassTest(eventsClassNum,identity);
     }
@@ -644,9 +683,8 @@ contract BoT{
         if(addEventsClassList[index].approve==true){
             _addEventsClass(addEventsClassList[index].class,name);
         }
-
         // 添加事件记录
-        eventsById[account][eventsNum[account]].time=block.timestamp+1000;
+        eventsById[account][eventsNum[account]].time=block.timestamp;
         eventsById[account][eventsNum[account]].state1=true;
         eventsById[account][eventsNum[account]].state2=addDeviceList[index].approve;
 
@@ -724,7 +762,8 @@ contract BoT{
 
     // 敏感事件待办清单
     struct ToDoList{
-        address device;   // 设备地址
+        bool real;      // 真实设备
+        address device; // 设备地址
         uint8 eventType;// 事件类型id
         uint8 refer;    // 在事件列表的下标
         bool  read;     // 是否已读
@@ -736,8 +775,9 @@ contract BoT{
     mapping(string => uint8) public toDoListNameToIndex;
     //mapping(uint8 => string) public toDoListIndexToName;
 
-    function _addToDoList(uint8 i,address account,uint8 eventType,uint8 refer,bool read,bool approve)private{
+    function _addToDoList(uint8 i,bool real,address account,uint8 eventType,uint8 refer,bool read,bool approve)private{
         toDoListNameToIndex[eventsClass[eventType].name] = i;
+        toDoList[i].real=real;
         toDoList[i].device=account;
         toDoList[i].eventType=eventType;
         toDoList[i].refer=refer;
@@ -749,6 +789,7 @@ contract BoT{
         toDoListNameToIndex[eventsClass[toDoList[toDoListLen].eventType].name] = 0;
         if(i!=toDoListLen){
             _addToDoList(i,
+                toDoList[toDoListLen].real,
                 toDoList[toDoListLen].device,
                 toDoList[toDoListLen].eventType,
                 toDoList[toDoListLen].refer,
@@ -765,28 +806,30 @@ contract BoT{
     }
 
     // 获取待办清单信息(返回：设备id,事件类型id,在事件列表的下标)
-    function getToDoListInfo(uint8 i)public view returns(address,uint8,uint8,uint8,bool,bool){
+    function getToDoListInfo(uint8 i)public view returns(address,uint8,uint8,uint8,bool,bool,bool){
         require(toDoList[i].device!=0x0000000000000000000000000000000000000000);
-        return (toDoList[i].device,toDoList[i].eventType,toDoList[i].refer,i,toDoList[i].read,toDoList[i].approve);
+        return (toDoList[i].device,toDoList[i].eventType,toDoList[i].refer,i,toDoList[i].read,toDoList[i].approve,toDoList[i].real);
     }
 
     // 敏感事件申请
-    event AddEvent(bool approve,bool wait,uint identity);
+    event AddEvent(bool approve,bool wait,uint eventId,uint identity);
+    event AddEventTest(address _account,uint8 eventId);
     function addEventTest(address _account, uint8 eventId,uint identity) public returns(uint8){
-        return _addEvent(_account,eventId,identity);
+        emit AddEventTest(_account,eventId);
+        return _addEvent(_account,eventId,false,identity);
     }
     function addEvent(address _account, string memory _password, string memory eventClass,uint identity) public returns(uint8){
         // 设备认证
         require(authDevice(_account,_password));
-        return _addEvent(_account,eventsClassNameToIndex[eventClass],identity);
+        return _addEvent(_account,eventsClassNameToIndex[eventClass],true,identity);
     }
-    function _addEvent(address _account, uint8 eventId,uint identity) public returns(uint8){
+    function _addEvent(address _account, uint8 eventId,bool real,uint identity) public returns(uint8){
         // 事件Id合法认证
         require(eventsClass[eventId].class!=0,"Undefined Class Type!");
         // 进行敏感事件申请
         if(eventsClass[eventId].class==1){
             // 默认自动通过, 不进行记录
-            emit AddEvent(true,false,identity);
+            emit AddEvent(true,false,eventId,identity);
             return 1;
         }else{
             // 进行计数
@@ -799,7 +842,7 @@ contract BoT{
                 // 默认记录后通过
                 eventsById[_account][eventsNum[_account]].state1=false;
                 eventsById[_account][eventsNum[_account]].state2=false;
-                emit AddEvent(true,false,identity);
+                emit AddEvent(true,false,eventId,identity);
                 return 2;
             }else if(eventsClass[eventId].class==3){
                 // 需要等待
@@ -811,14 +854,14 @@ contract BoT{
                 }
                 // 加入申请列表
                 toDoListLen++;
-                _addToDoList(toDoListLen,_account,eventId,eventsNum[_account],false,false);
-                emit AddEvent(false,true,identity);
+                _addToDoList(toDoListLen,real,_account,eventId,eventsNum[_account],false,false);
+                emit AddEvent(false,true,eventId,identity);
                 return 3;
             }else{
                 // 默认记录后拒绝
                 eventsById[_account][eventsNum[_account]].state1=false;
                 eventsById[_account][eventsNum[_account]].state2=true;
-                emit AddEvent(false,false,identity);
+                emit AddEvent(false,false,eventId,identity);
                 return 4;
             }
         }
@@ -877,14 +920,22 @@ contract BoT{
         eventsClass[1].count = 0;
         eventsClass[1].name = "Add Device";
         eventsClassNameToIndex["Add Device"] = 1;
+        //addEventsClassTest(3,"Add Device",1111111);
         // 初始化事件类别 - 添加新类型申请
         eventsClass[2].class = 3;
         eventsClass[2].count = 0;
         eventsClass[2].name = "Add Event Type";
         eventsClassNameToIndex["Add Event Type"] = 2;
-        eventsClassNum=2;
+        //addEventsClassTest(3,"Add Event Type",1111111);
+        // 初始化事件类别 - 添加新类型申请
+        eventsClass[3].class = 2;
+        eventsClass[3].count = 0;
+        eventsClass[3].name = "GPS";
+        eventsClassNameToIndex["GPS"] = 3;
+        eventsClassNum=3;
 
         // 测试函数
+        //addEventsClassTest(1,"Light",12345678);
         //addDevice(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,"12345678","Device","A Device",0);
         //addDeviceApprove(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,true,1);
         //addDeviceReply(0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8,2);

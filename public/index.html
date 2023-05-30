@@ -10,6 +10,11 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico">
     <link href="assets/libs/chartist/chartist.min.css" rel="stylesheet">
+    <!-- DataTables -->
+    <link href="assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+        <link href="assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />  
     <!-- Plugin css -->
     <link href="assets/libs/@fullcalendar/core/main.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/libs/@fullcalendar/daygrid/main.min.css" rel="stylesheet" type="text/css" />
@@ -63,7 +68,7 @@
         <!-- Begin page -->
         <div id="layout-wrapper">
             <header id="page-topbar" style="display: none;">
-                <div class="navbar-header">
+                <div class="navbar-header"><!-- id="page-topbar" style="display: none;"-->
                     <div class="d-flex">
                         <!-- LOGO -->
                         <div class="navbar-brand-box">
@@ -102,166 +107,6 @@
                                         <a class="dropdown-item" data-toggle="modal" data-target="#AddEventTypeTest">Test Event Type</a>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#AddEventTest">Test Event</a>
                                         <a class="dropdown-item" onclick="uiRefresh()">UI Refresh</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--****a1-->
-                            <div class="col-sm-6 col-md-3 mt-4">
-                                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddDeviceTest">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title mt-0">Add New Test Equipment</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Device Name</label>
-                                                            <input class="form-control" placeholder="Please input the device name" id="AddDeviceTestI" required value="" />
-                                                            <div class="invalid-feedback">Please input the device name</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Device Introduce</label>
-                                                            <input class="form-control" placeholder="Please input the device Concise Introduce" id="AddDeviceTestI2" required value="" />
-                                                            <div class="invalid-feedback">Please input the device introduction</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-2">
-                                                    <div class="col-6">
-                                                        <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
-                                                    </div>
-                                                    <div class="col-6 text-right">
-                                                        <button type="button" class="btn btn-light mr-1" id="AddDeviceTestBC" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-success" id="AddDeviceTestB" onclick="doAddDeviceTest()">Save</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--****a2-->
-                            <div class="col-sm-6 col-md-3 mt-4">
-                                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddEventTypeTest">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title mt-0">Add New Test Event Type</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Event Type Name</label>
-                                                            <input class="form-control" placeholder="Insert Event Type Name" id="AddEventTypeTestI" required value="" />
-                                                            <div class="invalid-feedback">Please provide a valid event type name</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Processing Method</label>
-                                                            <select class="form-control custom-select" name="category" id="AddEventTypeTestS" required>
-                                                                <option>Plain Mode</option>
-                                                                <option selected>Normal Mode</option>
-                                                                <option>Warning Mode</option>
-                                                                <option>Reject Mode</option>
-                                                            </select>
-                                                            <div class="invalid-feedback">Please select a valid event category</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-2">
-                                                    <div class="col-6">
-                                                        <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
-                                                    </div>
-                                                    <div class="col-6 text-right">
-                                                        <button type="button" class="btn btn-light mr-1" id="AddEventTypeTestBC" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-success" id="AddEventTypeTestB" onclick="doAddEventsClassTest()">Save</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div><!-- /.modal -->
-                            </div>
-                            <!--****a3-->
-                            <div class="col-sm-6 col-md-3 mt-4">
-                                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddEventTest">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title mt-0">Add New Test Event</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Device ID</label>
-                                                            <input class="form-control" placeholder="Input the device id" id="AddEventTestI3" required value="" />
-                                                            <div class="invalid-feedback">Input Device ID</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Event Type</label>
-                                                            <select class="form-control custom-select" name="category" id="AddEventTestS" required>
-                                                                <!--****c-->
-                                                            </select>
-                                                            <div class="invalid-feedback">Please select a valid event category</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-2">
-                                                    <div class="col-6">
-                                                        <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
-                                                    </div>
-                                                    <div class="col-6 text-right">
-                                                        <button type="button" class="btn btn-light mr-1" id="AddEventTestBC" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-success" id="AddEventTestB" onclick="doAddEventTest()">Add</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div><!-- /.modal -->
-                            </div>
-                            <!--****todolist-->
-                            <div class="col-sm-6 col-md-3 mt-4">
-                                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="DoAddEventApprove">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title mt-0">Request Operater</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Are you going to Aprpove for the Request?</label>
-                                                            <p></p>
-                                                            <div class="invalid-feedback">Please input the device name</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-2">
-                                                    <div class="col-6">
-                                                        <button type="button" class="btn btn-danger" id="ToDoListB2" onclick="doAddEventApprove(false)">Reject</button>
-                                                    </div>
-                                                    <div class="col-6 text-right">
-                                                        <button type="button" class="btn btn-light mr-1" id="ToDoListBC" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-success" id="ToDoListB1" onclick="doAddEventApprove(true)">Approve</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -321,7 +166,7 @@
                         </div>
                         <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="assets/images/users/user-4.jpg" alt="Header Avatar">
+                                <img class="rounded-circle header-profile-user" src="assets/images/users/user-6.jpg" alt="Header Avatar">
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <!-- item-->
@@ -340,6 +185,168 @@
                     </div>
                 </div>
             </header>
+            <div>
+                <!--****a1-->
+                <div class="col-sm-6 col-md-3 mt-4">
+                    <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddDeviceTest">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0">Add New Test Equipment</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Device Name</label>
+                                                <input class="form-control" placeholder="Please input the device name" id="AddDeviceTestI" required value="" />
+                                                <div class="invalid-feedback">Please input the device name</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Device Introduce</label>
+                                                <input class="form-control" placeholder="Please input the device Concise Introduce" id="AddDeviceTestI2" required value="" />
+                                                <div class="invalid-feedback">Please input the device introduction</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button type="button" class="btn btn-light mr-1" id="AddDeviceTestBC" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-success" id="AddDeviceTestB" onclick="doAddDeviceTest()">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--****a2-->
+                <div class="col-sm-6 col-md-3 mt-4">
+                    <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddEventTypeTest">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0">Add New Test Event Type</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Event Type Name</label>
+                                                <input class="form-control" placeholder="Insert Event Type Name" id="AddEventTypeTestI" required value="" />
+                                                <div class="invalid-feedback">Please provide a valid event type name</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Processing Method</label>
+                                                <select class="form-control custom-select" name="category" id="AddEventTypeTestS" required>
+                                                    <option>Plain Mode</option>
+                                                    <option selected>Normal Mode</option>
+                                                    <option>Warning Mode</option>
+                                                    <option>Reject Mode</option>
+                                                </select>
+                                                <div class="invalid-feedback">Please select a valid event category</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button type="button" class="btn btn-light mr-1" id="AddEventTypeTestBC" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-success" id="AddEventTypeTestB" onclick="doAddEventsClassTest()">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                </div>
+                <!--****a3-->
+                <div class="col-sm-6 col-md-3 mt-4">
+                    <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddEventTest">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0">Add New Test Event</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Device ID</label>
+                                                <input class="form-control" placeholder="Input the device id" id="AddEventTestI3" required value="" />
+                                                <div class="invalid-feedback">Input Device ID</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Event Type</label>
+                                                <select class="form-control custom-select" name="category" id="AddEventTestS" required>
+                                                    <!--****c-->
+                                                </select>
+                                                <div class="invalid-feedback">Please select a valid event category</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button type="button" class="btn btn-light mr-1" id="AddEventTestBC" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-success" id="AddEventTestB" onclick="doAddEventTest()">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                </div>
+                <!--****todolist-->
+                <div class="col-sm-6 col-md-3 mt-4">
+                    <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="DoAddEventApprove">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0">Request Operater</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Are you going to Aprpove for the Request?</label>
+                                                <p></p>
+                                                <div class="invalid-feedback">Please input the device name</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <button type="button" class="btn btn-danger" id="ToDoListB2" onclick="doAddEventApprove(false)">Reject</button>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <button type="button" class="btn btn-light mr-1" id="ToDoListBC" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-success" id="ToDoListB1" onclick="doAddEventApprove(true)">Approve</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- ========== Left Sidebar Start ========== -->
             <div class="vertical-menu" id="vertical-menu" style="display: none;">
                 <div data-simplebar class="h-100">
@@ -446,7 +453,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
-                                © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Charles Shan.</span>
+                                © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Yu Mengqi.</span>
                             </div>
                         </div>
                     </div>
@@ -524,10 +531,54 @@
                                 <div class="col-lg-12">
                                     <div class="card">
                                         <div class="card-body">
+                                            <h4 class="card-title">Camera Recoding Displaying Area</h4>
+                                            <p class="card-title-desc">On and Off button is similar to the function in profile page.</p>
+                                            <video id="video" class="vio" autoplay="autoplay"></video>
+    <canvas id="canvas" width="400px" height="300px" style="display: none"></canvas>
+    <a id="down" style="opacity: 0; display: none;"></a>
+                                            <br>
+                                            <button class="btn btn-primary w-md waves-effect waves-light " type="submit" id="CameraOn">On</button>
+                                            <button class="btn btn-primary w-md waves-effect waves-light " type="submit" id="CameraOff">Off</button>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+                            </div> <!-- end row -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+
+                                            <h4 class="card-title">Events DataBase</h4>
+                                            <p class="card-title-desc">All Events are showned below ...
+                                            </p>
+                                            <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;" style="display:none">
+
+                                            <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead>
+                                                <tr>
+                                                    <th>Time</th>
+                                                    <th>Device</th>
+                                                    <th>Event</th>
+                                                    <th>Mode</th>
+                                                    <th>State</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="DataBaseBody">
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col -->
+                            </div> <!-- end row -->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
                                             <h4 class="card-title">Device Position Map</h4>
                                             <p class="card-title-desc">Device Position are showen ini the map. You need to click `Refresh` to load new Position</p>
                                             <div id="gmaps-markers" class="gmaps"></div>
-                                            <button class="btn btn-primary w-md waves-effect waves-light " type="submit" id="btn">Refresh</button>
+                                            <button class="btn btn-primary w-md waves-effect waves-light " type="submit" id="btn" onclick="show_position()">Refresh</button>
                                         </div>
                                     </div>
                                 </div> <!-- end col -->
@@ -539,7 +590,7 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
-                                    © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Charles Shan.</span>
+                                    © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Yu Mengqi.</span>
                                 </div>
                             </div>
                         </div>
@@ -626,6 +677,25 @@
                                 </div>
                             </div> <!-- end col -->
                         </div> <!-- end row -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Camera</h4>
+                                        <p class="card-title-desc">This config is to control the global camera serve. That means, when the button is <code class="highlighter-rouge">on</code>, only selected event type need record video. When the button is <code class="highlighter-rouge"> off</code>, all events will not record video!</p>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Camera Serve</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" id="SetCameraServe" , onchange="doChangeCameraServe()">
+                                                    <option>Off</option>
+                                                    <option>On</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row -->
                     </div> <!-- container-fluid -->
                 </div>
                 <!-- End Page-content -->
@@ -633,7 +703,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
-                                © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Charles Shan.</span>
+                                © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Yu Mengqi.</span>
                             </div>
                         </div>
                     </div>
@@ -702,7 +772,7 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
-                                    © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Charles Shan.</span>
+                                    © <script>document.write(new Date().getFullYear())</script> DIoT<span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Yu Mengqi.</span>
                                 </div>
                             </div>
                         </div>
@@ -759,13 +829,29 @@
         <script src="assets/libs/simplebar/simplebar.min.js"></script>
         <script src="assets/libs/node-waves/waves.min.js"></script>
         <!-- Plugin Js-->
-        <script src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=sEmoFD6wGwres3qo3zNNOUbrUEFZRWql"></script>
+        <script src="https://api.map.baidu.com/api?v=3.0&ak=rdpV8kRbLWQmttnHplwdcadbqFpr6o9G"></script>
         <script src="assets/js/app.js"></script>
         <script src="assets/js/web3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="assets/js/chart.js"></script>
         <script src="assets/js/chart.min.js"></script>
         <script src="assets/js/sweetalert2.min.js"></script>
+        <!-- Required datatable js -->
+        <script src="assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <!-- Buttons examples -->
+        <script src="assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+        <script src="assets/libs/jszip/jszip.min.js"></script>
+        <script src="assets/libs/pdfmake/build/pdfmake.min.js"></script>
+        <script src="assets/libs/pdfmake/build/vfs_fonts.js"></script>
+        <script src="assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+        <script src="assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+        <script src="assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+        <!-- Responsive examples -->
+        <script src="assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    
         <script src="assets/js/init.js"></script>
         <script src="assets/js/main.js"></script>
 </body>

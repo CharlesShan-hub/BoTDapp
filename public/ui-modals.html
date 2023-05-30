@@ -1,0 +1,178 @@
+﻿<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Modal | Veltrix - Responsive Bootstrap 4 Admin Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+        <meta content="Themesbrand" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!-- Bootstrap Css -->
+        <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body data-sidebar="dark">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <div id="DashboardCreat">
+                        <div class="d-none d-sm-block">
+                            <div class="dropdown pt-3 d-inline-block">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Create <i class="mdi mdi-chevron-down"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <!--****a-->
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#AddDeviceTest">Test Device</a>
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#AddEventTypeTest">Test Event Type</a>
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#AddEventTest">Test Event</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--****a1-->
+                        <div class="col-sm-6 col-md-3 mt-4">
+                            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddDeviceTest">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title mt-0">Add New Test Equipment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Device Name</label>
+                                                        <input class="form-control" placeholder="Please input the device name" id="AddDeviceTestI" required value="" />
+                                                        <div class="invalid-feedback">Please input the device name</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Device Introduce</label>
+                                                        <input class="form-control" placeholder="Please input the device Concise Introduce" id="AddDeviceTestI2" required value="" />
+                                                        <div class="invalid-feedback">Please input the device introduction</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-6">
+                                                    <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
+                                                </div>
+                                                <div class="col-6 text-right">
+                                                    <button type="button" class="btn btn-light mr-1" id="AddDeviceTestBC" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-success" id="AddDeviceTestB" onclick="doAddDeviceTest()">Save</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--****a2-->
+                        <div class="col-sm-6 col-md-3 mt-4">
+                            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddEventTypeTest">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title mt-0">Add New Test Event Type</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Event Type Name</label>
+                                                        <input class="form-control" placeholder="Insert Event Type Name" id="AddEventTypeTestI" required value="" />
+                                                        <div class="invalid-feedback">Please provide a valid event type name</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Processing Method</label>
+                                                        <select class="form-control custom-select" name="category" id="AddEventTypeTestS" required>
+                                                            <option>Plain Mode</option>
+                                                            <option selected>Normal Mode</option>
+                                                            <option>Warning Mode</option>
+                                                            <option>Reject Mode</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select a valid event category</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-6">
+                                                    <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
+                                                </div>
+                                                <div class="col-6 text-right">
+                                                    <button type="button" class="btn btn-light mr-1" id="AddEventTypeTestBC" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-success" id="AddEventTypeTestB" onclick="doAddEventsClassTest()">Save</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                        </div>
+                        <!--****a3-->
+                        <div class="col-sm-6 col-md-3 mt-4">
+                            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="AddEventTest">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title mt-0">Add New Test Event</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Device ID</label>
+                                                        <input class="form-control" placeholder="Input the device id" id="AddEventTestI3" required value="" />
+                                                        <div class="invalid-feedback">Input Device ID</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Event Type</label>
+                                                        <select class="form-control custom-select" name="category" id="AddEventTestS" required>
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select a valid event category</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-6">
+                                                    <button type="button" class="btn btn-danger" disabled="disabled">Delete</button>
+                                                </div>
+                                                <div class="col-6 text-right">
+                                                    <button type="button" class="btn btn-light mr-1" id="AddEventTestBC" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-success" id="AddEventTestB" onclick="doAddEventTest()">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- JAVASCRIPT -->
+        <script src="assets/libs/jquery/jquery.min.js"></script>
+        <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/libs/metismenu/metisMenu.min.js"></script>
+        <script src="assets/libs/simplebar/simplebar.min.js"></script>
+        <script src="assets/libs/node-waves/waves.min.js"></script>
+
+        <script src="assets/js/app.js"></script>
+
+    </body>
+</html>

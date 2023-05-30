@@ -40,6 +40,11 @@ function bodyify(value, type) {
     }
     return value;
 }
+function unpercent(value) {
+    return toUtf8Bytes(value.replace(/%([0-9a-f][0-9a-f])/gi, (all, code) => {
+        return String.fromCharCode(parseInt(code, 16));
+    }));
+}
 // This API is still a work in progress; the future changes will likely be:
 // - ConnectionInfo => FetchDataRequest<T = any>
 // - FetchDataRequest.body? = string | Uint8Array | { contentType: string, data: string | Uint8Array }
@@ -53,6 +58,7 @@ export function _fetchData(connection, body, processFunc) {
     const throttleCallback = ((typeof (connection) === "object") ? connection.throttleCallback : null);
     const throttleSlotInterval = ((typeof (connection) === "object" && typeof (connection.throttleSlotInterval) === "number") ? connection.throttleSlotInterval : 100);
     logger.assertArgument((throttleSlotInterval > 0 && (throttleSlotInterval % 1) === 0), "invalid connection throttle slot interval", "connection.throttleSlotInterval", throttleSlotInterval);
+    const errorPassThrough = ((typeof (connection) === "object") ? !!(connection.errorPassThrough) : false);
     const headers = {};
     let url = null;
     // @TODO: Allow ConnectionInfo to override some of these values
@@ -91,16 +97,22 @@ export function _fetchData(connection, body, processFunc) {
                 value: "Basic " + base64Encode(toUtf8Bytes(authorization))
             };
         }
+        if (connection.skipFetchSetup != null) {
+            options.skipFetchSetup = !!connection.skipFetchSetup;
+        }
+        if (connection.fetchOptions != null) {
+            options.fetchOptions = shallowCopy(connection.fetchOptions);
+        }
     }
-    const reData = new RegExp("^data:([a-z0-9-]+/[a-z0-9-]+);base64,(.*)$", "i");
+    const reData = new RegExp("^data:([^;:]*)?(;base64)?,(.*)$", "i");
     const dataMatch = ((url) ? url.match(reData) : null);
     if (dataMatch) {
         try {
             const response = {
                 statusCode: 200,
                 statusMessage: "OK",
-                headers: { "content-type": dataMatch[1] },
-                body: base64Decode(dataMatch[2])
+                headers: { "content-type": (dataMatch[1] || "text/plain") },
+                body: (dataMatch[2] ? base64Decode(dataMatch[3]) : unpercent(dataMatch[3]))
             };
             let result = response.body;
             if (processFunc) {
@@ -214,7 +226,7 @@ export function _fetchData(connection, body, processFunc) {
                 if (allow304 && response.statusCode === 304) {
                     body = null;
                 }
-                else if (response.statusCode < 200 || response.statusCode >= 300) {
+                else if (!errorPassThrough && (response.statusCode < 200 || response.statusCode >= 300)) {
                     runningTimeout.cancel();
                     logger.throwError("bad response", Logger.errors.SERVER_ERROR, {
                         status: response.statusCode,
